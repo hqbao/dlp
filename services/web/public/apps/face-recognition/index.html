@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<head>
+		<title>DLP - Face Recognition</title>
+	</head>
+	<body style="margin: 0px;">
+		<div style="width: 100%;text-align: center;">
+			<video width="512" height="512" style="position: fixed;background-color: black;z-index: 1;"></video>
+			<canvas id="overlay" width="512" height="512" style="position: relative;left: 0px;background-color: unset;z-index: 2;">
+		</div>
+		<div style="width: 100%;text-align: center;">
+			<button onclick="onStartClicked()">START</button><br>
+			<button onclick="onStopClicked()">STOP</button>
+		</div>
+		<div id="leftlookfaces"></div>
+		<div id="frontlookfaces"></div>
+		<div id="rightlookfaces"></div>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.4.0/dist/tf.min.js"></script>
+		<script type="text/javascript">
+			var video = document.querySelector('video');
+
+			var extractorCanvas = document.createElement('canvas');
+			var extractorCtx = extractorCanvas.getContext('2d');
+
+			var overlayCanvas = document.getElementById('overlay');
+			var overlayCtx = overlayCanvas.getContext('2d');
+
+			var isVideoReady = false;
+			var pBoxes = [];
+
+			function update(e) {
+				extractorCanvas.height = video.videoHeight;
+				extractorCanvas.width = video.videoWidth;
+				extractorCtx.drawImage(video, 0, 0);
+				extractorCanvas.toBlob(function(blob) {
+					var inputImage = document.createElement('img');
+					inputImage.height = 256;
+					inputImage.width = 256;
+					inputImage.src = URL.createObjectURL(blob);
+					inferFaceDet(inputImage);
+				}, 'image/jpeg');
+			}
+
+			video.addEventListener('loadedmetadata', function(e) {}, false);
+			video.addEventListener('timeupdate', update, false);
+			video.addEventListener('ended', function(e) {}, false);
+
+			function onStopClicked() {
+				if (isVideoReady) {
+					video.pause();
+				}
+			}
+
+			function onStartClicked() {
+				if (isVideoReady) {
+					video.play();
+				}
+			}
+
+			var constraints = {audio: false, video: {width: 256, height: 256}}; 
+			navigator.mediaDevices.getUserMedia(constraints)
+			.then(function(mediaStream) {
+				video.srcObject = mediaStream;
+				video.onloadedmetadata = function(e) {
+					isVideoReady = true;
+				};
+			})
+			.catch(function(err) { 
+				console.log(err.name + ": " + err.message); 
+			});
+
+			async function inferFaceDet(inputImage) {
+				const model = await tf.loadGraphModel('https://dlp.fansipan.io/apps/face-recognition/tfjs/face-det/model.json');
+				var pix = tf.browser.fromPixels(inputImage);
+				pix = tf.cast(pix, 'float32');
+				pix = pix.expandDims(0);
+				var outputs = await model.executeAsync(pix);
+				var validOutputs = outputs[0].arraySync()[0]
+				var boxes = outputs[1].arraySync();
+				handleBoxes(validOutputs, boxes);
+			}
+
+			async function inferFaceAli(boxImage, box) {
+				const model = await tf.loadGraphModel('https://dlp.fansipan.io/apps/face-recognition/tfjs/face-ali/model.json');
+				var pix = tf.browser.fromPixels(boxImage, 1);
+				pix = pix.expandDims(0);
+				var outputs = await model.executeAsync(pix);
+				var a = outputs[0].arraySync();
+				var b = outputs[1].arraySync();
+				var c = outputs[2].arraySync();
+				var d = outputs[3].arraySync();
+				var e = outputs[4].arraySync();
+				if (a != 0 && b != 0 && c != 0 && d != 0 && e != 0) {
+					var x_leye = a%112;
+					var x_reye = c%112;
+					var x_nose = b%112;
+
+					boxImage.height = 56;
+					boxImage.width = 56;
+
+					if (Math.abs(2*x_nose-x_leye-x_reye) < 8) {
+						var frontlookfaces = document.getElementById('frontlookfaces');
+						if (frontlookfaces.childNodes.length > 8) {
+							frontlookfaces.removeChild(frontlookfaces.childNodes[0]);
+						}
+
+						frontlookfaces.appendChild(boxImage);
+					}
+					else if (x_nose-x_leye > x_reye-x_nose) {
+						var leftlookfaces = document.getElementById('leftlookfaces');
+						if (leftlookfaces.childNodes.length > 8) {
+							leftlookfaces.removeChild(leftlookfaces.childNodes[0]);
+						}
+
+						leftlookfaces.appendChild(boxImage);
+					}
+					else {
+						var rightlookfaces = document.getElementById('rightlookfaces');
+						if (rightlookfaces.childNodes.length > 8) {
+							rightlookfaces.removeChild(rightlookfaces.childNodes[0]);
+						}
+
+						rightlookfaces.appendChild(boxImage);
+					}
+				}
+			}
+
+			function handleBoxes(validOutputs, boxes) {
+				overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+				for (var i = 0; i < validOutputs; i++) {
+					var box = boxes[i];
+
+					drawBoxes(box);
+
+					var size = box[1] > box[0] ? 1.1*box[1] : 1.1*box[0];
+					extractorCanvas.height = size;
+					extractorCanvas.width = size;
+					extractorCtx.drawImage(video, -(box[1]+0.5*(box[3]-box[1])-0.5*size), -(box[0]+0.5*(box[2]-box[0])-0.5*size));
+					extractorCanvas.toBlob(function(blob) {
+						var boxImage = document.createElement('img');
+						boxImage.height = 112;
+						boxImage.width = 112;
+						boxImage.src = URL.createObjectURL(blob);
+						inferFaceAli(boxImage, box);
+					}, 'image/jpeg');
+				}
+			}
+
+			function drawBoxes(box) {
+				var box = [2*box[0], 2*box[1], 2*box[2], 2*box[3]]
+				overlayCtx.beginPath();
+				overlayCtx.strokeStyle = "#00FF00";
+				overlayCtx.rect(box[1], box[0], (box[3]-box[1]), (box[2]-box[0]), Math.PI);
+				overlayCtx.stroke();
+			}
+		</script>
+	</body>
+</html>

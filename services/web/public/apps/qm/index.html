@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<head>
+		<title>DLP - Quiz Marker</title>
+	</head>
+	<body>
+		<div style="width: 100%;text-align: center;">
+			<video style="background: black;width: 400px;"></video>
+			<canvas id="overlay" width="400" height="480" style="border:1px solid #AAAAAA;background: black;"><br>
+		</div>
+		<div style="width: 100%;text-align: center;">
+			<button onclick="onStartClicked()">START</button><br>
+			<button onclick="onStopClicked()">STOP</button>
+		</div>
+		<img src="" style="position: fixed;top: 8px;" />
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.4.0/dist/tf.min.js"></script>
+		<script type="text/javascript">
+			var preview = document.querySelector('img');
+			var canvas = document.createElement('canvas');
+			var ctx = canvas.getContext('2d');
+			var overlay = document.getElementById("overlay");
+			var overlayCtx = overlay.getContext("2d");
+			var isVideoReady = false;
+
+			function initCanvas(e) {
+				canvas.width = this.videoWidth;
+				canvas.height = this.videoHeight;
+			}
+
+			function drawFrame(e) {
+				ctx.drawImage(this, 0, 0);
+				canvas.toBlob(onFrame, 'image/jpeg');
+			}
+
+			function onFrame(blob) {
+				var objectURL = URL.createObjectURL(blob);
+				preview.src = objectURL;
+
+				infer(blob);
+			}
+
+			function onEnded(e) {}
+
+			var video = document.querySelector('video');
+			video.addEventListener('loadedmetadata', initCanvas, false);
+			video.addEventListener('timeupdate', drawFrame, false);
+			video.addEventListener('ended', onEnded, false);
+
+			function onStopClicked() {
+				if (isVideoReady) {
+					video.pause();
+				}
+			}
+
+			function onStartClicked() {
+				if (isVideoReady) {
+					video.play();
+				}
+			}
+
+			// Prefer camera resolution nearest to 1280x720.
+			var constraints = {audio: false, video: {width: 200, height: 240}}; 
+			navigator.mediaDevices.getUserMedia(constraints)
+			.then(function(mediaStream) {
+				video.srcObject = mediaStream;
+				video.onloadedmetadata = function(e) {
+					isVideoReady = true;
+				};
+			})
+			.catch(function(err) { 
+				console.log(err.name + ": " + err.message); 
+			});
+
+
+			async function infer(blob) {
+				const model = await tf.loadGraphModel('https://dlp.fansipan.io/apps/qm/tfjs/model.json');
+				var pix = tf.browser.fromPixels(preview);
+				pix = pix.expandDims(0);
+				var outputs = await model.executeAsync(pix);
+				var validOutputs = outputs[1].arraySync()[0]
+				var boxes = outputs[0].arraySync();
+				drawBoxes(validOutputs, boxes);
+			}
+
+			function drawBoxes(validOutputs, boxes) {
+				overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
+				for (var i = 0; i < validOutputs; i++) {
+					var box = boxes[i];
+					overlayCtx.beginPath();
+					if (box[4]) {
+						overlayCtx.strokeStyle = "#FF0000";
+					}
+					else {
+						overlayCtx.strokeStyle = "#00FF00";
+					}
+					
+					overlayCtx.arc(2*box[1], 2*box[0], 8, 0, 2*Math.PI);
+					overlayCtx.stroke();
+				}
+			}
+		</script>
+	</body>
+</html>
