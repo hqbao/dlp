@@ -4,11 +4,11 @@ import {UIConnectionNode} from './UIConnectionNode.js';
 import {TensorFlowValidator} from './TensorFlowValidator.js';
 
 class UINodeManager {
-	constructor(render, canvas, context, extEventMap, height, width, movingUnit) {
+	constructor(render, canvas, context, notif, height, width, movingUnit) {
 		this.canvas = canvas;
 		this.context = context;
 		this.render = render;
-		this.extEventMap = extEventMap;
+		this.notif = notif;
 		this.height = height;
 		this.width = width;
 		this.movingUnit = movingUnit;
@@ -32,7 +32,7 @@ class UINodeManager {
 				this.autoIncreaseEntityId,
 				this.autoIncreaseLowZIndex, 
 				this.canvas,
-				this.extEventMap,
+				this.notif,
 				this.height, 
 				this.width,
 				this.movingUnit,
@@ -45,7 +45,7 @@ class UINodeManager {
 				this.autoIncreaseEntityId,
 				this.autoIncreaseLowZIndex, 
 				this.canvas,
-				this.extEventMap,
+				this.notif,
 				params.nodeSettings, 
 				params.nodeParams,
 				[],
@@ -59,7 +59,7 @@ class UINodeManager {
 				this.autoIncreaseEntityId,
 				this.autoIncreaseHighZIndex, 
 				this.canvas,
-				this.extEventMap,
+				this.notif,
 				params.srcPosition, 
 				params.dstPosition,
 				params.srcNodeId, 
@@ -92,7 +92,7 @@ class UINodeManager {
 				snapshot.nodeId,
 				snapshot.nodeZIndex, 
 				this.canvas,
-				this.extEventMap,
+				this.notif,
 				this.height, 
 				this.width,
 				this.movingUnit,
@@ -107,7 +107,7 @@ class UINodeManager {
 				snapshot.nodeId,
 				snapshot.nodeZIndex, 
 				this.canvas,
-				this.extEventMap,
+				this.notif,
 				snapshot.nodeSettings, 
 				snapshot.nodeParams,
 				snapshot.srcConnIdList,
@@ -123,7 +123,7 @@ class UINodeManager {
 				snapshot.nodeId,
 				snapshot.nodeZIndex, 
 				this.canvas,
-				this.extEventMap,
+				this.notif,
 				snapshot.srcPosition, 
 				snapshot.dstPosition,
 				snapshot.srcNodeId, 

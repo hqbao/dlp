@@ -12,9 +12,9 @@ const CONN_PATH_HIGHLIGHT_COLOR			= '#202020';
 const CONN_SRC_HIGHLIGHT_COLOR			= '#606060';
 const CONN_DST_HIGHLIGHT_COLOR			= '#A0A0A0';
 class UIConnectionNode extends UINode {
-	constructor(nodeId, nodeZIndex, canvas, extEventMap, srcPosition, dstPosition, 
+	constructor(nodeId, nodeZIndex, canvas, notif, srcPosition, dstPosition, 
 		srcNodeId, dstNodeId, connEventProtocol) {
-		super(nodeId, nodeZIndex, canvas, extEventMap);
+		super(nodeId, nodeZIndex, canvas, notif);
 
 		var pathEntity = {
 			nodeId: this.getId(),

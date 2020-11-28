@@ -40,41 +40,41 @@
 		<script src="TensorFlowValidator.js" type="module"></script>
 		<script src="UINodeManager.js" type="module"></script>
 		<script src="UIApp.js" type="module"></script>
-		<script src="main.js" type="module"></script>
+		<script src="Main.js" type="module"></script>
 		<script type="module">
-			import * as dlt from './main.js';
-			window.addImageClassificationDatagen = dlt.addImageClassificationDatagen;
-			window.addHeatmapRegressionDatagen = dlt.addHeatmapRegressionDatagen;
-			window.addObjectDetection4TiersDatagen = dlt.addObjectDetection4TiersDatagen;
-			window.addInputLayer = dlt.addInputLayer;
-			window.addDenseLayer = dlt.addDenseLayer;
-			window.addConv2DLayer = dlt.addConv2DLayer;
-			window.addMaxPool2DLayer = dlt.addMaxPool2DLayer;
-			window.addUpSampling2DLayer = dlt.addUpSampling2DLayer;
-			window.addBatchNormLayer = dlt.addBatchNormLayer;
-			window.addActivationLayer = dlt.addActivationLayer;
-			window.addDropoutLayer = dlt.addDropoutLayer;
-			window.addDropoutLayer = dlt.addDropoutLayer;
-			window.addFlattenLayer = dlt.addFlattenLayer;
-			window.addAddLayer = dlt.addAddLayer;
-			window.addConcatLayer = dlt.addConcatLayer;
-			window.addSplitLayer = dlt.addSplitLayer;
-			window.addSplittedLayer = dlt.addSplittedLayer;
-			window.addReshapeLayer = dlt.addReshapeLayer;
-			window.addConv2DBlock = dlt.addConv2DBlock;
-			window.addCastLayer = dlt.addCastLayer;
-			window.addConv2DBlock = dlt.addConv2DBlock;
-			window.addNMSBlock = dlt.addNMSBlock;
-			window.addResnetIdentityBlock = dlt.addResnetIdentityBlock;
-			window.addResnetSIdentityBlock = dlt.addResnetSIdentityBlock;
-			window.addRFEBlock = dlt.addRFEBlock;
-			window.addHourglassBlock = dlt.addHourglassBlock;
-			window.ICLossFunc = dlt.ICLossFunc;
-			window.HMRLossFunc = dlt.HMRLossFunc;
-			window.OD4LossFunc = dlt.OD4LossFunc;
+			import * as dlt from './Main.js';
+			window.addImageClassificationDatagen = dlt.gCommander.addImageClassificationDatagen;
+			window.addHeatmapRegressionDatagen = dlt.gCommander.addHeatmapRegressionDatagen;
+			window.addObjectDetection4TiersDatagen = dlt.gCommander.addObjectDetection4TiersDatagen;
+			window.addInputLayer = dlt.gCommander.addInputLayer;
+			window.addDenseLayer = dlt.gCommander.addDenseLayer;
+			window.addConv2DLayer = dlt.gCommander.addConv2DLayer;
+			window.addMaxPool2DLayer = dlt.gCommander.addMaxPool2DLayer;
+			window.addUpSampling2DLayer = dlt.gCommander.addUpSampling2DLayer;
+			window.addBatchNormLayer = dlt.gCommander.addBatchNormLayer;
+			window.addActivationLayer = dlt.gCommander.addActivationLayer;
+			window.addDropoutLayer = dlt.gCommander.addDropoutLayer;
+			window.addDropoutLayer = dlt.gCommander.addDropoutLayer;
+			window.addFlattenLayer = dlt.gCommander.addFlattenLayer;
+			window.addAddLayer = dlt.gCommander.addAddLayer;
+			window.addConcatLayer = dlt.gCommander.addConcatLayer;
+			window.addSplitLayer = dlt.gCommander.addSplitLayer;
+			window.addSplittedLayer = dlt.gCommander.addSplittedLayer;
+			window.addReshapeLayer = dlt.gCommander.addReshapeLayer;
+			window.addConv2DBlock = dlt.gCommander.addConv2DBlock;
+			window.addCastLayer = dlt.gCommander.addCastLayer;
+			window.addConv2DBlock = dlt.gCommander.addConv2DBlock;
+			window.addNMSBlock = dlt.gCommander.addNMSBlock;
+			window.addResnetIdentityBlock = dlt.gCommander.addResnetIdentityBlock;
+			window.addResnetSIdentityBlock = dlt.gCommander.addResnetSIdentityBlock;
+			window.addRFEBlock = dlt.gCommander.addRFEBlock;
+			window.addHourglassBlock = dlt.gCommander.addHourglassBlock;
+			window.ICLossFunc = dlt.gCommander.ICLossFunc;
+			window.HMRLossFunc = dlt.gCommander.HMRLossFunc;
+			window.OD4LossFunc = dlt.gCommander.OD4LossFunc;
 
-			window.train = dlt.train;
-			window.validate = dlt.validate;
+			window.train = dlt.gCommander.train;
+			window.validate = dlt.gCommander.validate;
 
 			import * as itg from './integration.js';
 			window.onImageClassificationDatagenChange = itg.onImageClassificationDatagenChange;

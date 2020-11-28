@@ -2,8 +2,8 @@ class UINode {
 	#id
 	#zIndex
 	#canvas
-	#extEventMap
-	constructor(nodeId, nodeZIndex, canvas, extEventMap) {
+	#notif
+	constructor(nodeId, nodeZIndex, canvas, notif) {
 		if (new.target === Node) { 
 			throw new Error("Can not construct Node instances directly");
 		}
@@ -11,7 +11,7 @@ class UINode {
 		this.#id = nodeId;
 		this.#zIndex = nodeZIndex;
 		this.#canvas = canvas;
-		this.#extEventMap = extEventMap;
+		this.#notif = notif;
 	}
 
 	getId() {
@@ -26,8 +26,8 @@ class UINode {
 		return this.#canvas;
 	}
 
-	getExtEventMap() {
-		return this.#extEventMap;
+	getnotif() {
+		return this.#notif;
 	}
 
 	getName() {

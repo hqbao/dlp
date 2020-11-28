@@ -1,4 +1,4 @@
-import * as dlt from './main.js';
+import * as dlt from './Main.js';
 
 var gNode = null;
 
@@ -60,7 +60,7 @@ export function onImageClassificationDatagenChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onHeatmapRegressionDatagenSelected() {
@@ -121,7 +121,7 @@ export function onHeatmapRegressionDatagenChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onObjectDetection4TiersDatagenSelected() {
@@ -194,7 +194,7 @@ export function addObjectDetection4TiersDatagenChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onInputLayerSelected() {
@@ -237,7 +237,7 @@ export function onInputLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onDenseLayerSelected() {
@@ -286,7 +286,7 @@ export function onDenseLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onConv2DLayerSelected() {
@@ -353,7 +353,7 @@ export function onConv2DLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onMaxPool2DLayerSelected() {
@@ -396,7 +396,7 @@ export function onMaxPool2DLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onUpSampling2DLayerSelected() {
@@ -427,7 +427,7 @@ export function onUpSampling2DLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onBatchNormLayerSelected() {
@@ -464,7 +464,7 @@ export function onBatchNormLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onDropoutLayerSelected() {
@@ -507,7 +507,7 @@ export function onDropoutLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onActivationLayerSelected() {
@@ -538,7 +538,7 @@ export function onActivationLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onFlattenLayerSelected() {
@@ -563,7 +563,7 @@ export function onFlattenLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onAddLayerSelected() {
@@ -588,7 +588,7 @@ export function onAddLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onConcatLayerSelected() {
@@ -619,7 +619,7 @@ export function onConcatLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onSplitLayerSelected() {
@@ -656,7 +656,7 @@ export function onSplitLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onSplittedLayerSelected() {
@@ -687,7 +687,7 @@ export function onSplittedLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onReshapeLayerSelected() {
@@ -718,7 +718,7 @@ export function onReshapeLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onCastLayerSelected() {
@@ -749,7 +749,7 @@ export function onCastLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onConv2DBlockSelected() {
@@ -828,7 +828,7 @@ export function onConv2DBlockChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onResnetIdentityBlockSelected() {
@@ -891,7 +891,7 @@ export function onResnetIdentityBlockChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onResnetSIdentityBlockSelected() {
@@ -958,7 +958,7 @@ export function onResnetSIdentityBlockChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onNMSLayerSelected() {
@@ -1001,7 +1001,7 @@ export function onNMSLayerChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onRFEBlockSelected() {
@@ -1050,7 +1050,7 @@ export function onRFEBlockChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onHourglassBlockSelected() {
@@ -1107,7 +1107,7 @@ export function onHourglassBlockChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onOD4LossFuncSelected() {
@@ -1150,7 +1150,7 @@ export function onOD4LossFuncChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onICLossFuncSelected() {
@@ -1181,7 +1181,7 @@ export function onICLossFuncChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
 export function onHMRLossFuncSelected() {
@@ -1212,10 +1212,10 @@ export function onHMRLossFuncChange(id, value) {
 		break;
 	}
 
-	dlt.gExtEventMap.onNodeUpdated(gNode);
+	dlt.gCommander.onNodeUpdated(gNode);
 }
 
-dlt.gExtEventMap.onClear = function(node) {
+dlt.gNotification.onClear = function(node) {
 	var settingsForms = document.getElementsByClassName("SettingForm");
 	for (var i = 0; i < settingsForms.length; i++) {
 		var settingForm = settingsForms[i];
@@ -1223,8 +1223,8 @@ dlt.gExtEventMap.onClear = function(node) {
 	}
 };
 
-dlt.gExtEventMap.onNodeSelected = function(node) {
-	dlt.gExtEventMap.onClear();
+dlt.gNotification.onNodeSelected = function(node) {
+	dlt.gNotification.onClear();
 	gNode = node;
 	document.getElementById(gNode.nodeParams.blockType).style.display = "block";
 
@@ -1342,7 +1342,7 @@ dlt.gExtEventMap.onNodeSelected = function(node) {
 	}
 };
 
-dlt.gExtEventMap.onError = function(errors) {
+dlt.gNotification.onError = function(errors) {
 	var errorMessages = "";
 	for (var i = 0; i < errors.length; i++) {
 		var error = errors[i];
@@ -1376,11 +1376,11 @@ function download(filename, text) {
 }
 
 export function exportModel(argument) {
-	download('model_'+(new Date()).toISOString()+'.json', dlt.exportModel());
+	download('model_'+(new Date()).toISOString()+'.json', dlt.gCommander.exportModel());
 }
 
 export function exportFile() {
-	download('screenshot_'+(new Date()).toISOString()+'.json', dlt.exportDLT());
+	download('screenshot_'+(new Date()).toISOString()+'.json', dlt.gCommander.exportDLT());
 }
 
 export function importFile() {
@@ -1393,7 +1393,7 @@ export function importFile() {
 		var reader = new FileReader();
 		reader.onload = function(e) {
 			var snapshotJson = e.target.result;
-			dlt.importDLT(snapshotJson);
+			dlt.gCommander.importDLT(snapshotJson);
 		};
 		reader.readAsText(file);
 	});

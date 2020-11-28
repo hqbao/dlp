@@ -14,8 +14,8 @@ const SIZE_EDITOR_CORNER_BOX_SIZE		= 16;
 const SIZE_EDITOR_EDGE_COLOR				= '#E0E0E0';
 const SIZE_EDITOR_CORNER_COLOR			= '#D0D0D0';
 class UISizeEditor extends UINode {
-	constructor(nodeId, nodeZIndex, canvas, extEventMap, y1, x1, y2, x2, entities) {
-		super(nodeId, nodeZIndex, canvas, extEventMap);
+	constructor(nodeId, nodeZIndex, canvas, notif, y1, x1, y2, x2, entities) {
+		super(nodeId, nodeZIndex, canvas, notif);
 
 		this.ui = [
 			{
@@ -498,7 +498,7 @@ class UISizeEditor extends UINode {
 const CONNECTABLE_NODE_NAME_PREFIX 		= 'CONNECTABLE_NODE_'
 const Z_INDEX_OF_SIZE_EDITOR_ENTITIES 	= 2000000;
 class UIConnectableNode extends UINode {
-	constructor(nodeId, nodeZIndex, canvas, extEventMap,
+	constructor(nodeId, nodeZIndex, canvas, notif,
 		nodeSettings={
 			color: '#808080', 
 			rect: {y1: 0, x1: 0, y2: 0, x2: 0}, 
@@ -508,7 +508,7 @@ class UIConnectableNode extends UINode {
 		srcConnIdList=[],
 		dstConnIdList=[],
 		connEventProtocol) {
-		super(nodeId, nodeZIndex, canvas, extEventMap);
+		super(nodeId, nodeZIndex, canvas, notif);
 
 		var entity = {
 			nodeId: this.getId(),
@@ -528,7 +528,7 @@ class UIConnectableNode extends UINode {
 			this.getId(), 
 			Z_INDEX_OF_SIZE_EDITOR_ENTITIES+this.getZIndex(), 
 			canvas,
-			extEventMap,
+			notif,
 			entity.y1, entity.x1, entity.y2, entity.x2, this.ui);
 
 		this.srcConnIdList = srcConnIdList;
@@ -670,7 +670,7 @@ class UIConnectableNode extends UINode {
 	onSelect() {
 		this.sizeEditor.show();
 		var entity = this.ui[0];
-		this.getExtEventMap().onNodeSelected({
+		this.getnotif().onNodeSelected({
 			nodeId: entity.nodeId,
 			rect: [entity.y1, entity.x1, entity.y2, entity.x2],
 			color: entity.color,

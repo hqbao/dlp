@@ -2,10 +2,10 @@ import {UIRender} from './UIRender.js';
 import {UINodeManager} from './UINodeManager.js';
 
 class UIApp {
-	constructor(canvas, extEventMap, height, width) {
+	constructor(canvas, notif, height, width) {
 		this.canvas = canvas;
 		this.context = canvas.getContext('2d');
-		this.extEventMap = extEventMap;
+		this.notif = notif;
 		this.height = height;
 		this.width = width;
 		this.movingUnit = 8;
@@ -27,7 +27,7 @@ class UIApp {
 			this.render, 
 			this.canvas, 
 			this.context,
-			this.extEventMap, 
+			this.notif, 
 			this.height, 
 			this.width,
 			this.movingUnit);

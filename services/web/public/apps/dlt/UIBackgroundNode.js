@@ -8,8 +8,8 @@ const BACKGROUND_CARO_COLOR				= '#000000';
 const BACKGROUND_SELECTED_AREA_COLOR	= '#000000';
 const NODE_TYPE_BACKGROUND					= 'BACKGROUND'
 class UIBackgroundNode extends UINode {
-	constructor(nodeId, nodeZIndex, canvas, extEventMap, height, width, movingUnit, backgroundEventProtocol) {
-		super(nodeId, nodeZIndex, canvas, extEventMap);
+	constructor(nodeId, nodeZIndex, canvas, notif, height, width, movingUnit, backgroundEventProtocol) {
+		super(nodeId, nodeZIndex, canvas, notif);
 
 		this.ui = [
 			{
