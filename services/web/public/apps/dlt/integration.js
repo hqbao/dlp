@@ -133,7 +133,7 @@ export function onObjectDetection4TiersDatagenSelected() {
 	var anchorSizesInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.anchor_sizes");
 	var scaleSizesInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.scale_sizes");
 	var iouThresholdsInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.iou_thresholds");
-	var anchorSamplingsInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.anchor_samplings");
+	var anchorSamplingsInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.anchor_sampling");
 	var epochsInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.epochs");
 
 	rectInput.value = JSON.stringify(gNode.rect);
@@ -144,7 +144,7 @@ export function onObjectDetection4TiersDatagenSelected() {
 	anchorSizesInput.value = JSON.stringify(gNode.nodeParams.params.anchor_sizes);
 	scaleSizesInput.value = JSON.stringify(gNode.nodeParams.params.scale_sizes);
 	iouThresholdsInput.value = JSON.stringify(gNode.nodeParams.params.iou_thresholds);
-	anchorSamplingsInput.value = JSON.stringify(gNode.nodeParams.params.anchor_samplings);
+	anchorSamplingsInput.value = JSON.stringify(gNode.nodeParams.params.anchor_sampling);
 	epochsInput.value = gNode.nodeParams.params.epochs;
 }
 
@@ -182,8 +182,8 @@ export function addObjectDetection4TiersDatagenChange(id, value) {
 		gNode.nodeParams.params.iou_thresholds = JSON_parse(value);
 		break;
 
-		case "OBJECT_DETECTION_4TIERS_DATAGEN.anchor_samplings":
-		gNode.nodeParams.params.anchor_samplings = JSON_parse(value);
+		case "OBJECT_DETECTION_4TIERS_DATAGEN.anchor_sampling":
+		gNode.nodeParams.params.anchor_sampling = JSON_parse(value);
 		break;
 
 		case "OBJECT_DETECTION_4TIERS_DATAGEN.epochs":

@@ -1,9 +1,9 @@
 import {UIConnectableNode} from './UIConnectableNode.js';
 import {UIConnectionNode} from './UIConnectionNode.js';
 
-const SUPPORTED_IMAGE_CLASSIFICATION_DATASETS = ['MNIST_DIGITS'];
-const SUPPORTED_HEATMAP_REGRESSION_DATASETS = ['FACEALI128X128'];
-const SUPPORTED_OBJECT_DETECTION_4TIERS_DATASETS = ['FACE1024'];
+const SUPPORTED_IMAGE_CLASSIFICATION_DATASETS = ['mnist-digits'];
+const SUPPORTED_HEATMAP_REGRESSION_DATASETS = ['faceali128x128'];
+const SUPPORTED_OBJECT_DETECTION_4TIERS_DATASETS = ['face1024'];
 
 class TensorFlowValidator {
 	constructor() {}

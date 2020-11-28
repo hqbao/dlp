@@ -178,7 +178,8 @@ function onkeypress(e) {
 	}	
 }
 
-document.onkeypress = onkeypress;
+// document.onkeypress notworking in Windows
+document.onkeydown = onkeypress;
 
 var gCommander = {
 	addImageClassificationDatagen: function() {
@@ -199,7 +200,7 @@ var gCommander = {
 					type: 'NONE_ANY',
 					blockType: 'IMAGE_CLASSIFICATION_DATAGEN',
 					params: {
-						dataset_name: 'MNIST_DIGITS',
+						dataset_name: 'mnist_digits',
 						train_procedure: 'IMAGE_CLASSIFICATION',
 						image_shape: [28, 28],
 						total_train_examples: 60000,
@@ -228,7 +229,7 @@ var gCommander = {
 					type: 'NONE_ANY',
 					blockType: 'HEATMAP_REGRESSION_DATAGEN',
 					params: {
-						dataset_name: 'FACEALI128X128',
+						dataset_name: 'faceali128x128',
 						train_procedure: 'HEATMAP_REGRESSION',
 						image_shape: [112, 112, 1],
 						total_train_examples: 1000,
@@ -257,13 +258,13 @@ var gCommander = {
 					type: 'NONE_ANY',
 					blockType: 'OBJECT_DETECTION_4TIERS_DATAGEN',
 					params: {
-						dataset_name: 'FACE1024',
+						dataset_name: 'face1024',
 						train_procedure: 'OBJECT_DETECTION_4TIERS',
 						image_shape: [512, 512, 3],
 						anchor_sizes: [[[32, 32]], [[64, 64]], [[128, 128]], [[256, 256]]],
 						scale_sizes: [[128, 128], [64, 64], [32, 32], [16, 16]],
 						iou_thresholds: [[0.5, 0.6], [0.45, 0.55], [0.4, 0.5], [0.3, 0.4]],
-						anchor_samplings: [400, 300, 200, 100],
+						anchor_sampling: [400, 300, 200, 100],
 						epochs: 100,
 					}
 				},
