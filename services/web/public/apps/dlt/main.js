@@ -228,7 +228,7 @@ var gCommander = {
 					type: 'NONE_ANY',
 					blockType: 'HEATMAP_REGRESSION_DATAGEN',
 					params: {
-						dataset_name: 'FACEALI',
+						dataset_name: 'FACEALI128X128',
 						train_procedure: 'HEATMAP_REGRESSION',
 						image_shape: [112, 112, 1],
 						total_train_examples: 1000,
@@ -257,7 +257,7 @@ var gCommander = {
 					type: 'NONE_ANY',
 					blockType: 'OBJECT_DETECTION_4TIERS_DATAGEN',
 					params: {
-						dataset_name: 'FACE_DETECION',
+						dataset_name: 'FACE1024',
 						train_procedure: 'OBJECT_DETECTION_4TIERS',
 						image_shape: [512, 512, 3],
 						anchor_sizes: [[[32, 32]], [[64, 64]], [[128, 128]], [[256, 256]]],
@@ -314,7 +314,7 @@ var gCommander = {
 					type: 'ONE_ANY',
 					blockType: 'CONV2D_LAYER',
 					params: {
-						name: 'conv',
+						name: '',
 						filters: 1,
 						kernel_size: [3, 3],
 						strides: [1, 1],
@@ -613,7 +613,7 @@ var gCommander = {
 					type: 'ONE_ANY',
 					blockType: 'CONV2D_BLOCK',
 					params: {
-						block_name: 'conv',
+						name: '',
 						filters: 1,
 						kernel_size: [3, 3],
 						strides: [1, 1],
@@ -719,7 +719,7 @@ var gCommander = {
 					type: 'ONE_ANY',
 					blockType: 'HOURGLASS_BLOCK',
 					params: {
-						block_name: 'hourglass',
+						name: '',
 						depth: 4,
 						use_bias: 1,
 						trainable: 1,
@@ -735,20 +735,20 @@ var gCommander = {
 			UINodeManager.NODE_TYPE_CONNECTABLE,
 			{
 				nodeSettings: {
-					color: "#404080", 
+					color: '#404080', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
 						x1: gUIApp.refPosition.x-32, 
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+32,
 					}, 
-					name: "ResnetIdentityBlock"
+					name: 'ResnetIdentityBlock'
 				},
 				nodeParams: {
-					type: "ONE_ANY",
-					blockType: "RESNET_IDENTITY_BLOCK",
+					type: 'ONE_ANY',
+					blockType: 'RESNET_IDENTITY_BLOCK',
 					params: {
-						block_name: "identity",
+						name: '',
 						filters: [16, 16, 64],
 						kernel_size: [3, 3],
 						use_bias: 1,
@@ -778,7 +778,7 @@ var gCommander = {
 					type: 'ONE_ANY',
 					blockType: 'RESNET_SIDENTITY_BLOCK',
 					params: {
-						block_name: 'sidentity',
+						name: 'sidentity',
 						filters: [16, 16, 64],
 						kernel_size: [3, 3],
 						strides: [2, 2],
@@ -808,7 +808,7 @@ var gCommander = {
 					type: 'ONE_ANY',
 					blockType: 'RFE_BLOCK',
 					params: {
-						block_name: 'rfe',
+						name: 'rfe',
 						use_bias: 1,
 						trainable: 1,
 						bn_trainable: 1,

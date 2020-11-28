@@ -755,7 +755,7 @@ export function onCastLayerChange(id, value) {
 export function onConv2DBlockSelected() {
 	var rectInput = document.getElementById("CONV2D_BLOCK.rect");
 	var colorInput = document.getElementById("CONV2D_BLOCK.color");
-	var blockNameInput = document.getElementById("CONV2D_BLOCK.block_name");
+	var nameInput = document.getElementById("CONV2D_BLOCK.name");
 	var filtersInput = document.getElementById("CONV2D_BLOCK.filters");
 	var kernelSizeInput = document.getElementById("CONV2D_BLOCK.kernel_size");
 	var stridesInput = document.getElementById("CONV2D_BLOCK.strides");
@@ -767,7 +767,7 @@ export function onConv2DBlockSelected() {
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
-	blockNameInput.value = gNode.nodeParams.params.block_name;
+	nameInput.value = gNode.nodeParams.params.name;
 	filtersInput.value = gNode.nodeParams.params.filters;
 	kernelSizeInput.value = JSON.stringify(gNode.nodeParams.params.kernel_size);
 	stridesInput.value = JSON.stringify(gNode.nodeParams.params.strides);
@@ -788,8 +788,8 @@ export function onConv2DBlockChange(id, value) {
 		gNode.color = value;
 		break;
 
-		case "CONV2D_BLOCK.block_name":
-		gNode.nodeParams.params.block_name = value;
+		case "CONV2D_BLOCK.name":
+		gNode.nodeParams.params.name = value;
 		break;
 
 		case "CONV2D_BLOCK.filters":
@@ -834,7 +834,7 @@ export function onConv2DBlockChange(id, value) {
 export function onResnetIdentityBlockSelected() {
 	var rectInput = document.getElementById("RESNET_IDENTITY_BLOCK.rect");
 	var colorInput = document.getElementById("RESNET_IDENTITY_BLOCK.color");
-	var blockNameInput = document.getElementById("RESNET_IDENTITY_BLOCK.block_name");
+	var nameInput = document.getElementById("RESNET_IDENTITY_BLOCK.name");
 	var filtersInput = document.getElementById("RESNET_IDENTITY_BLOCK.filters");
 	var kernelSizeInput = document.getElementById("RESNET_IDENTITY_BLOCK.kernel_size");
 	var useBiasInput = document.getElementById("RESNET_IDENTITY_BLOCK.use_bias");
@@ -844,7 +844,7 @@ export function onResnetIdentityBlockSelected() {
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
-	blockNameInput.value = gNode.nodeParams.params.block_name;
+	nameInput.value = gNode.nodeParams.params.name;
 	filtersInput.value = JSON.stringify(gNode.nodeParams.params.filters);
 	kernelSizeInput.value = JSON.stringify(gNode.nodeParams.params.kernel_size);
 	useBiasInput.value = gNode.nodeParams.params.use_bias;
@@ -863,8 +863,8 @@ export function onResnetIdentityBlockChange(id, value) {
 		gNode.color = value;
 		break;
 
-		case "RESNET_IDENTITY_BLOCK.block_name":
-		gNode.nodeParams.params.block_name = value;
+		case "RESNET_IDENTITY_BLOCK.name":
+		gNode.nodeParams.params.name = value;
 		break;
 
 		case "RESNET_IDENTITY_BLOCK.filters":
@@ -897,7 +897,7 @@ export function onResnetIdentityBlockChange(id, value) {
 export function onResnetSIdentityBlockSelected() {
 	var rectInput = document.getElementById("RESNET_SIDENTITY_BLOCK.rect");
 	var colorInput = document.getElementById("RESNET_SIDENTITY_BLOCK.color");
-	var blockNameInput = document.getElementById("RESNET_SIDENTITY_BLOCK.block_name");
+	var nameInput = document.getElementById("RESNET_SIDENTITY_BLOCK.name");
 	var filtersInput = document.getElementById("RESNET_SIDENTITY_BLOCK.filters");
 	var kernelSizeInput = document.getElementById("RESNET_SIDENTITY_BLOCK.kernel_size");
 	var stridesInput = document.getElementById("RESNET_SIDENTITY_BLOCK.strides");
@@ -907,7 +907,7 @@ export function onResnetSIdentityBlockSelected() {
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
-	blockNameInput.value = gNode.nodeParams.params.block_name;
+	nameInput.value = gNode.nodeParams.params.name;
 	filtersInput.value = JSON.stringify(gNode.nodeParams.params.filters);
 	kernelSizeInput.value = JSON.stringify(gNode.nodeParams.params.kernel_size);
 	stridesInput.value = JSON.stringify(gNode.nodeParams.params.strides);
@@ -926,8 +926,8 @@ export function onResnetSIdentityBlockChange(id, value) {
 		gNode.color = value;
 		break;
 
-		case "RESNET_SIDENTITY_BLOCK.block_name":
-		gNode.nodeParams.params.block_name = value;
+		case "RESNET_SIDENTITY_BLOCK.name":
+		gNode.nodeParams.params.name = value;
 		break;
 
 		case "RESNET_SIDENTITY_BLOCK.filters":
@@ -1007,14 +1007,14 @@ export function onNMSLayerChange(id, value) {
 export function onRFEBlockSelected() {
 	var rectInput = document.getElementById("RFE_BLOCK.rect");
 	var colorInput = document.getElementById("RFE_BLOCK.color");
-	var blockNameInput = document.getElementById("RFE_BLOCK.block_name");
+	var nameInput = document.getElementById("RFE_BLOCK.name");
 	var useBiasInput = document.getElementById("RFE_BLOCK.use_bias");
 	var trainableInput = document.getElementById("RFE_BLOCK.trainable");
 	var bnTrainableInput = document.getElementById("RFE_BLOCK.bn_trainable");
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
-	blockNameInput.value = gNode.nodeParams.params.block_name;
+	nameInput.value = gNode.nodeParams.params.name;
 	useBiasInput.value = gNode.nodeParams.params.use_bias;
 	trainableInput.value = gNode.nodeParams.params.trainable;
 	bnTrainableInput.value = gNode.nodeParams.params.bn_trainable;
@@ -1030,8 +1030,8 @@ export function onRFEBlockChange(id, value) {
 		gNode.color = value;
 		break;
 
-		case "RFE_BLOCK.block_name":
-		gNode.nodeParams.params.block_name = value;
+		case "RFE_BLOCK.name":
+		gNode.nodeParams.params.name = value;
 		break;
 
 		case "RFE_BLOCK.use_bias":
@@ -1056,7 +1056,7 @@ export function onRFEBlockChange(id, value) {
 export function onHourglassBlockSelected() {
 	var rectInput = document.getElementById("HOURGLASS_BLOCK.rect");
 	var colorInput = document.getElementById("HOURGLASS_BLOCK.color");
-	var blockNameInput = document.getElementById("HOURGLASS_BLOCK.block_name");
+	var nameInput = document.getElementById("HOURGLASS_BLOCK.name");
 	var depthInput = document.getElementById("HOURGLASS_BLOCK.depth");
 	var useBiasInput = document.getElementById("HOURGLASS_BLOCK.use_bias");
 	var trainableInput = document.getElementById("HOURGLASS_BLOCK.trainable");
@@ -1065,7 +1065,7 @@ export function onHourglassBlockSelected() {
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
-	blockNameInput.value = gNode.nodeParams.params.block_name;
+	nameInput.value = gNode.nodeParams.params.name;
 	depthInput.value = gNode.nodeParams.params.depth;
 	useBiasInput.value = gNode.nodeParams.params.use_bias;
 	trainableInput.value = gNode.nodeParams.params.trainable;
@@ -1083,8 +1083,8 @@ export function onHourglassBlockChange(id, value) {
 		gNode.color = value;
 		break;
 
-		case "HOURGLASS_BLOCK.block_name":
-		gNode.nodeParams.params.block_name = value;
+		case "HOURGLASS_BLOCK.name":
+		gNode.nodeParams.params.name = value;
 		break;
 
 		case "HOURGLASS_BLOCK.depth":

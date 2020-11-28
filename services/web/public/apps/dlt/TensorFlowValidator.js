@@ -1,6 +1,10 @@
 import {UIConnectableNode} from './UIConnectableNode.js';
 import {UIConnectionNode} from './UIConnectionNode.js';
 
+const SUPPORTED_IMAGE_CLASSIFICATION_DATASETS = ['MNIST_DIGITS'];
+const SUPPORTED_HEATMAP_REGRESSION_DATASETS = ['FACEALI128X128'];
+const SUPPORTED_OBJECT_DETECTION_4TIERS_DATASETS = ['FACE1024'];
+
 class TensorFlowValidator {
 	constructor() {}
 
@@ -45,20 +49,44 @@ class TensorFlowValidator {
 			return scaleSet != undefined;
 		}
 
+		var nameDist = {
+			'CONV2D_LAYER': [],
+			'DENSE_LAYER': [],
+			'BATCH_NORM_LAYER': [],
+			'DROPOUT_LAYER': [],
+			'CONV2D_BLOCK': [],
+			'HOURGLASS_BLOCK': [],
+			'RESNET_IDENTITY_BLOCK': [],
+			'RESNET_SIDENTITY_BLOCK': [],
+			'RFE_BLOCK': [],
+		};
+
 		var errors = [];
 		for (var i = 0; i < nodes.length; i++) {
 			var node = nodes[i];
 			if (node instanceof UIConnectableNode) {
 				switch (node.nodeParams.blockType) {
 					case 'IMAGE_CLASSIFICATION_DATAGEN': {
+						if (!SUPPORTED_IMAGE_CLASSIFICATION_DATASETS.includes(node.nodeParams.params.dataset_name)) {
+							errors.push(node.getName()+' dataset not supported');
+						}
+
 						break;
 					}
 
 					case 'HEATMAP_REGRESSION_DATAGEN': {
+						if (!SUPPORTED_HEATMAP_REGRESSION_DATASETS.includes(node.nodeParams.params.dataset_name)) {
+							errors.push(node.getName()+' dataset not supported');
+						}
+
 						break;
 					}
 
 					case 'OBJECT_DETECTION_4TIERS_DATAGEN': {
+						if (!SUPPORTED_OBJECT_DETECTION_4TIERS_DATASETS.includes(node.nodeParams.params.dataset_name)) {
+							errors.push(node.getName()+' dataset not supported');
+						}
+
 						break;
 					}
 
@@ -104,14 +132,20 @@ class TensorFlowValidator {
 							errors.push(node.getName()+' trainable must not be empty');
 						}
 
+						// Set name if needed
+						var name = node.nodeParams.params.name;
+						var blockType = node.nodeParams.blockType;
+						var existedNames = nameDist[blockType];
+						if (!name || existedNames.includes(name)) {
+							var newName = blockType+existedNames.length;
+							node.nodeParams.params.name = newName;
+							existedNames.push(newName);
+						}
+
 						break;
 					}
 
 					case 'DENSE_LAYER': {
-						if (isEmpty(node.nodeParams.params.name)) {
-							errors.push(node.getName()+' name must not be empty');
-						}
-
 						if (isEmpty(node.nodeParams.params.units)) {
 							errors.push(node.getName()+' units must not be empty');
 						}
@@ -123,13 +157,29 @@ class TensorFlowValidator {
 						if (isEmpty(node.nodeParams.params.trainable)) {
 							errors.push(node.getName()+' trainable must not be empty');
 						}
+
+						// Set name if needed
+						var name = node.nodeParams.params.name;
+						var blockType = node.nodeParams.blockType;
+						var existedNames = nameDist[blockType];
+						if (!name || existedNames.includes(name)) {
+							var newName = blockType+existedNames.length;
+							node.nodeParams.params.name = newName;
+							existedNames.push(newName);
+						}
 						
 						break;
 					}
 
 					case 'BATCH_NORM_LAYER': {
-						if (isEmpty(node.nodeParams.params.name)) {
-							errors.push(node.getName()+' name must not be empty');
+						// Set name if needed
+						var name = node.nodeParams.params.name;
+						var blockType = node.nodeParams.blockType;
+						var existedNames = nameDist[blockType];
+						if (!name || existedNames.includes(name)) {
+							var newName = blockType+existedNames.length;
+							node.nodeParams.params.name = newName;
+							existedNames.push(newName);
 						}
 
 						break;
@@ -152,8 +202,14 @@ class TensorFlowValidator {
 							errors.push(node.getName()+' trainable must not be empty');
 						}
 
-						if (isEmpty(node.nodeParams.params.name)) {
-							errors.push(node.getName()+' name must not be empty');
+						// Set name if needed
+						var name = node.nodeParams.params.name;
+						var blockType = node.nodeParams.blockType;
+						var existedNames = nameDist[blockType];
+						if (!name || existedNames.includes(name)) {
+							var newName = blockType+existedNames.length;
+							node.nodeParams.params.name = newName;
+							existedNames.push(newName);
 						}
 
 						break;
@@ -285,14 +341,20 @@ class TensorFlowValidator {
 							errors.push(node.getName()+' activation must not be empty');
 						}
 
+						// Set name if needed
+						var name = node.nodeParams.params.name;
+						var blockType = node.nodeParams.blockType;
+						var existedNames = nameDist[blockType];
+						if (!name || existedNames.includes(name)) {
+							var newName = blockType+existedNames.length;
+							node.nodeParams.params.name = newName;
+							existedNames.push(newName);
+						}
+
 						break;
 					}
 
 					case 'RESNET_IDENTITY_BLOCK': {
-						if (isEmpty(node.nodeParams.params.block_name)) {
-							errors.push(node.getName()+' block name must not be empty');
-						}
-
 						if (!Array.isArray(node.nodeParams.params.filters) ||
 							node.nodeParams.params.filters.length != 3) {
 							errors.push(node.getName()+' filters must be 3 values');
@@ -318,14 +380,20 @@ class TensorFlowValidator {
 							errors.push(node.getName()+' repeat must not be empty');
 						}
 
+						// Set name if needed
+						var name = node.nodeParams.params.name;
+						var blockType = node.nodeParams.blockType;
+						var existedNames = nameDist[blockType];
+						if (!name || existedNames.includes(name)) {
+							var newName = blockType+existedNames.length;
+							node.nodeParams.params.name = newName;
+							existedNames.push(newName);
+						}
+
 						break;
 					}
 
 					case 'RESNET_SIDENTITY_BLOCK': {
-						if (isEmpty(node.nodeParams.params.block_name)) {
-							errors.push(node.getName()+' block name must not be empty');
-						}
-
 						if (!Array.isArray(node.nodeParams.params.filters) ||
 							node.nodeParams.params.filters.length != 3) {
 							errors.push(node.getName()+' filters must be 3 values');
@@ -351,14 +419,20 @@ class TensorFlowValidator {
 							errors.push(node.getName()+' batch norm trainable must not be empty');
 						}
 
+						// Set name if needed
+						var name = node.nodeParams.params.name;
+						var blockType = node.nodeParams.blockType;
+						var existedNames = nameDist[blockType];
+						if (!name || existedNames.includes(name)) {
+							var newName = blockType+existedNames.length;
+							node.nodeParams.params.name = newName;
+							existedNames.push(newName);
+						}
+
 						break;
 					}
 
 					case 'RFE_BLOCK': {
-						if (isEmpty(node.nodeParams.params.block_name)) {
-							errors.push(node.getName()+' block name must not be empty');
-						}
-
 						if (isEmpty(node.nodeParams.params.use_bias)) {
 							errors.push(node.getName()+' use bias must not be empty');
 						}
@@ -371,14 +445,20 @@ class TensorFlowValidator {
 							errors.push(node.getName()+' batch norm trainable must not be empty');
 						}
 
+						// Set name if needed
+						var name = node.nodeParams.params.name;
+						var blockType = node.nodeParams.blockType;
+						var existedNames = nameDist[blockType];
+						if (!name || existedNames.includes(name)) {
+							var newName = blockType+existedNames.length;
+							node.nodeParams.params.name = newName;
+							existedNames.push(newName);
+						}
+
 						break;
 					}
 
 					case 'HOURGLASS_BLOCK': {
-						if (isEmpty(node.nodeParams.params.block_name)) {
-							errors.push(node.getName()+' block name must not be empty');
-						}
-
 						if (!Number.isInteger(node.nodeParams.params.depth)) {
 							errors.push(node.getName()+' depth must be integer');
 						}
@@ -397,6 +477,16 @@ class TensorFlowValidator {
 
 						if (!Number.isInteger(node.nodeParams.params.repeat)) {
 							errors.push(node.getName()+' repeat must be integer');
+						}
+
+						// Set name if needed
+						var name = node.nodeParams.params.name;
+						var blockType = node.nodeParams.blockType;
+						var existedNames = nameDist[blockType];
+						if (!name || existedNames.includes(name)) {
+							var newName = blockType+existedNames.length;
+							node.nodeParams.params.name = newName;
+							existedNames.push(newName);
 						}
 
 						break;
