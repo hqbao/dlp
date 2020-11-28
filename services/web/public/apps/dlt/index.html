@@ -32,14 +32,17 @@
 				text-decoration-style: none;
 			}
 		</style>
+
 		<script src="UINode.js" type="module"></script>
 		<script src="UIBackgroundNode.js" type="module"></script>
 		<script src="UIConnectableNode.js" type="module"></script>
 		<script src="UIConnectionNode.js" type="module"></script>
+		<script src="TensorFlowValidator.js" type="module"></script>
 		<script src="UINodeManager.js" type="module"></script>
-		<script src="dlt.js" type="module"></script>
+		<script src="UIApp.js" type="module"></script>
+		<script src="main.js" type="module"></script>
 		<script type="module">
-			import * as dlt from './dlt.js';
+			import * as dlt from './main.js';
 			window.addImageClassificationDatagen = dlt.addImageClassificationDatagen;
 			window.addHeatmapRegressionDatagen = dlt.addHeatmapRegressionDatagen;
 			window.addObjectDetection4TiersDatagen = dlt.addObjectDetection4TiersDatagen;

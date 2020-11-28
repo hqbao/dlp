@@ -1,4 +1,4 @@
-import * as dlt from './dlt.js';
+import * as dlt from './main.js';
 
 var gNode = null;
 
