@@ -105,3 +105,4 @@ dist
 
 # Private keys
 **/*.key
+**/token.json

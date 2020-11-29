@@ -71,7 +71,7 @@
 			});
 
 			async function inferFaceDet(inputImage) {
-				const model = await tf.loadGraphModel('https://dlp.fansipan.io/apps/face-recognition/tfjs/face-det/model.json');
+				const model = await tf.loadGraphModel('https://ai-designer.io/apps/face-recognition/tfjs/face-det/model.json');
 				var pix = tf.browser.fromPixels(inputImage);
 				pix = tf.cast(pix, 'float32');
 				pix = pix.expandDims(0);
@@ -82,7 +82,7 @@
 			}
 
 			async function inferFaceAli(boxImage, box) {
-				const model = await tf.loadGraphModel('https://dlp.fansipan.io/apps/face-recognition/tfjs/face-ali/model.json');
+				const model = await tf.loadGraphModel('https://ai-designer.io/apps/face-recognition/tfjs/face-ali/model.json');
 				var pix = tf.browser.fromPixels(boxImage, 1);
 				pix = pix.expandDims(0);
 				var outputs = await model.executeAsync(pix);

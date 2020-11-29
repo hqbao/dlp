@@ -5,14 +5,27 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const securityAudit = require('./components/SecurityAudit');
+const gdrive = require('./routes/GoogleDrive');
 
 // Global settings
 global.settings = {
-    sslCertPath: './ssl-cert/certificate.crt',
-    sslCAPath: './ssl-cert/ca_bundle.crt',
-    sslPrivateKeyPath: './ssl-cert/private.key',
+    sslCertPath: './ssl-cert/ai-designer.io/certificate.crt',
+    sslCAPath: './ssl-cert/ai-designer.io/ca_bundle.crt',
+    sslPrivateKeyPath: './ssl-cert/ai-designer.io/private.key',
     loginJwtCert: './token-cert/jwt-token.crt',
-    webServiceEndPoint: 'https://dlp.fansipan.io',
+    webServiceEndPoint: 'https://ai-designer.io',
+    GOOGLEAPP_clientId: '210397520506-84pgv2tomkdqmvb5cv4hk7d37ifre5d7.apps.googleusercontent.com',
+    GOOGLEAPP_clientSecret: '7WBSTo3UDvKk66gBPRlCWIw4',
+    GOOGLEAPP_redirectURI: 'https://ai-designer.io/gdrive/sign-in-return',
+    GOOGLEAPP_scopes: [
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/drive.file',
+        'https://www.googleapis.com/auth/drive.readonly',
+        'https://www.googleapis.com/auth/drive.metadata.readonly',
+        'https://www.googleapis.com/auth/drive.metadata',
+        'https://www.googleapis.com/auth/drive.appdata',
+    ],
+    GOOGLEAPP_tokenPath: './misc/token.json',
 };
 
 // ssl
@@ -62,6 +75,9 @@ app.get('/', function(req, res) {
     }));
     res.end();
 });
+app.get('/gdrive/sign-in', gdrive.signIn);
+app.get('/gdrive/sign-in-return', gdrive.signInReturn);
+app.get('/gdrive/list', gdrive.list);
 
 // Start http
 const httpsServer = https.createServer(credentials, app);

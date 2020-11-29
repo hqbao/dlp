@@ -74,7 +74,7 @@
 
 
 			async function infer(blob) {
-				const model = await tf.loadGraphModel('https://dlp.fansipan.io/apps/qm/tfjs/model.json');
+				const model = await tf.loadGraphModel('https://ai-designer.io/apps/qm/tfjs/model.json');
 				var pix = tf.browser.fromPixels(preview);
 				pix = pix.expandDims(0);
 				var outputs = await model.executeAsync(pix);
