@@ -32,7 +32,7 @@
 				text-decoration-style: none;
 			}
 		</style>
-
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script src="UINode.js" type="module"></script>
 		<script src="UIBackgroundNode.js" type="module"></script>
 		<script src="UIConnectableNode.js" type="module"></script>
@@ -105,9 +105,9 @@
 			window.onICLossFuncChange = itg.onICLossFuncChange;
 			window.onHMRLossFuncChange = itg.onHMRLossFuncChange;
 
-			window.exportModel = itg.exportModel;
 			window.exportFile = itg.exportFile;
 			window.importFile = itg.importFile;
+			window.generateCode = itg.generateCode;
 		</script>
 	</head>
 	<body style="margin: 0px; background-color: #202020;">
@@ -345,7 +345,7 @@
 			</div>
 			<div class="NodeAdditionContainer">
 				<p class="SettingsTitle">ACTION</p>
-				<button class="NodeAddition" onclick="exportModel();">EXPORT MODEL FOR CODEGEN</button>
+				<button class="NodeAddition" onclick="generateCode();">GENERATE CODE</button>
 				<button class="NodeAddition" onclick="validate();">VALIDATE</button>
 				<button class="NodeAddition" onclick="train();">TRAIN</button>
 				<button class="NodeAddition" onclick="importFile();">IMPORT</button>

@@ -6,6 +6,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const securityAudit = require('./components/SecurityAudit');
 const gdrive = require('./routes/GoogleDrive');
+const codegen = require('./routes/Codegen');
 
 // Global settings
 global.settings = {
@@ -14,6 +15,7 @@ global.settings = {
     sslPrivateKeyPath: './ssl-cert/ai-designer.io/private.key',
     loginJwtCert: './token-cert/jwt-token.crt',
     webServiceEndPoint: 'https://ai-designer.io',
+    GOOGLEAPP_apiKey: 'AIzaSyAwuK6oxj3WWhAz-vGf_fWCXssuMrRu4qM',
     GOOGLEAPP_clientId: '210397520506-84pgv2tomkdqmvb5cv4hk7d37ifre5d7.apps.googleusercontent.com',
     GOOGLEAPP_clientSecret: '7WBSTo3UDvKk66gBPRlCWIw4',
     GOOGLEAPP_redirectURI: 'https://ai-designer.io/gdrive/sign-in-return',
@@ -78,6 +80,7 @@ app.get('/', function(req, res) {
 app.get('/gdrive/sign-in', gdrive.signIn);
 app.get('/gdrive/sign-in-return', gdrive.signInReturn);
 app.get('/gdrive/list', gdrive.list);
+app.post('/codegen/generate', codegen.generate);
 
 // Start http
 const httpsServer = https.createServer(credentials, app);

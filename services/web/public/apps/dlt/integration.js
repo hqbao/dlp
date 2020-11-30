@@ -1375,8 +1375,21 @@ function download(filename, text) {
 	}
 }
 
-export function exportModel(argument) {
-	download('model_'+(new Date()).toISOString()+'.json', dlt.gCommander.exportModel());
+export function generateCode() {
+	const tab = window.open('about:blank');
+	var jModel = JSON.parse(dlt.gCommander.exportModel());
+	$.ajax({
+		url: 'https://ai-designer.io/codegen/generate',
+		data: JSON.stringify({model: jModel}),
+		contentType: 'application/json',
+		type: 'POST',
+		async: false,
+		success: function(data){
+			var body = JSON.parse(data);
+			tab.location = body.msgResp.colabUrl;
+         tab.focus();
+		}
+	});
 }
 
 export function exportFile() {
