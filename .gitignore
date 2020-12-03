@@ -105,4 +105,19 @@ dist
 
 # Private keys
 **/*.key
+
+# Google sign-in token
 **/token.json
+
+# Image upload folder
+services/web/public/upload/images/user/*
+services/web/public/upload/weights/*
+
+# Misc
+**/dbscript.txt
+
+# database folder
+data/
+
+# Codegen data
+services/web/codegen/*

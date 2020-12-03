@@ -9,6 +9,7 @@ export function onImageClassificationDatagenSelected() {
 	var trainProcedureInput = document.getElementById("IMAGE_CLASSIFICATION_DATAGEN.train_procedure");
 	var imageShapeInput = document.getElementById("IMAGE_CLASSIFICATION_DATAGEN.image_shape");
 	var totalTrainExamplesShapeInput = document.getElementById("IMAGE_CLASSIFICATION_DATAGEN.total_train_examples");
+	var totalTestExamplesShapeInput = document.getElementById("IMAGE_CLASSIFICATION_DATAGEN.total_test_examples");
 	var batchSizeShapeInput = document.getElementById("IMAGE_CLASSIFICATION_DATAGEN.batch_size");
 	var epochsShapeInput = document.getElementById("IMAGE_CLASSIFICATION_DATAGEN.epochs");
 
@@ -18,6 +19,7 @@ export function onImageClassificationDatagenSelected() {
 	trainProcedureInput.value = gNode.nodeParams.params.train_procedure;
 	imageShapeInput.value = JSON.stringify(gNode.nodeParams.params.image_shape);
 	totalTrainExamplesShapeInput.value = gNode.nodeParams.params.total_train_examples;
+	totalTestExamplesShapeInput.value = gNode.nodeParams.params.total_test_examples;
 	batchSizeShapeInput.value = gNode.nodeParams.params.batch_size;
 	epochsShapeInput.value = gNode.nodeParams.params.epochs;
 }
@@ -48,6 +50,10 @@ export function onImageClassificationDatagenChange(id, value) {
 		gNode.nodeParams.params.total_train_examples = parseInt(value);
 		break;
 
+		case "IMAGE_CLASSIFICATION_DATAGEN.total_test_examples":
+		gNode.nodeParams.params.total_test_examples = parseInt(value);
+		break;
+
 		case "IMAGE_CLASSIFICATION_DATAGEN.batch_size":
 		gNode.nodeParams.params.batch_size = parseInt(value);
 		break;
@@ -70,6 +76,7 @@ export function onHeatmapRegressionDatagenSelected() {
 	var trainProcedureInput = document.getElementById("HEATMAP_REGRESSION_DATAGEN.train_procedure");
 	var imageShapeInput = document.getElementById("HEATMAP_REGRESSION_DATAGEN.image_shape");
 	var totalTrainExamplesShapeInput = document.getElementById("HEATMAP_REGRESSION_DATAGEN.total_train_examples");
+	var totalTestExamplesShapeInput = document.getElementById("HEATMAP_REGRESSION_DATAGEN.total_test_examples");
 	var batchSizeShapeInput = document.getElementById("HEATMAP_REGRESSION_DATAGEN.batch_size");
 	var epochsShapeInput = document.getElementById("HEATMAP_REGRESSION_DATAGEN.epochs");
 
@@ -79,6 +86,7 @@ export function onHeatmapRegressionDatagenSelected() {
 	trainProcedureInput.value = gNode.nodeParams.params.train_procedure;
 	imageShapeInput.value = JSON.stringify(gNode.nodeParams.params.image_shape);
 	totalTrainExamplesShapeInput.value = gNode.nodeParams.params.total_train_examples;
+	totalTestExamplesShapeInput.value = gNode.nodeParams.params.total_test_examples;
 	batchSizeShapeInput.value = gNode.nodeParams.params.batch_size;
 	epochsShapeInput.value = gNode.nodeParams.params.epochs;
 }
@@ -107,6 +115,10 @@ export function onHeatmapRegressionDatagenChange(id, value) {
 
 		case "HEATMAP_REGRESSION_DATAGEN.total_train_examples":
 		gNode.nodeParams.params.total_train_examples = parseInt(value);
+		break;
+
+		case "HEATMAP_REGRESSION_DATAGEN.total_test_examples":
+		gNode.nodeParams.params.total_test_examples = parseInt(value);
 		break;
 
 		case "HEATMAP_REGRESSION_DATAGEN.batch_size":

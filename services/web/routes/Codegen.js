@@ -8,7 +8,6 @@ exports.generate = function(req, res) {
         return;
     }
 
-    // Add or remove ip track
     var ip = req.headers['x-forwarded-for'] || 
     req.connection.remoteAddress ||
     req.socket.remoteAddress || 

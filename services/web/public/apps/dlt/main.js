@@ -204,6 +204,7 @@ var gCommander = {
 						train_procedure: 'IMAGE_CLASSIFICATION',
 						image_shape: [28, 28],
 						total_train_examples: 60000,
+						total_test_examples: 10000,
 						batch_size: 1000,
 						epochs: 100,
 					}
@@ -233,6 +234,7 @@ var gCommander = {
 						train_procedure: 'HEATMAP_REGRESSION',
 						image_shape: [112, 112, 1],
 						total_train_examples: 1000,
+						total_test_examples: 200,
 						batch_size: 100,
 						epochs: 100,
 					}
@@ -279,9 +281,9 @@ var gCommander = {
 					color: '#004000', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-32, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+32,
+						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'InputLayer'
 				},
@@ -305,9 +307,9 @@ var gCommander = {
 					color: '#00E000', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-32, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+32,
+						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'Conv2DLayer'
 				},
@@ -335,9 +337,9 @@ var gCommander = {
 					color: '#E00000', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-32, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+32,
+						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'DenseLayer'
 				},
@@ -362,9 +364,9 @@ var gCommander = {
 					color: '#A04040', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-32, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+32,
+						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'FlattenLayer'
 				},
@@ -384,9 +386,9 @@ var gCommander = {
 					color: '#80F080', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-32, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+32,
+						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'MaxPool2DLayer'
 				},
@@ -410,9 +412,9 @@ var gCommander = {
 					color: '#F080F0', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-32, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+32,
+						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'UpSampling2DLayer'
 				},
@@ -604,9 +606,9 @@ var gCommander = {
 					color: '#00E080', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-32, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+32,
+						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'Conv2DBlock'
 				},
@@ -685,8 +687,8 @@ var gCommander = {
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
 						x1: gUIApp.refPosition.x-64, 
-						y2: gUIApp.refPosition.y+16, 
-						x2: gUIApp.refPosition.x+16,
+						y2: gUIApp.refPosition.y+64, 
+						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'NMSBlock'
 				},
@@ -710,9 +712,9 @@ var gCommander = {
 					color: '#F04040', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-32, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+32,
+						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'HourglassBlock'
 				},
@@ -739,9 +741,9 @@ var gCommander = {
 					color: '#404080', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-32, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+32,
+						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'ResnetIdentityBlock'
 				},
@@ -769,9 +771,9 @@ var gCommander = {
 					color: '#4080A0', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-32, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+32,
+						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'ResnetSIdentityBlock'
 				},
@@ -799,9 +801,9 @@ var gCommander = {
 					color: '#04A0E0', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-32, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+32,
+						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'RFEBlock'
 				},

@@ -5,15 +5,27 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const securityAudit = require('./components/SecurityAudit');
-const gdrive = require('./routes/GoogleDrive');
+const user = require('./routes/User');
+const aiModel = require('./routes/AIModel');
 const codegen = require('./routes/Codegen');
+const gdrive = require('./routes/GoogleDrive');
+const upload = require('./routes/Upload');
 
 // Global settings
 global.settings = {
+    loginLockedTimeCoefficient: 5,
+    loginAllowedRetries: 4,
+    loginJwtPeriod: 24*3600,
+    resetPasswordPeriod: 1*300,
+    mailService: 'gmail',
+    mailTransporterID: 'baofair001@gmail.com',
+    mailSenderID: 'baofair001@gmail.com',
+    mailSenderPass: '123!@#qweQWE',
+    loginJwtCertPath: './token-cert/jwt-token.crt',
+    loginJwtPrivateKeyPath: './token-cert/jwt-token.key',
     sslCertPath: './ssl-cert/ai-designer.io/certificate.crt',
     sslCAPath: './ssl-cert/ai-designer.io/ca_bundle.crt',
     sslPrivateKeyPath: './ssl-cert/ai-designer.io/private.key',
-    loginJwtCert: './token-cert/jwt-token.crt',
     webServiceEndPoint: 'https://ai-designer.io',
     GOOGLEAPP_apiKey: 'AIzaSyAwuK6oxj3WWhAz-vGf_fWCXssuMrRu4qM',
     GOOGLEAPP_clientId: '210397520506-84pgv2tomkdqmvb5cv4hk7d37ifre5d7.apps.googleusercontent.com',
@@ -28,6 +40,7 @@ global.settings = {
         'https://www.googleapis.com/auth/drive.appdata',
     ],
     GOOGLEAPP_tokenPath: './misc/token.json',
+    defaultPagingLimit: 20,
 };
 
 // ssl
@@ -77,14 +90,45 @@ app.get('/', function(req, res) {
     }));
     res.end();
 });
+
+app.post('/user/login', user.login);
+app.post('/user/register', user.register);
+app.patch('/user/update', user.update);
+app.get('/user/detail', user.detail);
+app.patch('/user/change-password', user.changePassword);
+app.patch('/user/reset-password', user.resetPassword);
+app.delete('/user/delete', user.delete);
+
+app.get('/aimodel/list', aiModel.list);
+app.post('/aimodel/create', aiModel.create);
+app.patch('/aimodel/update', aiModel.update);
+app.get('/aimodel/detail', aiModel.detail);
+app.delete('/aimodel/delete', aiModel.delete);
+
+app.post('/codegen/generate', codegen.generate);
+
 app.get('/gdrive/sign-in', gdrive.signIn);
 app.get('/gdrive/sign-in-return', gdrive.signInReturn);
 app.get('/gdrive/list', gdrive.list);
-app.post('/codegen/generate', codegen.generate);
 
-// Start http
-const httpsServer = https.createServer(credentials, app);
-// const httpsServer = http.createServer(app);
-httpsServer.listen(app.get('port'), function() {
-    console.log('[DLP Service] API server listening on port ' + app.get('port'));
+app.post('/upload/image', upload.image);
+app.post('/upload/weights', upload.weights);
+
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb://bao:123qweASD@127.0.0.1:27017/dlp";
+MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
+    if (err) {
+        console.log(err);
+        return;
+    }
+
+    // Set mongoDB
+    global.mongoDB = db;
+
+    // Start http
+    var httpsServer = https.createServer(credentials, app);
+    // const httpsServer = http.createServer(app);
+    httpsServer.listen(app.get('port'), function() {
+        console.log('[Web Service] API server listening on port ' + app.get('port'));
+    });
 });
