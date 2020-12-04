@@ -65,7 +65,7 @@ exports.generate = function(req, res) {
                 fs.readFile(tokenPath, 'utf8', (err, jToken) => {
                     if (err) {
                         res.writeHead(400, {});
-                        res.write(JSON.parse({msgCode: 1013, msgResp: 'Can not read token JSON'}));
+                        res.write(JSON.stringify({msgCode: 1013, msgResp: 'Can not read token JSON'}));
                         res.end();
                         return;
                     }

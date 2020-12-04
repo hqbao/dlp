@@ -64,10 +64,35 @@ exports.create = function(req, res) {
         }
 
         var model = req.body.model;
+        var type = null;
+        if (model) {
+            var jModel = JSON.parse(model);
+            for (var i = 0; i < jModel.vertices.length; i++) {
+                var vertex = jModel.vertices[i];
+                switch (vertex.blockType) {
+                    case 'IMAGE_CLASSIFICATION_DATAGEN':
+                        type = 'IMAGE_CLASSIFICATION_DATAGEN';
+                        break;
+                    case 'OBJECT_DETECTION_DATAGEN':
+                        type = 'OBJECT_DETECTION_DATAGEN';
+                        break;
+                    case 'OBJECT_DETECTION_4TIERS_DATAGEN':
+                        type = 'OBJECT_DETECTION_4TIERS_DATAGEN';
+                        break;
+                    case 'HEATMAP_REGRESSION_DATAGEN':
+                        type = 'HEATMAP_REGRESSION_DATAGEN';
+                        break;
+                }
+
+                if (type != null) break;
+            }
+            doc['type'] = type;
+        }
 
         var doc = {
             name: name,
             screenshot: screenshot,
+            type: type,
             model: model,
             uid: decoded.uid,
             colabFileId: null,
@@ -132,8 +157,30 @@ exports.update = function(req, res) {
         }
 
         var model = req.body.model;
+        var type = null;
         if (model) {
             doc['model'] = model;
+            var jModel = JSON.parse(model);
+            for (var i = 0; i < jModel.vertices.length; i++) {
+                var vertex = jModel.vertices[i];
+                switch (vertex.blockType) {
+                    case 'IMAGE_CLASSIFICATION_DATAGEN':
+                        type = 'IMAGE_CLASSIFICATION_DATAGEN';
+                        break;
+                    case 'OBJECT_DETECTION_DATAGEN':
+                        type = 'OBJECT_DETECTION_DATAGEN';
+                        break;
+                    case 'OBJECT_DETECTION_4TIERS_DATAGEN':
+                        type = 'OBJECT_DETECTION_4TIERS_DATAGEN';
+                        break;
+                    case 'HEATMAP_REGRESSION_DATAGEN':
+                        type = 'HEATMAP_REGRESSION_DATAGEN';
+                        break;
+                }
+
+                if (type != null) break;
+            }
+            doc['type'] = type;
         }
 
         var colabFileId = req.body.colabFileId;

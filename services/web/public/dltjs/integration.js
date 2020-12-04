@@ -1403,6 +1403,7 @@ export function generateCode() {
 
 	var jBdyStr = JSON.stringify({
 		model: dlt.gCommander.exportModel(),
+		screenshot: dlt.gCommander.exportDLT(),
 	});
 	var http = new XMLHttpRequest();
 	http.open('PATCH', 'https://ai-designer.io/api/aimodel/update?id='+model._id, true);
@@ -1418,7 +1419,7 @@ export function generateCode() {
 			var msg1 = JSON.parse(http.responseText);
 			if (msg1.msgCode == 1000) {
 				const tab1 = window.open('about:blank');
-				tab1.location = '/model';
+				tab1.location = '/ai-model/detail?id='+model._id;
 				const tab2 = window.open('about:blank');
 				var jBdyStr = JSON.stringify({
 					aiModelId: model._id,

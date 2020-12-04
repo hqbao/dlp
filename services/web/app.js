@@ -13,6 +13,7 @@ const upload = require('./routes/Upload');
 const cUser = require('./controllers/User');
 const cIndex = require('./controllers/Index');
 const cDLT = require('./controllers/DLT');
+const cAIModel = require('./controllers/AIModel');
 
 // Global settings
 global.settings = {
@@ -123,6 +124,8 @@ app.get('/', cIndex.index);
 app.get('/sign-in', cUser.signIn);
 app.get('/sign-up', cUser.signUp);
 app.get('/dlt', cDLT.index);
+app.get('/ai-model/list', cAIModel.list);
+app.get('/ai-model/detail', cAIModel.detail);
 
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://bao:123qweASD@127.0.0.1:27017/dlp";

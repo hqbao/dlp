@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="/bootstrap/js/bootstrap.js"></script>
+  <title>DLP - AI Model</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">DLP</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/profile/index">MY PROFILE</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ai-model/list">MY MODELS</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+  <br>
+  <div class="container-fluid">
+    <div id="aiModeTemplate" style="display: none;">
+      <div class="col-12" style="margin-bottom: 28px;">
+        <div class="card">
+          <h5 class="card-header">{TYPE}</h5>
+          <div class="card-body">
+            <h5 class="card-title">{NAME}</h5>
+            <p class="card-text">{CONTENT}</p>
+            <a href="javascript:void(0)" class="btn btn-outline-info" onclick="openModel('{ID}')">OPEN</a>
+            <a href="/ai-model/detail?id={ID}" class="btn btn-outline-warning">DETAIL</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" id="aiModeList"></div>
+  </div>
+  <script type="text/javascript">
+    function openModel(id) {
+      var http = new XMLHttpRequest();
+      http.open('GET', 'https://ai-designer.io/api/aimodel/detail?id='+id, true);
+      http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
+      http.onreadystatechange = function() {
+        if(http.readyState == 4) {
+          if (http.status == 401) {
+            location.href = '/sign-in';
+            return;
+          }
+
+          var msg = JSON.parse(http.responseText);
+          if (msg.msgCode == 1000) {
+            localStorage.setItem('MODEL', JSON.stringify(msg.msgResp));
+            location.href = '/dlt';
+          }
+        }
+      }
+      http.send();
+    }
+
+    function load() {
+      var http = new XMLHttpRequest();
+      http.open('GET', 'https://ai-designer.io/api/aimodel/list', true);
+      http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
+      http.onreadystatechange = function() {
+        if(http.readyState == 4) {
+          if (http.status == 401) {
+            location.href = '/sign-in';
+            return;
+          }
+
+          var msg = JSON.parse(http.responseText);
+          if (msg.msgCode == 1000) {
+            var models = msg.msgResp;
+            var aiModeListNode = document.getElementById('aiModeList');
+            for (var i = 0; i < models.length; i++) {
+              var model = models[i];
+              var tempHtml = document.getElementById('aiModeTemplate').innerHTML;
+              tempHtml = tempHtml.replace('{TYPE}', model.type);
+              tempHtml = tempHtml.replaceAll('{ID}', model._id);
+              tempHtml = tempHtml.replace('{NAME}', model.name);
+              tempHtml = tempHtml.replace('{CONTENT}', '');
+              var tempNode = document.createElement('div');
+              tempNode.innerHTML = tempHtml.trim();
+              console.log(tempNode.innerHTML);
+              aiModeListNode.appendChild(tempNode.firstChild);
+            }
+          }
+        }
+      }
+      http.send();
+    }
+
+    load();
+  </script>
+</body>
+</html>
