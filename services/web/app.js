@@ -10,6 +10,9 @@ const aiModel = require('./routes/AIModel');
 const codegen = require('./routes/Codegen');
 const gdrive = require('./routes/GoogleDrive');
 const upload = require('./routes/Upload');
+const cUser = require('./controllers/User');
+const cIndex = require('./controllers/Index');
+const cDLT = require('./controllers/DLT');
 
 // Global settings
 global.settings = {
@@ -58,8 +61,10 @@ const app = express();
 
 // All environments
 app.set('port', 443);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '16mb'}));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(function (req, res, next) {
     securityAudit.check(req, function() {
@@ -82,7 +87,7 @@ app.use(function (req, res, next) {
     });
 });
 
-app.get('/', function(req, res) {
+app.get('/api', function(req, res) {
     res.writeHead(200, {});
     res.write(JSON.stringify({
         name: 'DLP service', 
@@ -91,21 +96,21 @@ app.get('/', function(req, res) {
     res.end();
 });
 
-app.post('/user/login', user.login);
-app.post('/user/register', user.register);
-app.patch('/user/update', user.update);
-app.get('/user/detail', user.detail);
-app.patch('/user/change-password', user.changePassword);
-app.patch('/user/reset-password', user.resetPassword);
-app.delete('/user/delete', user.delete);
+app.post('/api/user/login', user.login);
+app.post('/api/user/register', user.register);
+app.patch('/api/user/update', user.update);
+app.get('/api/user/detail', user.detail);
+app.patch('/api/user/change-password', user.changePassword);
+app.patch('/api/user/reset-password', user.resetPassword);
+app.delete('/api/user/delete', user.delete);
 
-app.get('/aimodel/list', aiModel.list);
-app.post('/aimodel/create', aiModel.create);
-app.patch('/aimodel/update', aiModel.update);
-app.get('/aimodel/detail', aiModel.detail);
-app.delete('/aimodel/delete', aiModel.delete);
+app.get('/api/aimodel/list', aiModel.list);
+app.post('/api/aimodel/create', aiModel.create);
+app.patch('/api/aimodel/update', aiModel.update);
+app.get('/api/aimodel/detail', aiModel.detail);
+app.delete('/api/aimodel/delete', aiModel.delete);
 
-app.post('/codegen/generate', codegen.generate);
+app.post('/api/codegen/generate', codegen.generate);
 
 app.get('/gdrive/sign-in', gdrive.signIn);
 app.get('/gdrive/sign-in-return', gdrive.signInReturn);
@@ -113,6 +118,11 @@ app.get('/gdrive/list', gdrive.list);
 
 app.post('/upload/image', upload.image);
 app.post('/upload/weights', upload.weights);
+
+app.get('/', cIndex.index);
+app.get('/sign-in', cUser.signIn);
+app.get('/sign-up', cUser.signUp);
+app.get('/dlt', cDLT.index);
 
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://bao:123qweASD@127.0.0.1:27017/dlp";

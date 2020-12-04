@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>DLP - Deep Learning Tool</title>
+		<style type="text/css">
+			.SettingsContainer {
+				width: 90%;
+			}
+			.SettingForm {
+				display: none;
+			}
+			.SettingForm input {
+				width: 100%;
+			}
+			.SettingsTitle {
+				color: #A0A0A0;
+				text-align: center;
+			}
+			.NodeAdditionContainer {
+				width: 90%;
+			}
+			.NodeAddition {
+				width: 100%;
+			}
+			#ERROR_VALIDATION {
+				list-style: none;
+				padding: 0px;
+				margin: 0px;
+			}
+			#ERROR_VALIDATION > li {
+				color: #FF0000;
+				text-decoration-style: none;
+			}
+		</style>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="/dltjs/UINode.js" type="module"></script>
+		<script src="/dltjs/UIBackgroundNode.js" type="module"></script>
+		<script src="/dltjs/UIConnectableNode.js" type="module"></script>
+		<script src="/dltjs/UIConnectionNode.js" type="module"></script>
+		<script src="/dltjs/TensorFlowValidator.js" type="module"></script>
+		<script src="/dltjs/UINodeManager.js" type="module"></script>
+		<script src="/dltjs/UIApp.js" type="module"></script>
+		<script src="/dltjs/Main.js" type="module"></script>
+		<script type="module">
+			import * as dlt from './dltjs/Main.js';
+			window.addImageClassificationDatagen = dlt.gCommander.addImageClassificationDatagen;
+			window.addHeatmapRegressionDatagen = dlt.gCommander.addHeatmapRegressionDatagen;
+			window.addObjectDetection4TiersDatagen = dlt.gCommander.addObjectDetection4TiersDatagen;
+			window.addInputLayer = dlt.gCommander.addInputLayer;
+			window.addDenseLayer = dlt.gCommander.addDenseLayer;
+			window.addConv2DLayer = dlt.gCommander.addConv2DLayer;
+			window.addMaxPool2DLayer = dlt.gCommander.addMaxPool2DLayer;
+			window.addUpSampling2DLayer = dlt.gCommander.addUpSampling2DLayer;
+			window.addBatchNormLayer = dlt.gCommander.addBatchNormLayer;
+			window.addActivationLayer = dlt.gCommander.addActivationLayer;
+			window.addDropoutLayer = dlt.gCommander.addDropoutLayer;
+			window.addDropoutLayer = dlt.gCommander.addDropoutLayer;
+			window.addFlattenLayer = dlt.gCommander.addFlattenLayer;
+			window.addAddLayer = dlt.gCommander.addAddLayer;
+			window.addConcatLayer = dlt.gCommander.addConcatLayer;
+			window.addSplitLayer = dlt.gCommander.addSplitLayer;
+			window.addSplittedLayer = dlt.gCommander.addSplittedLayer;
+			window.addReshapeLayer = dlt.gCommander.addReshapeLayer;
+			window.addConv2DBlock = dlt.gCommander.addConv2DBlock;
+			window.addCastLayer = dlt.gCommander.addCastLayer;
+			window.addConv2DBlock = dlt.gCommander.addConv2DBlock;
+			window.addNMSBlock = dlt.gCommander.addNMSBlock;
+			window.addResnetIdentityBlock = dlt.gCommander.addResnetIdentityBlock;
+			window.addResnetSIdentityBlock = dlt.gCommander.addResnetSIdentityBlock;
+			window.addRFEBlock = dlt.gCommander.addRFEBlock;
+			window.addHourglassBlock = dlt.gCommander.addHourglassBlock;
+			window.ICLossFunc = dlt.gCommander.ICLossFunc;
+			window.HMRLossFunc = dlt.gCommander.HMRLossFunc;
+			window.OD4LossFunc = dlt.gCommander.OD4LossFunc;
+
+			window.train = dlt.gCommander.train;
+			window.validate = dlt.gCommander.validate;
+			window.importDLT = dlt.gCommander.importDLT;
+
+			import * as itg from './dltjs/integration.js';
+			window.onImageClassificationDatagenChange = itg.onImageClassificationDatagenChange;
+			window.onHeatmapRegressionDatagenChange = itg.onHeatmapRegressionDatagenChange;
+			window.addObjectDetection4TiersDatagenChange = itg.addObjectDetection4TiersDatagenChange;
+			window.onInputLayerChange = itg.onInputLayerChange;
+			window.onDenseLayerChange = itg.onDenseLayerChange;
+			window.onConv2DLayerChange = itg.onConv2DLayerChange;
+			window.onMaxPool2DLayerChange = itg.onMaxPool2DLayerChange;
+			window.onUpSampling2DLayerChange = itg.onUpSampling2DLayerChange;
+			window.onDropoutLayerChange = itg.onDropoutLayerChange;
+			window.onFlattenLayerChange = itg.onFlattenLayerChange;
+			window.onBatchNormLayerChange = itg.onBatchNormLayerChange;
+			window.onActivationLayerChange = itg.onActivationLayerChange;
+			window.onAddLayerChange = itg.onAddLayerChange;
+			window.onConcatLayerChange = itg.onConcatLayerChange;
+			window.onSplitLayerChange = itg.onSplitLayerChange;
+			window.onSplittedLayerChange = itg.onSplittedLayerChange;
+			window.onReshapeLayerChange = itg.onReshapeLayerChange;
+			window.onCastLayerChange = itg.onCastLayerChange;
+			window.onConv2DBlockChange = itg.onConv2DBlockChange;
+			window.onNMSLayerChange = itg.onNMSLayerChange;
+			window.onResnetIdentityBlockChange = itg.onResnetIdentityBlockChange;
+			window.onResnetSIdentityBlockChange = itg.onResnetSIdentityBlockChange;
+			window.onRFEBlockChange = itg.onRFEBlockChange;
+			window.onHourglassBlockChange = itg.onHourglassBlockChange;
+			window.onOD4LossFuncChange = itg.onOD4LossFuncChange;
+			window.onICLossFuncChange = itg.onICLossFuncChange;
+			window.onHMRLossFuncChange = itg.onHMRLossFuncChange;
+
+			window.exportFile = itg.exportFile;
+			window.importFile = itg.importFile;
+			window.generateCode = itg.generateCode;
+
+			var model = undefined;
+			try { model = JSON.parse(localStorage.getItem('MODEL')); }
+			catch (e) {}
+			if (model && model.screenshot) {
+				importDLT(model.screenshot);
+				model.screenshot = undefined;
+				localStorage.setItem('MODEL', JSON.stringify(model));
+			}
+		</script>
+	</head>
+	<body style="margin: 0px; background-color: #202020;">
+		<div style="float: right; width: 224px;">
+			<div class="SettingsContainer">
+				<form id="IMAGE_CLASSIFICATION_DATAGEN" class="SettingForm">
+					<p class="SettingsTitle">IMAGE CLASSIFICATION DATAGEN</p>
+					<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.rect" placeholder="RECT" onchange="onImageClassificationDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.color" placeholder="COLOR" onchange="onImageClassificationDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.dataset_name" placeholder="DATASET NAME" onchange="onImageClassificationDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.train_procedure" placeholder="TRAIN PROCEDURE" onchange="onImageClassificationDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.image_shape" placeholder="IMAGE SHAPE" onchange="onImageClassificationDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.total_train_examples" placeholder="TOTAL TRAIN EXAMPLES" onchange="onImageClassificationDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.total_test_examples" placeholder="TOTAL TEST EXAMPLES" onchange="onImageClassificationDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.batch_size" placeholder="BATCH SIZE" onchange="onImageClassificationDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.epochs" placeholder="EPOCHS" onchange="onImageClassificationDatagenChange(this.id, this.value)"><br>
+				</form>
+				<form id="HEATMAP_REGRESSION_DATAGEN" class="SettingForm">
+					<p class="SettingsTitle">HEATMAP REGRESSION DATAGEN</p>
+					<input type="text" id="HEATMAP_REGRESSION_DATAGEN.rect" placeholder="RECT" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="HEATMAP_REGRESSION_DATAGEN.color" placeholder="COLOR" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="HEATMAP_REGRESSION_DATAGEN.dataset_name" placeholder="DATASET NAME" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="HEATMAP_REGRESSION_DATAGEN.train_procedure" placeholder="TRAIN PROCEDURE" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="HEATMAP_REGRESSION_DATAGEN.image_shape" placeholder="IMAGE SHAPE" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="HEATMAP_REGRESSION_DATAGEN.total_train_examples" placeholder="TOTAL TRAIN EXAMPLES" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="HEATMAP_REGRESSION_DATAGEN.total_test_examples" placeholder="TOTAL TEST EXAMPLES" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="HEATMAP_REGRESSION_DATAGEN.batch_size" placeholder="BATCH SIZE" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="HEATMAP_REGRESSION_DATAGEN.epochs" placeholder="EPOCHS" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)"><br>
+				</form>
+				<form id="OBJECT_DETECTION_4TIERS_DATAGEN" class="SettingForm">
+					<p class="SettingsTitle">OBJECT DETECTION DATAGEN</p>
+					<input type="text" id="OBJECT_DETECTION_4TIERS_DATAGEN.rect" placeholder="RECT" onchange="addObjectDetection4TiersDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="OBJECT_DETECTION_4TIERS_DATAGEN.color" placeholder="COLOR" onchange="addObjectDetection4TiersDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="OBJECT_DETECTION_4TIERS_DATAGEN.dataset_name" placeholder="DATASET NAME" onchange="addObjectDetection4TiersDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="OBJECT_DETECTION_4TIERS_DATAGEN.train_procedure" placeholder="TRAIN PROCEDURE" onchange="addObjectDetection4TiersDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="OBJECT_DETECTION_4TIERS_DATAGEN.image_shape" placeholder="IMAGE SHAPE" onchange="addObjectDetection4TiersDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="OBJECT_DETECTION_4TIERS_DATAGEN.anchor_sizes" placeholder="ANCHOR SIZES" onchange="addObjectDetection4TiersDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="OBJECT_DETECTION_4TIERS_DATAGEN.scale_sizes" placeholder="SCALE SIZES" onchange="addObjectDetection4TiersDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="OBJECT_DETECTION_4TIERS_DATAGEN.iou_thresholds" placeholder="IOU THRESHOLDS" onchange="addObjectDetection4TiersDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="OBJECT_DETECTION_4TIERS_DATAGEN.anchor_sampling" placeholder="ANCHOR SAMPLING" onchange="addObjectDetection4TiersDatagenChange(this.id, this.value)"><br>
+					<input type="text" id="OBJECT_DETECTION_4TIERS_DATAGEN.epochs" placeholder="EPOCHS" onchange="addObjectDetection4TiersDatagenChange(this.id, this.value)"><br>
+				</form>
+				<form id="INPUT_LAYER" class="SettingForm">
+					<p class="SettingsTitle">INPUT LAYER</p>
+					<input type="text" id="INPUT_LAYER.rect" placeholder="RECT" onchange="onInputLayerChange(this.id, this.value)"><br>
+					<input type="text" id="INPUT_LAYER.color" placeholder="COLOR" onchange="onInputLayerChange(this.id, this.value)"><br>
+					<input type="text" id="INPUT_LAYER.batch_size" placeholder="BATCH SIZE" onchange="onInputLayerChange(this.id, this.value)"><br>
+					<input type="text" id="INPUT_LAYER.input_shape" placeholder="SHAPE" onchange="onInputLayerChange(this.id, this.value)"><br>
+					<input type="text" id="INPUT_LAYER.dtype" placeholder="DATA TYPE" onchange="onInputLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="DENSE_LAYER" class="SettingForm">
+					<p class="SettingsTitle">DENSE LAYER</p>
+					<input type="text" id="DENSE_LAYER.rect" placeholder="RECT" onchange="onDenseLayerChange(this.id, this.value)"><br>
+					<input type="text" id="DENSE_LAYER.color" placeholder="COLOR" onchange="onDenseLayerChange(this.id, this.value)"><br>
+					<input type="text" id="DENSE_LAYER.name" placeholder="NAME" onchange="onDenseLayerChange(this.id, this.value)"><br>
+					<input type="text" id="DENSE_LAYER.units" placeholder="UNITS" onchange="onDenseLayerChange(this.id, this.value)"><br>
+					<input type="text" id="DENSE_LAYER.use_bias" placeholder="USE BIAS" onchange="onDenseLayerChange(this.id, this.value)"><br>
+					<input type="text" id="DENSE_LAYER.trainable" placeholder="TRAINABLE" onchange="onDenseLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="CONV2D_LAYER" class="SettingForm">
+					<p class="SettingsTitle">CONV2D LAYER</p>
+					<input type="text" id="CONV2D_LAYER.rect" placeholder="RECT" onchange="onConv2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_LAYER.color" placeholder="COLOR" onchange="onConv2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_LAYER.name" placeholder="NAME" onchange="onConv2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_LAYER.filters" placeholder="FILTERS" onchange="onConv2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_LAYER.kernel_size" placeholder="KERNEL SIZE" onchange="onConv2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_LAYER.strides" placeholder="STRIDES" onchange="onConv2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_LAYER.padding" placeholder="PADDING" onchange="onConv2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_LAYER.use_bias" placeholder="USE BIAS" onchange="onConv2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_LAYER.trainable" placeholder="TRAINABLE" onchange="onConv2DLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="MAXPOOL2D_LAYER" class="SettingForm">
+					<p class="SettingsTitle">MAXPOOL2D LAYER</p>
+					<input type="text" id="MAXPOOL2D_LAYER.rect" placeholder="RECT" onchange="onMaxPool2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="MAXPOOL2D_LAYER.color" placeholder="COLOR" onchange="onMaxPool2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="MAXPOOL2D_LAYER.pool_size" placeholder="POOL SIZE" onchange="onMaxPool2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="MAXPOOL2D_LAYER.strides" placeholder="STRIDES" onchange="onMaxPool2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="MAXPOOL2D_LAYER.padding" placeholder="PADDING" onchange="onMaxPool2DLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="UPSAMPLING2D_LAYER" class="SettingForm">
+					<p class="SettingsTitle">UPSAMPLING2D LAYER</p>
+					<input type="text" id="UPSAMPLING2D_LAYER.rect" placeholder="RECT" onchange="onUpSampling2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="UPSAMPLING2D_LAYER.color" placeholder="COLOR" onchange="onUpSampling2DLayerChange(this.id, this.value)"><br>
+					<input type="text" id="UPSAMPLING2D_LAYER.size" placeholder="SIZE" onchange="onUpSampling2DLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="DROPOUT_LAYER" class="SettingForm">
+					<p class="SettingsTitle">DROPOUT LAYER</p>
+					<input type="text" id="DROPOUT_LAYER.rect" placeholder="RECT" onchange="onDropoutLayerChange(this.id, this.value)"><br>
+					<input type="text" id="DROPOUT_LAYER.color" placeholder="COLOR" onchange="onDropoutLayerChange(this.id, this.value)"><br>
+					<input type="text" id="DROPOUT_LAYER.name" placeholder="NAME" onchange="onDropoutLayerChange(this.id, this.value)"><br>
+					<input type="text" id="DROPOUT_LAYER.rate" placeholder="RATE" onchange="onDropoutLayerChange(this.id, this.value)"><br>
+					<input type="text" id="DROPOUT_LAYER.trainable" placeholder="TRAINABLE" onchange="onDropoutLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="FLATTEN_LAYER" class="SettingForm">
+					<p class="SettingsTitle">FLATTEN LAYER</p>
+					<input type="text" id="FLATTEN_LAYER.rect" placeholder="RECT" onchange="onFlattenLayerChange(this.id, this.value)"><br>
+					<input type="text" id="FLATTEN_LAYER.color" placeholder="COLOR" onchange="onFlattenLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="BATCH_NORM_LAYER" class="SettingForm">
+					<p class="SettingsTitle">BATCH NORM LAYER</p>
+					<input type="text" id="BATCH_NORM_LAYER.rect" placeholder="RECT" onchange="onBatchNormLayerChange(this.id, this.value)"><br>
+					<input type="text" id="BATCH_NORM_LAYER.color" placeholder="COLOR" onchange="onBatchNormLayerChange(this.id, this.value)"><br>
+					<input type="text" id="BATCH_NORM_LAYER.name" placeholder="NAME" onchange="onBatchNormLayerChange(this.id, this.value)"><br>
+					<input type="text" id="BATCH_NORM_LAYER.trainable" placeholder="TRAINABLE" onchange="onBatchNormLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="ACTIVATION_LAYER" class="SettingForm">
+					<p class="SettingsTitle">ACTIVATION LAYER</p>
+					<input type="text" id="ACTIVATION_LAYER.rect" placeholder="RECT" onchange="onActivationLayerChange(this.id, this.value)"><br>
+					<input type="text" id="ACTIVATION_LAYER.color" placeholder="COLOR" onchange="onActivationLayerChange(this.id, this.value)"><br>
+					<input type="text" id="ACTIVATION_LAYER.activation" placeholder="ACTIVATION" onchange="onActivationLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="ADD_LAYER" class="SettingForm">
+					<p class="SettingsTitle">ADD LAYER</p>
+					<input type="text" id="ADD_LAYER.rect" placeholder="RECT" onchange="onAddLayerChange(this.id, this.value)"><br>
+					<input type="text" id="ADD_LAYER.color" placeholder="COLOR" onchange="onAddLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="CONCAT_LAYER" class="SettingForm">
+					<p class="SettingsTitle">CONCAT LAYER</p>
+					<input type="text" id="CONCAT_LAYER.rect" placeholder="RECT" onchange="onConcatLayerChange(this.id, this.value)"><br>
+					<input type="text" id="CONCAT_LAYER.color" placeholder="COLOR" onchange="onConcatLayerChange(this.id, this.value)"><br>
+					<input type="text" id="CONCAT_LAYER.axis" placeholder="AXIS" onchange="onConcatLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="SPLIT_LAYER" class="SettingForm">
+					<p class="SettingsTitle">SPLIT LAYER</p>
+					<input type="text" id="SPLIT_LAYER.rect" placeholder="RECT" onchange="onSplitLayerChange(this.id, this.value)"><br>
+					<input type="text" id="SPLIT_LAYER.color" placeholder="COLOR" onchange="onSplitLayerChange(this.id, this.value)"><br>
+					<input type="text" id="SPLIT_LAYER.axis" placeholder="AXIS" onchange="onSplitLayerChange(this.id, this.value)"><br>
+					<input type="text" id="SPLIT_LAYER.size_splits" placeholder="SIZE SPLITS" onchange="onSplitLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="SPLITTED_LAYER" class="SettingForm">
+					<p class="SettingsTitle">SPLITTED LAYER</p>
+					<input type="text" id="SPLITTED_LAYER.rect" placeholder="RECT" onchange="onSplittedLayerChange(this.id, this.value)"><br>
+					<input type="text" id="SPLITTED_LAYER.color" placeholder="COLOR" onchange="onSplittedLayerChange(this.id, this.value)"><br>
+					<input type="text" id="SPLITTED_LAYER.order" placeholder="ORDER" onchange="onSplittedLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="RESHAPE_LAYER" class="SettingForm">
+					<p class="SettingsTitle">RESHAPE LAYER</p>
+					<input type="text" id="RESHAPE_LAYER.rect" placeholder="RECT" onchange="onReshapeLayerChange(this.id, this.value)"><br>
+					<input type="text" id="RESHAPE_LAYER.color" placeholder="COLOR" onchange="onReshapeLayerChange(this.id, this.value)"><br>
+					<input type="text" id="RESHAPE_LAYER.new_shape" placeholder="SHAPE" onchange="onReshapeLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="CAST_LAYER" class="SettingForm">
+					<p class="SettingsTitle">CAST LAYER</p>
+					<input type="text" id="CAST_LAYER.rect" placeholder="RECT" onchange="onCastLayerChange(this.id, this.value)"><br>
+					<input type="text" id="CAST_LAYER.color" placeholder="COLOR" onchange="onCastLayerChange(this.id, this.value)"><br>
+					<input type="text" id="CAST_LAYER.dtype" placeholder="DATE TYPE" onchange="onCastLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="CONV2D_BLOCK" class="SettingForm">
+					<p class="SettingsTitle">CONV2D BLOCK</p>
+					<input type="text" id="CONV2D_BLOCK.rect" placeholder="RECT" onchange="onConv2DBlockChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_BLOCK.color" placeholder="COLOR" onchange="onConv2DBlockChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_BLOCK.name" placeholder="NAME" onchange="onConv2DBlockChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_BLOCK.filters" placeholder="FILTERS" onchange="onConv2DBlockChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_BLOCK.kernel_size" placeholder="KERNEL SIZE" onchange="onConv2DBlockChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_BLOCK.strides" placeholder="STRIDES" onchange="onConv2DBlockChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_BLOCK.padding" placeholder="PADDING" onchange="onConv2DBlockChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_BLOCK.use_bias" placeholder="USE BIAS" onchange="onConv2DBlockChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_BLOCK.trainable" placeholder="TRAINABLE" onchange="onConv2DBlockChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_BLOCK.bn_trainable" placeholder="BATCH NORM TRAINABLE" onchange="onConv2DBlockChange(this.id, this.value)"><br>
+					<input type="text" id="CONV2D_BLOCK.activation" placeholder="ACTIVATION" onchange="onConv2DBlockChange(this.id, this.value)"><br>
+				</form>
+				<form id="NMS_BLOCK" class="SettingForm">
+					<p class="SettingsTitle">NMS BLOCK</p>
+					<input type="text" id="NMS_BLOCK.rect" placeholder="RECT" onchange="onNMSLayerChange(this.id, this.value)"><br>
+					<input type="text" id="NMS_BLOCK.color" placeholder="COLOR" onchange="onNMSLayerChange(this.id, this.value)"><br>
+					<input type="text" id="NMS_BLOCK.max_output_size" placeholder="MAX OUTPUT SIZE" onchange="onNMSLayerChange(this.id, this.value)"><br>
+					<input type="text" id="NMS_BLOCK.iou_threshold" placeholder="IOU THRESHOLD" onchange="onNMSLayerChange(this.id, this.value)"><br>
+					<input type="text" id="NMS_BLOCK.score_threshold" placeholder="SCORE THRESHOLD" onchange="onNMSLayerChange(this.id, this.value)"><br>
+				</form>
+				<form id="RESNET_IDENTITY_BLOCK" class="SettingForm">
+					<p class="SettingsTitle">RESNET IDENTITY BLOCK</p>
+					<input type="text" id="RESNET_IDENTITY_BLOCK.rect" placeholder="RECT" onchange="onResnetIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_IDENTITY_BLOCK.color" placeholder="COLOR" onchange="onResnetIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_IDENTITY_BLOCK.name" placeholder="NAME" onchange="onResnetIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_IDENTITY_BLOCK.filters" placeholder="FILTERS" onchange="onResnetIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_IDENTITY_BLOCK.kernel_size" placeholder="KERNEL SIZE" onchange="onResnetIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_IDENTITY_BLOCK.use_bias" placeholder="USE BIAS" onchange="onResnetIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_IDENTITY_BLOCK.trainable" placeholder="TRAINABLE" onchange="onResnetIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_IDENTITY_BLOCK.bn_trainable" placeholder="BATCH NORM TRAINABLE" onchange="onResnetIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_IDENTITY_BLOCK.repeat" placeholder="REPEAT" onchange="onResnetIdentityBlockChange(this.id, this.value)"><br>
+				</form>
+				<form id="RESNET_SIDENTITY_BLOCK" class="SettingForm">
+					<p class="SettingsTitle">RESNET SIDENTITY BLOCK</p>
+					<input type="text" id="RESNET_SIDENTITY_BLOCK.rect" placeholder="RECT" onchange="onResnetSIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_SIDENTITY_BLOCK.color" placeholder="COLOR" onchange="onResnetSIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_SIDENTITY_BLOCK.name" placeholder="NAME" onchange="onResnetSIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_SIDENTITY_BLOCK.filters" placeholder="FILTERS" onchange="onResnetSIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_SIDENTITY_BLOCK.kernel_size" placeholder="KERNEL SIZE" onchange="onResnetSIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_SIDENTITY_BLOCK.strides" placeholder="STRIDES" onchange="onResnetSIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_SIDENTITY_BLOCK.use_bias" placeholder="USE BIAS" onchange="onResnetSIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_SIDENTITY_BLOCK.trainable" placeholder="TRAINABLE" onchange="onResnetSIdentityBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RESNET_SIDENTITY_BLOCK.bn_trainable" placeholder="BATCH NORM TRAINABLE" onchange="onResnetSIdentityBlockChange(this.id, this.value)"><br>
+				</form>
+				<form id="RFE_BLOCK" class="SettingForm">
+					<p class="SettingsTitle">RFE BLOCK</p>
+					<input type="text" id="RFE_BLOCK.rect" placeholder="RECT" onchange="onRFEBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RFE_BLOCK.color" placeholder="COLOR" onchange="onRFEBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RFE_BLOCK.name" placeholder="NAME" onchange="onRFEBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RFE_BLOCK.use_bias" placeholder="USE BIAS" onchange="onRFEBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RFE_BLOCK.trainable" placeholder="TRAINABLE" onchange="onRFEBlockChange(this.id, this.value)"><br>
+					<input type="text" id="RFE_BLOCK.bn_trainable" placeholder="BATCH NORM TRAINABLE" onchange="onRFEBlockChange(this.id, this.value)"><br>
+				</form>
+				<form id="HOURGLASS_BLOCK" class="SettingForm">
+					<p class="SettingsTitle">HOURGLASS BLOCK</p>
+					<input type="text" id="HOURGLASS_BLOCK.rect" placeholder="RECT" onchange="onHourglassBlockChange(this.id, this.value)"><br>
+					<input type="text" id="HOURGLASS_BLOCK.color" placeholder="COLOR" onchange="onHourglassBlockChange(this.id, this.value)"><br>
+					<input type="text" id="HOURGLASS_BLOCK.name" placeholder="NAME" onchange="onHourglassBlockChange(this.id, this.value)"><br>
+					<input type="text" id="HOURGLASS_BLOCK.depth" placeholder="DEPTH" onchange="onHourglassBlockChange(this.id, this.value)"><br>
+					<input type="text" id="HOURGLASS_BLOCK.use_bias" placeholder="USE BIAS" onchange="onHourglassBlockChange(this.id, this.value)"><br>
+					<input type="text" id="HOURGLASS_BLOCK.trainable" placeholder="TRAINABLE" onchange="onHourglassBlockChange(this.id, this.value)"><br>
+					<input type="text" id="HOURGLASS_BLOCK.bn_trainable" placeholder="BATCH NORM TRAINABLE" onchange="onHourglassBlockChange(this.id, this.value)"><br>
+					<input type="text" id="HOURGLASS_BLOCK.repeat" placeholder="REPEAT" onchange="onHourglassBlockChange(this.id, this.value)"><br>
+				</form>
+				<form id="LOSS_FUNC_OD4" class="SettingForm">
+					<p class="SettingsTitle">LOSS FUNCTION OBJECT DETECTION 4TIERS</p>
+					<input type="text" id="LOSS_FUNC_OD4.rect" placeholder="RECT" onchange="onOD4LossFuncChange(this.id, this.value)"><br>
+					<input type="text" id="LOSS_FUNC_OD4.color" placeholder="COLOR" onchange="onOD4LossFuncChange(this.id, this.value)"><br>
+					<input type="text" id="LOSS_FUNC_OD4.name" placeholder="NAME" onchange="onOD4LossFuncChange(this.id, this.value)"><br>
+					<input type="text" id="LOSS_FUNC_OD4.total_classes" placeholder="TOTAL CLASSES" onchange="onOD4LossFuncChange(this.id, this.value)"><br>
+					<input type="text" id="LOSS_FUNC_OD4.lamda" placeholder="LAMDA" onchange="onOD4LossFuncChange(this.id, this.value)"><br>
+				</form>
+				<form id="LOSS_FUNC_IC" class="SettingForm">
+					<p class="SettingsTitle">LOSS FUNCTION OBJECT DETECTION 4TIERS</p>
+					<input type="text" id="LOSS_FUNC_IC.rect" placeholder="RECT" onchange="onICLossFuncChange(this.id, this.value)"><br>
+					<input type="text" id="LOSS_FUNC_IC.color" placeholder="COLOR" onchange="onICLossFuncChange(this.id, this.value)"><br>
+					<input type="text" id="LOSS_FUNC_IC.name" placeholder="NAME" onchange="onICLossFuncChange(this.id, this.value)"><br>
+				</form>
+				<form id="LOSS_FUNC_HMR" class="SettingForm">
+					<p class="SettingsTitle">LOSS FUNCTION HEATMAP REGRESSION</p>
+					<input type="text" id="LOSS_FUNC_HMR.rect" placeholder="RECT" onchange="onHMRLossFuncChange(this.id, this.value)"><br>
+					<input type="text" id="LOSS_FUNC_HMR.color" placeholder="COLOR" onchange="onHMRLossFuncChange(this.id, this.value)"><br>
+					<input type="text" id="LOSS_FUNC_HMR.name" placeholder="NAME" onchange="onHMRLossFuncChange(this.id, this.value)"><br>
+				</form>
+			</div>
+			<div>
+				<ul id=ERROR_VALIDATION></ul>
+			</div>
+			<div class="NodeAdditionContainer">
+				<p class="SettingsTitle">ACTION</p>
+				<button class="NodeAddition" onclick="generateCode();">GENERATE CODE</button>
+				<button class="NodeAddition" onclick="validate();">VALIDATE</button>
+				<button class="NodeAddition" onclick="train();">TRAIN</button>
+				<button class="NodeAddition" onclick="importFile();">IMPORT</button>
+				<button class="NodeAddition" onclick="exportFile();">EXPORT</button>
+			</div>
+			<div class="NodeAdditionContainer">
+				<p class="SettingsTitle">ADD NODE</p>
+				<button class="NodeAddition" onclick="addImageClassificationDatagen();">IMAGE CLASSIFIACTION DATAGEN</button>
+				<button class="NodeAddition" onclick="addHeatmapRegressionDatagen();">HEATMAP REGRESSION DATAGEN</button>
+				<button class="NodeAddition" onclick="addObjectDetection4TiersDatagen();">OBJECT DETECTION DATAGEN</button>
+				<button class="NodeAddition" onclick="addInputLayer();">INPUT LAYER</button>
+				<button class="NodeAddition" onclick="addDenseLayer();">DENSE LAYER</button>
+				<button class="NodeAddition" onclick="addConv2DLayer();">CONV2D LAYER</button>
+				<button class="NodeAddition" onclick="addMaxPool2DLayer();">MAX POOL 2D LAYER</button>
+				<button class="NodeAddition" onclick="addUpSampling2DLayer();">UPSAMPLING2D LAYER</button>
+				<button class="NodeAddition" onclick="addBatchNormLayer();">BATCH NORM LAYER</button>
+				<button class="NodeAddition" onclick="addActivationLayer();">ACTIVATION LAYER</button>
+				<button class="NodeAddition" onclick="addDropoutLayer();">DROPOUT LAYER</button>
+				<button class="NodeAddition" onclick="addFlattenLayer();">FLATTEN LAYER</button>
+				<button class="NodeAddition" onclick="addAddLayer();">ADD LAYER</button>
+				<button class="NodeAddition" onclick="addConcatLayer();">CONCAT LAYER</button>
+				<button class="NodeAddition" onclick="addSplitLayer();">SPLIT LAYER</button>
+				<button class="NodeAddition" onclick="addSplittedLayer();">SPLITTED LAYER</button>
+				<button class="NodeAddition" onclick="addReshapeLayer();">RESHAPE LAYER</button>
+				<button class="NodeAddition" onclick="addCastLayer();">CAST LAYER</button>
+				<button class="NodeAddition" onclick="addConv2DBlock();">CONV2D BLOCK</button>
+				<button class="NodeAddition" onclick="addNMSBlock();">NMS LAYER</button>
+				<button class="NodeAddition" onclick="addResnetIdentityBlock();">RESNET IDENTITY BLOCK</button>
+				<button class="NodeAddition" onclick="addResnetSIdentityBlock();">RESNET SIDENTITY BLOCK</button>
+				<button class="NodeAddition" onclick="addRFEBlock();">RFE BLOCK</button>
+				<button class="NodeAddition" onclick="addHourglassBlock();">HOURGLASS BLOCK</button>
+				<button class="NodeAddition" onclick="ICLossFunc();">LOSS FUNCTION IMAGE CLASSIFICATION</button>
+				<button class="NodeAddition" onclick="HMRLossFunc();">LOSS FUNCTION HEATMAP REGRESSION</button>
+				<button class="NodeAddition" onclick="OD4LossFunc();">LOSS FUNCTION OBJECT DETECTION 4TIERS</button>
+			</div>
+		</div>
+		<canvas id="dltool_canvas"></canvas>
+	</body>
+</html>

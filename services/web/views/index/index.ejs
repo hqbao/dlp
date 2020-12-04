@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="/bootstrap/js/bootstrap.js"></script>
+  <title>DLP - Home</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">DLP</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/profile/index">PROFILE</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+  <br>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
+        <div class="card">
+          <a href="javascript:void(0)" onclick="make('screenshot_ic.json')">
+            <img src="/images/template-model-imgclz.png" class="card-img-top" alt="image classification">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Image classification</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
+        <div class="card">
+          <a href="javascript:void(0)" onclick="make('screenshot_od.json')">
+            <img src="/images/template-model-od.png" class="card-img-top" alt="object detection">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Object detection</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
+        <div class="card">
+          <a href="javascript:void(0)" onclick="make('screenshot_od4.json')">
+            <img src="/images/template-model-od4.png" class="card-img-top" alt="object detection">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Object detection 4 tiers</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
+        <div class="card">
+          <a href="javascript:void(0)" onclick="make('screenshot_hm.json')">
+            <img src="/images/template-model-hm.png" class="card-img-top" alt="object detection">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Heatmap regression</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
+        <div class="card">
+          <a href="javascript:void(0)" onclick="make('screenshot_empty.json')">
+            <img src="/images/add-model-icon.png" class="card-img-top" alt="object detection">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Empty model</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    function make(template) {
+      var http = new XMLHttpRequest();
+      http.open('GET', 'https://ai-designer.io/model-templates/'+template, true);
+      http.onreadystatechange = function() {
+        if(http.readyState == 4 && http.status == 200) {
+          var jBdyStr = JSON.stringify({
+            name: 'Noname',
+            screenshot: http.responseText,
+          });
+          http.open('POST', 'https://ai-designer.io/api/aimodel/create', true);
+          http.setRequestHeader('Content-type', 'application/json');
+          http.setRequestHeader('Authorization', 'Bearer '+localStorage.getItem('TOKEN'));
+          http.onreadystatechange = function() {
+            if(http.readyState == 4) {
+              if (http.status == 401) {
+                location.href = '/sign-in';
+                return;
+              }
+
+              var msg = JSON.parse(http.responseText);
+              if (msg.msgCode == 1000) {
+                localStorage.setItem('MODEL', JSON.stringify(msg.msgResp));
+                location.href = '/dlt';
+              }
+            }
+          }
+          http.send(jBdyStr);
+        }
+      }
+      http.send();
+    }
+  </script>
+</body>
+</html>

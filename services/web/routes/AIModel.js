@@ -55,16 +55,19 @@ exports.create = function(req, res) {
             return;
         }
 
-        var model = req.body.model;
-        if (!model) {
+        var screenshot = req.body.screenshot;
+        if (!screenshot) {
             res.writeHead(400, {});
-            res.write(JSON.stringify({msgCode: 1005, msgResp: 'Missing model'}));
+            res.write(JSON.stringify({msgCode: 1005, msgResp: 'Missing screenshot'}));
             res.end();
             return;
         }
 
+        var model = req.body.model;
+
         var doc = {
             name: name,
+            screenshot: screenshot,
             model: model,
             uid: decoded.uid,
             colabFileId: null,
@@ -76,7 +79,7 @@ exports.create = function(req, res) {
         const aiModelModel = require('../model/AIModel');
         aiModelModel.create(doc, function(aiModel) {
             res.writeHead(201, {});
-            res.write(JSON.stringify(aiModel));
+            res.write(JSON.stringify({msgCode: 1000, msgResp: aiModel}));
             res.end();
         }, function(e) {
             res.writeHead(400, {});
@@ -121,6 +124,11 @@ exports.update = function(req, res) {
             }
 
             doc['name'] = name;
+        }
+
+        var screenshot = req.body.screenshot;
+        if (screenshot) {
+            doc['screenshot'] = screenshot;
         }
 
         var model = req.body.model;
