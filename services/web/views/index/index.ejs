@@ -107,6 +107,8 @@
                 return;
               }
 
+              console.log(http.responseText);
+
               var msg = JSON.parse(http.responseText);
               if (msg.msgCode == 1000) {
                 localStorage.setItem('MODEL', JSON.stringify(msg.msgResp));

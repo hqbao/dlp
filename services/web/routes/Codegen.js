@@ -8,7 +8,7 @@ exports.generate = function(req, res) {
     var cert = fs.readFileSync(global.settings.loginJwtCertPath);
     jwt.verify(token, cert, function(err, decoded) {
         if (err) {
-            res.writeHead(400, {});
+            res.writeHead(401, {});
             res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
             res.end();
             return;
@@ -37,7 +37,7 @@ exports.generate = function(req, res) {
         aiModelModel.findById(aiModelId, function(aiModel) {
             if (!aiModel) {
                 res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1007, msgResp: 'User not found'}));
+                res.write(JSON.stringify({msgCode: 1007, msgResp: 'AI model not found'}));
                 res.end();
                 return;
             }
@@ -60,7 +60,7 @@ exports.generate = function(req, res) {
                     return;
                 }
 
-                const tokenPath = global.settings.GOOGLEAPP_tokenPath;
+                const tokenPath = global.settings.GOOGLEAPP_refreshTokenPath;
                 const fs = require('fs');
                 fs.readFile(tokenPath, 'utf8', (err, jToken) => {
                     if (err) {

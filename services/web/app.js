@@ -27,13 +27,11 @@ global.settings = {
     mailSenderPass: '123!@#qweQWE',
     loginJwtCertPath: './token-cert/jwt-token.crt',
     loginJwtPrivateKeyPath: './token-cert/jwt-token.key',
+    googleJwtPrivateKeyPath: './token-cert/google-jwt.key',
     sslCertPath: './ssl-cert/ai-designer.io/certificate.crt',
     sslCAPath: './ssl-cert/ai-designer.io/ca_bundle.crt',
     sslPrivateKeyPath: './ssl-cert/ai-designer.io/private.key',
     webServiceEndPoint: 'https://ai-designer.io',
-    GOOGLEAPP_apiKey: 'AIzaSyAwuK6oxj3WWhAz-vGf_fWCXssuMrRu4qM',
-    GOOGLEAPP_clientId: '210397520506-84pgv2tomkdqmvb5cv4hk7d37ifre5d7.apps.googleusercontent.com',
-    GOOGLEAPP_clientSecret: '7WBSTo3UDvKk66gBPRlCWIw4',
     GOOGLEAPP_redirectURI: 'https://ai-designer.io/gdrive/sign-in-return',
     GOOGLEAPP_scopes: [
         'https://www.googleapis.com/auth/drive',
@@ -43,7 +41,9 @@ global.settings = {
         'https://www.googleapis.com/auth/drive.metadata',
         'https://www.googleapis.com/auth/drive.appdata',
     ],
+    GOOGLEAPP_clientPath: './misc/client_secret_210397520506-84pgv2tomkdqmvb5cv4hk7d37ifre5d7.apps.googleusercontent.com.json',
     GOOGLEAPP_tokenPath: './misc/token.json',
+    GOOGLEAPP_refreshTokenPath: './misc/refresh_token.json',
     defaultPagingLimit: 20,
 };
 
@@ -115,7 +115,7 @@ app.post('/api/codegen/generate', codegen.generate);
 
 app.get('/gdrive/sign-in', gdrive.signIn);
 app.get('/gdrive/sign-in-return', gdrive.signInReturn);
-app.get('/gdrive/list', gdrive.list);
+app.get('/gdrive/refresh', gdrive.refresh);
 
 app.post('/upload/image', upload.image);
 app.post('/upload/weights', upload.weights);

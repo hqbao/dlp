@@ -7,7 +7,7 @@ exports.list = function(req, res) {
     const cert = fs.readFileSync(global.settings.loginJwtCertPath);
     jwt.verify(token, cert, function(err, decoded) {
         if (err) {
-            res.writeHead(400, {});
+            res.writeHead(401, {});
             res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
             res.end();
             return;
@@ -41,7 +41,7 @@ exports.create = function(req, res) {
     var cert = fs.readFileSync(global.settings.loginJwtCertPath);
     jwt.verify(token, cert, function(err, decoded) {
         if (err) {
-            res.writeHead(400, {});
+            res.writeHead(401, {});
             res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
             res.end();
             return;
@@ -123,7 +123,7 @@ exports.update = function(req, res) {
     var cert = fs.readFileSync(global.settings.loginJwtCertPath);
     jwt.verify(token, cert, function(err, decoded) {
         if (err) {
-            res.writeHead(400, {});
+            res.writeHead(401, {});
             res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
             res.end();
             return;

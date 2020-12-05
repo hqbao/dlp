@@ -1401,6 +1401,8 @@ export function generateCode() {
 		return;
 	}
 
+	document.getElementById('loadingEffect').style.display = 'block';
+
 	var jBdyStr = JSON.stringify({
 		model: dlt.gCommander.exportModel(),
 		screenshot: dlt.gCommander.exportDLT(),
@@ -1418,9 +1420,6 @@ export function generateCode() {
 
 			var msg1 = JSON.parse(http.responseText);
 			if (msg1.msgCode == 1000) {
-				const tab1 = window.open('about:blank');
-				tab1.location = '/ai-model/detail?id='+model._id;
-				const tab2 = window.open('about:blank');
 				var jBdyStr = JSON.stringify({
 					aiModelId: model._id,
 				});
@@ -1436,6 +1435,10 @@ export function generateCode() {
 
 						var msg2 = JSON.parse(http.responseText);
 						if (msg2.msgCode == 1000) {
+							document.getElementById('loadingEffect').style.display = 'none';
+							var tab1 = window.open('about:blank');
+							tab1.location = '/ai-model/detail?id='+model._id;
+							var tab2 = window.open('about:blank');
 							tab2.location = msg2.msgResp.colabUrl;
 						}
 					}

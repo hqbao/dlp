@@ -108,6 +108,12 @@ dist
 
 # Google sign-in token
 **/token.json
+**/refresh_token.json
+
+# Google service private key
+**/DLPv1-21194660679e.json
+**/dlpv1-297103-653d203de150.json
+**/*.apps.googleusercontent.com.json
 
 # Image upload folder
 services/web/public/upload/images/user/*
