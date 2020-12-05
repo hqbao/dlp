@@ -22,17 +22,6 @@ exports.generate = function(req, res) {
             return;
         }
 
-        var ip = req.headers['x-forwarded-for'] || 
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress || 
-        (req.connection.socket ? req.connection.socket.remoteAddress : null);
-        if (!ip) {
-            res.writeHead(400, {});
-            res.write(JSON.stringify({msgCode: 1005, msgResp: 'IP not present'}));
-            res.end();
-            return;
-        }
-
         const aiModelModel = require('../model/AIModel');
         aiModelModel.findById(aiModelId, function(aiModel) {
             if (!aiModel) {
@@ -53,7 +42,7 @@ exports.generate = function(req, res) {
 
             var encodedToken = JSON.stringify({id: aiModelId, jwtToken: token})
             const exec = require('child_process').exec;
-            exec('./codegen/codegen.sh \''+ip+'\' '+modelJson+' \''+encodedToken+'\'', function(err, stdout, stderr){
+            exec('./codegen/codegen.sh \''+decoded.uid+'\' '+modelJson+' \''+encodedToken+'\'', function(err, stdout, stderr){
                 if (err || stdout != 'Success\n') {
                     res.writeHead(400, {});
                     res.write(JSON.stringify({msgCode: 1011, msgResp: 'Unknow error'}));
@@ -94,12 +83,12 @@ exports.generate = function(req, res) {
                             parents: ['1VffZdAFvzsjVbxrCnANUu-YCa8eUfxap'],
                             mimeType: 'application/vnd.google.colaboratory',
                             id: id,
-                            name: 'codegen_'+Buffer.from(ip).toString('base64')+'.ipynb',
+                            name: 'codegen_'+decoded.uid+'.ipynb',
                         });   
                         restapi.post('www.googleapis.com', 443, 
                             '/drive/v3/files', 
                             'Bearer '+accessToken, jBdyStr, function(msgResp2) {
-                            var filePath = './codegen/'+ip+'/play.ipynb';
+                            var filePath = './codegen/'+decoded.uid+'/play.ipynb';
                             fs.readFile(filePath, {encoding: 'utf-8'}, function(err, fileData){
                                 if (err) {
                                     res.writeHead(400, {});
