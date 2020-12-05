@@ -51,8 +51,9 @@ exports.generate = function(req, res) {
                 return;
             }
 
+            var encodedToken = JSON.stringify({id: aiModelId, jwtToken: token})
             const exec = require('child_process').exec;
-            exec('./codegen/codegen.sh \''+ip+'\' '+modelJson+' '+aiModelId+' '+token, function(err, stdout, stderr){
+            exec('./codegen/codegen.sh \''+ip+'\' '+modelJson+' \''+encodedToken+'\'', function(err, stdout, stderr){
                 if (err || stdout != 'Success\n') {
                     res.writeHead(400, {});
                     res.write(JSON.stringify({msgCode: 1011, msgResp: 'Unknow error'}));
