@@ -88,7 +88,7 @@ exports.generate = function(req, res) {
                         restapi.post('www.googleapis.com', 443, 
                             '/drive/v3/files', 
                             'Bearer '+accessToken, jBdyStr, function(msgResp2) {
-                            var filePath = './codegen/'+decoded.uid+'/play.ipynb';
+                            var filePath = './codegen/'+decoded.uid+'/train.ipynb';
                             fs.readFile(filePath, {encoding: 'utf-8'}, function(err, fileData){
                                 if (err) {
                                     res.writeHead(400, {});
