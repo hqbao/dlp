@@ -98,6 +98,9 @@ exports.create = function(req, res) {
             colabFileId: null,
             weights: null,
             trainResult: [],
+            converting: false,
+            converted: false,
+            tfjsModelUrl: null,
             createdAt: moment().unix(),
         };
 
@@ -260,18 +263,26 @@ exports.detail = function(req, res) {
             return;
         }
 
+        var id = req.query.id;
+        if (id.length != 12 && id.length != 24) {
+            res.writeHead(400, {});
+            res.write(JSON.stringify({msgCode: 1003, msgResp: 'Missing ID'}));
+            res.end();
+            return;
+        }
+
         const aiModelModel = require('../model/AIModel');
-        aiModelModel.findById(req.query.id, function(aiModel) {
+        aiModelModel.findById(id, function(aiModel) {
             if (!aiModel) {
                 res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1003, msgResp: 'Item not found'}));
+                res.write(JSON.stringify({msgCode: 1005, msgResp: 'Item not found'}));
                 res.end();
                 return;
             }
 
             if (aiModel.uid != decoded.uid) {
                 res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1005, msgResp: 'Invalid request'}));
+                res.write(JSON.stringify({msgCode: 1007, msgResp: 'Invalid request'}));
                 res.end();
                 return;
             }
@@ -281,7 +292,7 @@ exports.detail = function(req, res) {
             res.end();
         }, function(e){
             res.writeHead(400, {});
-            res.write(JSON.stringify({msgCode: 1007, msgResp: 'Unknow error'}));
+            res.write(JSON.stringify({msgCode: 1009, msgResp: 'Unknow error'}));
             res.end();
         });
     });
@@ -330,6 +341,139 @@ exports.delete = function(req, res) {
         }, function(e){
             res.writeHead(400, {});
             res.write(JSON.stringify({msgCode: 1009, msgResp: 'Unknow error'}));
+            res.end();
+        });
+    });
+};
+
+exports.convert = function(req, res) {
+    const fs = require('fs');
+    const jwt = require('jsonwebtoken');
+
+    var token = req.header('Authorization');
+    if (token) { token = token.replace('Bearer ', ''); }
+    var cert = fs.readFileSync(global.settings.loginJwtCertPath);
+    jwt.verify(token, cert, function(err, decoded) {
+        if (err) {
+            res.writeHead(401, {});
+            res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
+            res.end();
+            return;
+        }
+
+        var id = req.query.id;
+        if (id.length != 12 && id.length != 24) {
+            res.writeHead(400, {});
+            res.write(JSON.stringify({msgCode: 1003, msgResp: 'Missing ID'}));
+            res.end();
+            return;
+        }
+
+        const aiModelModel = require('../model/AIModel');
+        aiModelModel.findById(id, function(aiModel) {
+            if (!aiModel) {
+                res.writeHead(400, {});
+                res.write(JSON.stringify({msgCode: 1005, msgResp: 'Item not found'}));
+                res.end();
+                return;
+            }
+
+            var converting = aiModel.converting;
+            if (converting == true) {
+                res.writeHead(200, {});
+                res.write(JSON.stringify({msgCode: 1000, msgResp: 'Model is being converted'}));
+                res.end();
+                return;
+            }
+
+            if (aiModel.uid != decoded.uid) {
+                res.writeHead(400, {});
+                res.write(JSON.stringify({msgCode: 1007, msgResp: 'Invalid request'}));
+                res.end();
+                return;
+            }
+
+            var modelJson = aiModel.model;
+            if (!modelJson) {
+                res.writeHead(400, {});
+                res.write(JSON.stringify({msgCode: 1009, msgResp: 'Empty model'}));
+                res.end();
+                return;
+            }
+
+            var weightsFileUrl = aiModel.weights;
+            if (!weightsFileUrl) {
+                res.writeHead(400, {});
+                res.write(JSON.stringify({msgCode: 1011, msgResp: 'Weights not exist'}));
+                res.end();
+                return;
+            }
+
+            function updateStatus(converted) {
+                aiModelModel.update(id, {converting: false, converted: converted}, function() {}, function(e) {
+                    console.log('Update status failed ('+id+'), this should be re-updated in cronjob');
+                });
+            }
+
+            aiModelModel.update(id, {converting: true}, function() {
+                res.writeHead(200, {});
+                res.write(JSON.stringify({msgCode: 1000, msgResp: 'Command ordered'}));
+                res.end();
+
+                var weightsFilePath = './codegen/'+decoded.uid+'/weights.h5';
+                const https = require('https');
+                const request = https.get(weightsFileUrl, function(response) {
+                    response.pipe(fs.createWriteStream(weightsFilePath));
+
+                    const exec = require('child_process').exec;
+                    exec('./codegen/codegen_convert.sh \''+decoded.uid+'\' \''+modelJson+'\' '+weightsFilePath+' \'{}\'', function(err, stdout, stderr) {
+                        if (err || stdout.slice(-7) != 'Success') {
+                            updateStatus(false);
+                            return;
+                        }
+
+                        var zipModelFilePath = './codegen/'+decoded.uid+'/model.zip';
+                        var output = fs.createWriteStream(zipModelFilePath);
+                        var archiver =  require('archiver');
+                        var zipArchive = archiver('zip');
+                        zipArchive.on('error', function(err){
+                            updateStatus(false);
+                        });
+                        output.on('close', function () {
+                            fs.readFile(zipModelFilePath, {}, function(err, fileData) {
+                                if (err) {
+                                    updateStatus(false);
+                                    return;
+                                }
+
+                                const restapi = require('../components/RestAPI');
+                                restapi.postFile('ai-designer.io', 443, '/upload/tfjs', undefined, fileData, function(msg) {
+                                    aiModelModel.update(id, {tfjsModelUrl: msg.msgResp.url}, function() {
+                                        updateStatus(true);
+                                    }, function(e) {
+                                        updateStatus(false);
+                                    });
+                                }, function(msgCode) {
+                                    updateStatus(false);
+                                });
+                            });
+                        });
+                        zipArchive.pipe(output);
+                        zipArchive.directory('./codegen/'+decoded.uid+'/tfjs/', false);
+                        zipArchive.finalize();
+                    });
+                });
+                request.on('error', function(err) {
+                    updateStatus(false);
+                });
+            }, function(e) {
+                res.writeHead(400, {});
+                res.write(JSON.stringify({msgCode: 1013, msgResp: 'Unknown error'}));
+                res.end();
+            });
+        }, function(e){
+            res.writeHead(400, {});
+            res.write(JSON.stringify({msgCode: 1015, msgResp: 'Unknow error'}));
             res.end();
         });
     });

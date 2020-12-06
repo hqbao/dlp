@@ -42,8 +42,8 @@ exports.generate = function(req, res) {
 
             var encodedToken = JSON.stringify({id: aiModelId, jwtToken: token})
             const exec = require('child_process').exec;
-            exec('./codegen/codegen.sh \''+decoded.uid+'\' '+modelJson+' \''+encodedToken+'\'', function(err, stdout, stderr){
-                if (err || stdout != 'Success\n') {
+            exec('./codegen/codegen_train.sh \''+decoded.uid+'\' '+modelJson+' \''+encodedToken+'\'', function(err, stdout, stderr){
+                if (err || stdout.slice(-7) != 'Success') {
                     res.writeHead(400, {});
                     res.write(JSON.stringify({msgCode: 1011, msgResp: 'Unknow error'}));
                     res.end();
@@ -74,7 +74,7 @@ exports.generate = function(req, res) {
                         return;
                     }
 
-                    const restapi = require('../components/GDriveRestAPI');
+                    const restapi = require('../components/RestAPI');
                     restapi.get('www.googleapis.com', 443, 
                         '/drive/v3/files/generateIds?count=1', 
                         'Bearer '+accessToken, function(msgResp1) {

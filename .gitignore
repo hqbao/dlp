@@ -118,6 +118,7 @@ dist
 # Image upload folder
 services/web/public/upload/images/user/*
 services/web/public/upload/weights/*
+services/web/public/upload/tfjs/*
 
 # Misc
 **/dbscript.txt
@@ -127,3 +128,8 @@ data/
 
 # Codegen data
 services/web/codegen/*
+!services/web/codegen/codegen_train.py
+!services/web/codegen/codegen_train.sh
+!services/web/codegen/codegen_convert.py
+!services/web/codegen/codegen_convert.sh
+!services/web/codegen/convert.sh

@@ -110,6 +110,7 @@ app.post('/api/aimodel/create', aiModel.create);
 app.patch('/api/aimodel/update', aiModel.update);
 app.get('/api/aimodel/detail', aiModel.detail);
 app.delete('/api/aimodel/delete', aiModel.delete);
+app.patch('/api/aimodel/convert', aiModel.convert);
 
 app.post('/api/codegen/generate', codegen.generate);
 
@@ -119,6 +120,7 @@ app.get('/gdrive/refresh', gdrive.refresh);
 
 app.post('/upload/image', upload.image);
 app.post('/upload/weights', upload.weights);
+app.post('/upload/tfjs', upload.tfjs);
 
 app.get('/', cIndex.index);
 app.get('/sign-in', cUser.signIn);
