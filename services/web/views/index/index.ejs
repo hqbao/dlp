@@ -103,6 +103,7 @@
           http.onreadystatechange = function() {
             if(http.readyState == 4) {
               if (http.status == 401) {
+                localStorage.setItem('REDIRECT_URL', '/');
                 location.href = '/sign-in';
                 return;
               }
