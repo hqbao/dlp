@@ -50,7 +50,7 @@
           <td>{NAME}</td>
           <td>
             <a href="javascript:void(0)" class="btn btn-outline-warning btn-sm" onclick="openModel('{ID}')">OPEN</a>
-            <a href="/ai-model/detail?id={ID}" class="btn btn-outline-warning btn-sm">DETAIL</a>
+            <a href="/ai-model/detail-{TYPE_DETAIL}?id={ID}" class="btn btn-outline-warning btn-sm">DETAIL</a>
           </td>
         </tr>
       </tbody>
@@ -58,6 +58,12 @@
     </table>
   </div>
   <script type="text/javascript">
+    const typeMap = {
+      'IMAGE_CLASSIFICATION_DATAGEN': 'ic',
+      'OBJECT_DETECTION_DATAGEN': 'od',
+      'HEATMAP_REGRESSION_DATAGEN': 'hm',
+    };
+
     function openModel(id) {
       var http = new XMLHttpRequest();
       http.open('GET', 'https://ai-designer.io/api/aimodel/detail?id='+id, true);
@@ -99,6 +105,7 @@
               var model = models[i];
               var tempHtml = document.getElementById('aiModeTemplate').innerHTML;
               tempHtml = tempHtml.replaceAll('{TYPE}', model.type);
+              tempHtml = tempHtml.replaceAll('{TYPE_DETAIL}', typeMap[model.type]);
               tempHtml = tempHtml.replaceAll('{ID}', model._id);
               tempHtml = tempHtml.replaceAll('{NAME}', model.name);
               var tempNode = document.createElement('tbody');

@@ -137,16 +137,16 @@ export function onHeatmapRegressionDatagenChange(id, value) {
 }
 
 export function onObjectDetection4TiersDatagenSelected() {
-	var rectInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.rect");
-	var colorInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.color");
-	var datasetNameInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.dataset_name");
-	var trainProcedureInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.train_procedure");
-	var imageShapeInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.image_shape");
-	var anchorSizesInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.anchor_sizes");
-	var scaleSizesInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.scale_sizes");
-	var iouThresholdsInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.iou_thresholds");
-	var anchorSamplingsInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.anchor_sampling");
-	var epochsInput = document.getElementById("OBJECT_DETECTION_4TIERS_DATAGEN.epochs");
+	var rectInput = document.getElementById("OBJECT_DETECTION_DATAGEN.rect");
+	var colorInput = document.getElementById("OBJECT_DETECTION_DATAGEN.color");
+	var datasetNameInput = document.getElementById("OBJECT_DETECTION_DATAGEN.dataset_name");
+	var trainProcedureInput = document.getElementById("OBJECT_DETECTION_DATAGEN.train_procedure");
+	var imageShapeInput = document.getElementById("OBJECT_DETECTION_DATAGEN.image_shape");
+	var anchorSizesInput = document.getElementById("OBJECT_DETECTION_DATAGEN.anchor_sizes");
+	var scaleSizesInput = document.getElementById("OBJECT_DETECTION_DATAGEN.scale_sizes");
+	var iouThresholdsInput = document.getElementById("OBJECT_DETECTION_DATAGEN.iou_thresholds");
+	var anchorSamplingsInput = document.getElementById("OBJECT_DETECTION_DATAGEN.anchor_sampling");
+	var epochsInput = document.getElementById("OBJECT_DETECTION_DATAGEN.epochs");
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
@@ -162,43 +162,43 @@ export function onObjectDetection4TiersDatagenSelected() {
 
 export function addObjectDetection4TiersDatagenChange(id, value) {
 	switch (id) {
-		case "OBJECT_DETECTION_4TIERS_DATAGEN.rect":
+		case "OBJECT_DETECTION_DATAGEN.rect":
 		gNode.rect = JSON_parse(value);
 		break;
 
-		case "OBJECT_DETECTION_4TIERS_DATAGEN.color":
+		case "OBJECT_DETECTION_DATAGEN.color":
 		gNode.color = value;
 		break;
 
-		case "OBJECT_DETECTION_4TIERS_DATAGEN.dataset_name":
+		case "OBJECT_DETECTION_DATAGEN.dataset_name":
 		gNode.nodeParams.params.dataset_name = value;
 		break;
 
-		case "OBJECT_DETECTION_4TIERS_DATAGEN.train_procedure":
+		case "OBJECT_DETECTION_DATAGEN.train_procedure":
 		gNode.nodeParams.params.train_procedure = value;
 		break;
 
-		case "OBJECT_DETECTION_4TIERS_DATAGEN.image_shape":
+		case "OBJECT_DETECTION_DATAGEN.image_shape":
 		gNode.nodeParams.params.image_shape = JSON_parse(value);
 		break;
 
-		case "OBJECT_DETECTION_4TIERS_DATAGEN.anchor_sizes":
+		case "OBJECT_DETECTION_DATAGEN.anchor_sizes":
 		gNode.nodeParams.params.anchor_sizes = JSON_parse(value);
 		break;
 
-		case "OBJECT_DETECTION_4TIERS_DATAGEN.scale_sizes":
+		case "OBJECT_DETECTION_DATAGEN.scale_sizes":
 		gNode.nodeParams.params.scale_sizes = JSON_parse(value);
 		break;
 
-		case "OBJECT_DETECTION_4TIERS_DATAGEN.iou_thresholds":
+		case "OBJECT_DETECTION_DATAGEN.iou_thresholds":
 		gNode.nodeParams.params.iou_thresholds = JSON_parse(value);
 		break;
 
-		case "OBJECT_DETECTION_4TIERS_DATAGEN.anchor_sampling":
+		case "OBJECT_DETECTION_DATAGEN.anchor_sampling":
 		gNode.nodeParams.params.anchor_sampling = JSON_parse(value);
 		break;
 
-		case "OBJECT_DETECTION_4TIERS_DATAGEN.epochs":
+		case "OBJECT_DETECTION_DATAGEN.epochs":
 		gNode.nodeParams.params.epochs = parseInt(value);
 		break;
 
@@ -1249,7 +1249,7 @@ dlt.gNotification.onNodeSelected = function(node) {
 		onHeatmapRegressionDatagenSelected();
 		break;
 
-		case "OBJECT_DETECTION_4TIERS_DATAGEN":
+		case "OBJECT_DETECTION_DATAGEN":
 		onObjectDetection4TiersDatagenSelected();
 		break;
 
@@ -1436,8 +1436,6 @@ export function generateCode() {
 						var msg2 = JSON.parse(http.responseText);
 						if (msg2.msgCode == 1000) {
 							document.getElementById('loadingEffect').style.display = 'none';
-							var tab1 = window.open('about:blank');
-							tab1.location = '/ai-model/detail?id='+model._id;
 							var tab2 = window.open('about:blank');
 							tab2.location = msg2.msgResp.colabUrl;
 						}

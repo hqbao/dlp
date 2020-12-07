@@ -258,10 +258,10 @@ var gCommander = {
 				},
 				nodeParams: {
 					type: 'NONE_ANY',
-					blockType: 'OBJECT_DETECTION_4TIERS_DATAGEN',
+					blockType: 'OBJECT_DETECTION_DATAGEN',
 					params: {
 						dataset_name: 'face1024',
-						train_procedure: 'OBJECT_DETECTION_4TIERS',
+						train_procedure: 'OBJECT_DETECTION',
 						image_shape: [512, 512, 3],
 						anchor_sizes: [[[32, 32]], [[64, 64]], [[128, 128]], [[256, 256]]],
 						scale_sizes: [[128, 128], [64, 64], [32, 32], [16, 16]],

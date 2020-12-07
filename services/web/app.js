@@ -127,7 +127,10 @@ app.get('/sign-in', cUser.signIn);
 app.get('/sign-up', cUser.signUp);
 app.get('/dlt', cDLT.index);
 app.get('/ai-model/list', cAIModel.list);
-app.get('/ai-model/detail', cAIModel.detail);
+app.get('/ai-model/detail-ic', cAIModel.detailIC);
+app.get('/ai-model/detail-od', cAIModel.detailOD);
+app.get('/ai-model/detail-od4', cAIModel.detailOD4);
+app.get('/ai-model/detail-hm', cAIModel.detailHM);
 app.get('/ai-model/play-digits', cAIModel.playDigits);
 
 const MongoClient = require('mongodb').MongoClient;

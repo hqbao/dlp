@@ -3,7 +3,7 @@ import {UIConnectionNode} from './UIConnectionNode.js';
 
 const SUPPORTED_IMAGE_CLASSIFICATION_DATASETS = ['mnist-digits'];
 const SUPPORTED_HEATMAP_REGRESSION_DATASETS = ['faceali128x128'];
-const SUPPORTED_OBJECT_DETECTION_4TIERS_DATASETS = ['face1024'];
+const SUPPORTED_OBJECT_DETECTION_DATASETS = ['face1024'];
 
 class TensorFlowValidator {
 	constructor() {}
@@ -82,8 +82,8 @@ class TensorFlowValidator {
 						break;
 					}
 
-					case 'OBJECT_DETECTION_4TIERS_DATAGEN': {
-						if (!SUPPORTED_OBJECT_DETECTION_4TIERS_DATASETS.includes(node.nodeParams.params.dataset_name)) {
+					case 'OBJECT_DETECTION_DATAGEN': {
+						if (!SUPPORTED_OBJECT_DETECTION_DATASETS.includes(node.nodeParams.params.dataset_name)) {
 							errors.push(node.getName()+' dataset not supported');
 						}
 

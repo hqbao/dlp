@@ -41,6 +41,8 @@
           <img id="preview" src="" style="position: fixed;top: 80px;" height="28" width="28" />
           <canvas id="paint" height="448" width="448" style="float: left;background-color: black;"></canvas>
           <div id="previewNumber" style="height: 448px;width: 448px;float: left;background-color: cyan;font-size: 300px;padding-left: 140px;">9</div>
+          <div class="clearfix"></div>
+          <span style="float: right;">Possibility: <b id="possibility"></b></span>
         </div>
       </div>
       <div class="col-12" style="text-align: center;">
@@ -58,9 +60,12 @@
       pix = pix.expandDims(0);
       var prediction = model.execute(pix);
       // console.log(prediction.arraySync());
-      prediction = tf.argMax(prediction, -1)
-      var number = prediction.arraySync()[0];
+      var predY = tf.argMax(prediction, -1);
+      var number = predY.arraySync()[0];
       document.getElementById('previewNumber').innerHTML = number;
+      var possibility = tf.max(prediction, -1);
+      var pos = possibility.arraySync()[0];
+      document.getElementById('possibility').innerHTML = pos;
     }
 
     var preview = document.getElementById('preview');
