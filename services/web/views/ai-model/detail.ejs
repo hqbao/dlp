@@ -9,6 +9,7 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="/bootstrap/js/bootstrap.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
   <title>DLP - AI Model</title>
 </head>
 <body>
@@ -35,12 +36,121 @@
   <br>
   <div class="container-fluid">
     <div class="row">
+      <div class="col-12 col-lg-6 col-sm-12">
+        <canvas id="lossChart" width="600" height="400"></canvas>
+      </div>
+      <div class="col-12 col-lg-6 col-sm-12">
+        <canvas id="prChart" width="600" height="400"></canvas>
+      </div>
       <div class="col-12">
-        <div id="trainResult"></div>
+        <button id="convertBtn" type="button" class="btn btn-info" onclick="convert()" disabled>CONVERT</button>
+        <a href="#" id="playLink" type="button" class="btn btn-success" style="display: none;">PLAY</a>
       </div>
     </div>
   </div>
   <script type="text/javascript">
+    function plotLoss(trainLossData, testLossData) {
+      var chartCanvas = document.getElementById("lossChart");
+
+      var trainLoss = {
+        label: "Train loss",
+        data: trainLossData,
+        lineTension: 0.3,
+        fill: false,
+        borderColor: 'cyan'
+      };
+
+      var testLoss = {
+        label: "Test loss",
+        data: testLossData,
+        lineTension: 0.3,
+        fill: false,
+        borderColor: 'orange'
+      };
+
+      var epoch = Math.max(trainLossData.length, testLossData.length)
+      var labels = [];
+      for (var i = 0; i < epoch; i++) {
+        labels.push(i+1);
+      }
+
+      var data = {
+        labels: labels,
+        datasets: [trainLoss, testLoss]
+      };
+
+      var chartOptions = {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            boxWidth: 80,
+            fontColor: 'black'
+          }
+        },
+        animation: {
+          duration: 0
+        },
+      };
+
+      var lineChart = new Chart(chartCanvas, {
+        type: 'line',
+        data: data,
+        options: chartOptions
+      });
+    }
+
+    function plotPR(precisionData, recallData) {
+      var chartCanvas = document.getElementById("prChart");
+
+      var precision = {
+        label: "Precision",
+        data: precisionData,
+        lineTension: 0.3,
+        fill: false,
+        borderColor: 'blue'
+      };
+
+      var recall = {
+        label: "Recall",
+        data: recallData,
+        lineTension: 0.3,
+        fill: false,
+        borderColor: 'red'
+      };
+
+      var epoch = Math.max(precisionData.length, recallData.length)
+      var labels = [];
+      for (var i = 0; i < epoch; i++) {
+        labels.push(i+1);
+      }
+
+      var data = {
+        labels: labels,
+        datasets: [precision, recall]
+      };
+
+      var chartOptions = {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            boxWidth: 80,
+            fontColor: 'black'
+          }
+        },
+        animation: {
+          duration: 0
+        }
+      };
+
+      var lineChart = new Chart(chartCanvas, {
+        type: 'line',
+        data: data,
+        options: chartOptions
+      });
+    }
+
     function getParameterByName(name, url = window.location.href) {
       name = name.replace(/[\[\]]/g, '\\$&');
       var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
@@ -52,6 +162,27 @@
 
     var aiModelId = getParameterByName('id');
     var http = new XMLHttpRequest();
+
+    function convert() {
+      document.getElementById('convertBtn').disabled = 'disabled';
+
+      http.open('PATCH', 'https://ai-designer.io/api/aimodel/convert?id='+aiModelId, true);
+      http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
+      http.onreadystatechange = function() {
+        if(http.readyState == 4) {
+          if (http.status == 401) {
+            location.href = '/sign-in';
+            return;
+          }
+
+          var msg = JSON.parse(http.responseText);
+          if (msg.msgCode == 1000) {
+            document.getElementById('convertBtn').disabled = true;
+          }
+        }
+      }
+      http.send('{}');
+    }
 
     function load() {
       http.open('GET', 'https://ai-designer.io/api/aimodel/detail?id='+aiModelId, true);
@@ -65,15 +196,56 @@
 
           var msg = JSON.parse(http.responseText);
           if (msg.msgCode == 1000) {
-            var trainResult = msg.msgResp.trainResult;
-            document.getElementById('trainResult').innerHTML = trainResult;
+            var model = msg.msgResp;
+            var trainResult = JSON.parse(model.trainResult);
+
+            var trainLossData = [];
+            var trainLoss = trainResult.trainLoss;
+            for (var i = 0; i < trainLoss.length; i++) {
+              var mean = trainLoss[i].reduce((a, b) => a + b, 0) / trainLoss[i].length;
+              trainLossData.push(mean);
+            }
+
+            var testLossData = [];
+            var testLoss = trainResult.testLoss;
+            for (var i = 0; i < testLoss.length; i++) {
+              var mean = testLoss[i].reduce((a, b) => a + b, 0) / testLoss[i].length;
+              testLossData.push(mean);
+            }
+            
+            plotLoss(trainLossData, testLossData);
+
+            var TP = trainResult.truePositive;
+            var FP = trainResult.falsePositive;
+            var FN = trainResult.falseNegative;
+            var precision = [];
+            var recall = [];
+            for (var i = 0; i < TP.length; i++) {
+              tp = TP[i][0];
+              fp = FP[i][0];
+              fn = FN[i][0];
+              precision.push(tp/(tp+fp));
+              recall.push(tp/(tp+fn));
+            }
+
+            plotPR(precision, recall);
+
+            if (model.weights && !model.converting) {
+              document.getElementById('convertBtn').disabled = '';
+            }
+
+            if (model.converted && model.tfjsModelUrl) {
+              document.getElementById('playLink').style.display = 'inline';
+              document.getElementById('playLink').href = '/ai-model/play-digits?id='+aiModelId;
+            }
           }
         }
       }
       http.send();
     }
 
-    setInterval(load, 1000);
+    load();
+    // setInterval(load, 1000);
   </script>
 </body>
 </html>

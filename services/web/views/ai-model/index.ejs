@@ -34,20 +34,28 @@
   </nav>
   <br>
   <div class="container-fluid">
-    <div id="aiModeTemplate" style="display: none;">
-      <div class="col-12" style="margin-bottom: 28px;">
-        <div class="card">
-          <h5 class="card-header">{TYPE}</h5>
-          <div class="card-body">
-            <h5 class="card-title">{NAME}</h5>
-            <p class="card-text">{CONTENT}</p>
-            <a href="javascript:void(0)" class="btn btn-outline-info" onclick="openModel('{ID}')">OPEN</a>
-            <a href="/ai-model/detail?id={ID}" class="btn btn-outline-warning">DETAIL</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row" id="aiModeList"></div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Type</th>
+          <th scope="col">Name</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="aiModeTemplate" style="display: none;">
+        <tr>
+          <th scope="row">1</th>
+          <td>{TYPE}</td>
+          <td>{NAME}</td>
+          <td>
+            <a href="javascript:void(0)" class="btn btn-outline-warning btn-sm" onclick="openModel('{ID}')">OPEN</a>
+            <a href="/ai-model/detail?id={ID}" class="btn btn-outline-warning btn-sm">DETAIL</a>
+          </td>
+        </tr>
+      </tbody>
+      <tbody id="aiModeList"></tbody>
+    </table>
   </div>
   <script type="text/javascript">
     function openModel(id) {
@@ -89,13 +97,11 @@
             for (var i = 0; i < models.length; i++) {
               var model = models[i];
               var tempHtml = document.getElementById('aiModeTemplate').innerHTML;
-              tempHtml = tempHtml.replace('{TYPE}', model.type);
+              tempHtml = tempHtml.replaceAll('{TYPE}', model.type);
               tempHtml = tempHtml.replaceAll('{ID}', model._id);
-              tempHtml = tempHtml.replace('{NAME}', model.name);
-              tempHtml = tempHtml.replace('{CONTENT}', '');
-              var tempNode = document.createElement('div');
+              tempHtml = tempHtml.replaceAll('{NAME}', model.name);
+              var tempNode = document.createElement('tbody');
               tempNode.innerHTML = tempHtml.trim();
-              console.log(tempNode.innerHTML);
               aiModeListNode.appendChild(tempNode.firstChild);
             }
           }

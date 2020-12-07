@@ -128,6 +128,7 @@ app.get('/sign-up', cUser.signUp);
 app.get('/dlt', cDLT.index);
 app.get('/ai-model/list', cAIModel.list);
 app.get('/ai-model/detail', cAIModel.detail);
+app.get('/ai-model/play-digits', cAIModel.playDigits);
 
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://bao:123qweASD@127.0.0.1:27017/dlp";
