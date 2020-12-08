@@ -1,0 +1,237 @@
+.dtl-action {
+	position: fixed;
+	left: 0px;
+	top: 16px;
+	width: 48px;
+	padding: 16px;
+	border-radius: 0px 8px 8px 0px;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.dtl-action > button {
+	height: 48px;
+	width: 48px;
+	margin-bottom: 8px;
+	background-repeat: no-repeat;
+	background-position: center;
+	border-width: 2px;
+	border-color: #009933;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+.dtl-action button:active {
+	border: none;
+}
+
+.save-btn {
+	background: url(/icons/save-solid.svg);
+}
+
+.validate-btn {
+	background: url(/icons/check-solid.svg);
+}
+
+.gencode-btn {
+	background: url(/icons/microchip-solid.svg);
+}
+
+.import-btn {
+	background: url(/icons/file-import-solid.svg);
+}
+
+.export-btn {
+	background: url(/icons/file-export-solid.svg);
+}
+
+
+
+
+.dlt-nodes {
+	position: fixed;
+	left: -16px;
+	top: 346px;
+	height: 256px;
+	width: 122px;
+	direction: rtl;
+	overflow: auto;
+	padding: 16px;
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 0px 8px 8px 0px;
+}
+
+.dlt-nodes > button {
+	height: 44px;
+	width: 106px;
+	margin-bottom: 8px;
+	background-size: 106px 44px;
+	background-position: center;
+	border-width: 2px;
+	border-color: #e0e0e0;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+.add-btn-icdatagen {
+	background-image: url(/images/dlt-icdatagen-node.png);
+}
+
+.add-btn-hmdatagen {
+	background-image: url(/images/dlt-hmdatagen-node.png);
+}
+
+.add-btn-oddatagen {
+	background-image: url(/images/dlt-oddatagen-node.png);
+}
+
+.add-btn-input {
+	background-image: url(/images/dlt-input-node.png);
+}
+
+.add-btn-dense {
+	background-image: url(/images/dlt-dense-node.png);
+}
+
+.add-btn-conv2d {
+	background-image: url(/images/dlt-conv2d-node.png);
+}
+
+.add-btn-maxpool2d {
+	background-image: url(/images/dlt-maxpool2d-node.png);
+}
+
+.add-btn-upsamp2d {
+	background-image: url(/images/dlt-upsamp2d-node.png);
+}
+
+.add-btn-bn {
+	background-image: url(/images/dlt-bn-node.png);
+}
+
+.add-btn-activation {
+	background-image: url(/images/dlt-act-node.png);
+}
+
+.add-btn-dropout {
+	background-image: url(/images/dlt-dropout-node.png);
+}
+
+.add-btn-flatten {
+	background-image: url(/images/dlt-flatten-node.png);
+}
+
+.add-btn-add {
+	background-image: url(/images/dlt-add-node.png);
+}
+
+.add-btn-concat {
+	background-image: url(/images/dlt-concat-node.png);
+}
+
+.add-btn-split {
+	background-image: url(/images/dlt-split-node.png);
+}
+
+.add-btn-splitted {
+	background-image: url(/images/dlt-splitted-node.png);
+}
+
+.add-btn-reshape {
+	background-image: url(/images/dlt-reshape-node.png);
+}
+
+.add-btn-cast {
+	background-image: url(/images/dlt-cast-node.png);
+}
+
+.add-btn-conv2dblk {
+	background-image: url(/images/dlt-conv2dblk-node.png);
+}
+
+.add-btn-nms {
+	background-image: url(/images/dlt-nms-node.png);
+}
+
+.add-btn-resnetid {
+	background-image: url(/images/dlt-resnetid-node.png);
+}
+
+.add-btn-resnetsid {
+	background-image: url(/images/dlt-resnetsid-node.png);
+}
+
+.add-btn-rfe {
+	background-image: url(/images/dlt-rfe-node.png);
+}
+
+.add-btn-hourglass {
+	background-image: url(/images/dlt-hourglass-node.png);
+}
+
+.add-btn-icloss {
+	background-image: url(/images/dlt-icloss-node.png);
+}
+
+.add-btn-hmloss {
+	background-image: url(/images/dlt-hmloss-node.png);
+}
+
+.add-btn-odloss {
+	background-image: url(/images/dlt-odloss-node.png);
+}
+
+
+
+
+.dlt-node-settings {
+	position: fixed;
+	right: -16px;
+	top: 16px;
+	height: 256px;
+	width: 212px;
+	overflow: auto;
+	padding: 16px;
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 8px 0px 0px 8px;
+}
+
+.settings-form {
+	display: none;
+}
+
+.settings-form > input {
+	width: 188px;
+}
+
+.settings-title {
+	color: #000000;
+}
+
+
+
+
+.dlt-errors {
+	position: fixed;
+	right: 0px;
+	top: 320px;
+	width: 196px;
+	height: 256px;
+	padding: 16px;
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 8px 0px 0px 8px;
+}
+
+.dlt-errors ul {
+	padding: 0px;
+	margin: 0px;
+	list-style: none;
+}
+
+.dlt-errors li {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ff0066;
+	border-radius: 4px;
+	padding: 4px;
+	color: #ff0066;
+}

@@ -502,7 +502,8 @@ class UIConnectableNode extends UINode {
 		nodeSettings={
 			color: '#808080', 
 			rect: {y1: 0, x1: 0, y2: 0, x2: 0}, 
-			name: ''
+			name: '',
+			shortName: 'NODE',
 		},
 		nodeParams={},
 		srcConnIdList=[],
@@ -517,8 +518,10 @@ class UIConnectableNode extends UINode {
 			x1: nodeSettings.rect.x1, 
 			y2: nodeSettings.rect.y2, 
 			x2: nodeSettings.rect.x2,
+			radius: {tl: 8, tr: 8, br: 8, bl: 8},
 			z: this.getZIndex(),
 			color: nodeSettings.color,
+			text: nodeSettings.shortName,
 			isHidden: false,
 			namePrefix: CONNECTABLE_NODE_NAME_PREFIX,
 			name: nodeSettings.name,
@@ -649,6 +652,7 @@ class UIConnectableNode extends UINode {
 				x2: entity.x2
 			}, 
 			name: entity.name,
+			shortName: entity.text,
 		};
 	}
 
@@ -773,6 +777,7 @@ class UIConnectableNode extends UINode {
 					x2: this.ui[0].x2,
 				},
 				name: this.ui[0].name,
+				shortName: this.ui[0].text,
 			},
 			srcConnIdList: this.srcConnIdList,
 			dstConnIdList: this.dstConnIdList,

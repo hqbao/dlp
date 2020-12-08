@@ -46,8 +46,8 @@
         </div>
       </div>
       <div class="col-12" style="text-align: center;">
-        <button onclick="onInferClicked()">INFER</button>
-        <button onclick="onClearClicked()">CLEAR</button>
+        <button class="btn btn-success" onclick="onInferClicked()">INFER</button>
+        <button class="btn btn-danger" onclick="onClearClicked()">CLEAR</button>
       </div>
     </div>
   </div>
@@ -55,7 +55,7 @@
     async function infer(blob) {
       const model = await tf.loadGraphModel(jModel);
       var pix = tf.browser.fromPixels(preview);
-      pix = tf.mean(pix, -1, false);
+      pix = tf.mean(pix, -1, true);
       // console.log(tf.cast(pix, 'int32').arraySync());
       pix = pix.expandDims(0);
       var prediction = model.execute(pix);
@@ -141,7 +141,7 @@
       ctx.moveTo(prevX, prevY);
       ctx.lineTo(currX, currY);
       ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth = 28;
+      ctx.lineWidth = 34;
       ctx.lineJoin = 'round';
       ctx.lineCap = 'round';
       ctx.stroke();

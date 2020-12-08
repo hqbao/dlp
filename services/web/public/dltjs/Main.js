@@ -3,8 +3,8 @@ import {UIApp} from './UIApp.js';
 
 /* Canvas setup */
 const gCanvas = document.getElementById('dltool_canvas');
-gCanvas.width = screen.width - 256;
-gCanvas.height = 0.9*screen.height;
+gCanvas.width = screen.width;
+gCanvas.height = screen.height;
 
 /* External events */
 var gNotification = {
@@ -194,13 +194,14 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'ImageClassificationDatagen'
+					name: 'ImageClassificationDatagen',
+					shortName: 'IC DATGEN',
 				},
 				nodeParams: {
 					type: 'NONE_ANY',
 					blockType: 'IMAGE_CLASSIFICATION_DATAGEN',
 					params: {
-						dataset_name: 'mnist_digits',
+						dataset_name: 'mnist-digits',
 						train_procedure: 'IMAGE_CLASSIFICATION',
 						image_shape: [28, 28],
 						total_train_examples: 60000,
@@ -224,7 +225,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'HeatmapRegressionDatagen'
+					name: 'HeatmapRegressionDatagen',
+					shortName: 'HM DATGEN',
 				},
 				nodeParams: {
 					type: 'NONE_ANY',
@@ -242,7 +244,7 @@ var gCommander = {
 			});
 		gUIApp.nodeManager.snapshot();
 	},
-	addObjectDetection4TiersDatagen: function() {
+	addObjectDetectionDatagen: function() {
 		gUIApp.nodeManager.addNode(
 			UINodeManager.NODE_TYPE_CONNECTABLE,
 			{
@@ -254,7 +256,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'ObjectDetection4TiersDatagen'
+					name: 'ObjectDetectionDatagen',
+					shortName: 'OD DATGEN',
 				},
 				nodeParams: {
 					type: 'NONE_ANY',
@@ -285,7 +288,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'InputLayer'
+					name: 'InputLayer',
+					shortName: 'INPUT',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -311,7 +315,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'Conv2DLayer'
+					name: 'Conv2DLayer',
+					shortName: 'CONV2D',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -341,7 +346,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'DenseLayer'
+					name: 'DenseLayer',
+					shortName: 'DENSE',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -368,7 +374,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'FlattenLayer'
+					name: 'FlattenLayer',
+					shortName: 'FLATTEN',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -390,7 +397,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'MaxPool2DLayer'
+					name: 'MaxPool2DLayer',
+					shortName: 'MAXPOOL2D',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -416,7 +424,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'UpSampling2DLayer'
+					name: 'UpSampling2DLayer',
+					shortName: 'UPSAMP2D',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -436,11 +445,12 @@ var gCommander = {
 					color: '#A0A0A0', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-16, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+16,
+						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'BatchNormLayer'
+					name: 'BatchNormLayer',
+					shortName: 'BN',
 				},
 				nodeParams: {
 					type: 'ONE_ONE',
@@ -461,11 +471,12 @@ var gCommander = {
 					color: '#E0E0E0', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-16, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+16,
+						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'ActivationLayer'
+					name: 'ActivationLayer',
+					shortName: 'ACT',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -485,11 +496,12 @@ var gCommander = {
 					color: '#606060', 
 					rect: {
 						y1: gUIApp.refPosition.y-64, 
-						x1: gUIApp.refPosition.x-16, 
+						x1: gUIApp.refPosition.x-64, 
 						y2: gUIApp.refPosition.y+64, 
-						x2: gUIApp.refPosition.x+16,
+						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'DropoutLayer'
+					name: 'DropoutLayer',
+					shortName: 'DROPOUT',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -510,12 +522,13 @@ var gCommander = {
 				nodeSettings: {
 					color: '#00A0A0', 
 					rect: {
-						y1: gUIApp.refPosition.y-32, 
-						x1: gUIApp.refPosition.x-32, 
-						y2: gUIApp.refPosition.y+32, 
-						x2: gUIApp.refPosition.x+32,
+						y1: gUIApp.refPosition.y-64, 
+						x1: gUIApp.refPosition.x-64, 
+						y2: gUIApp.refPosition.y+64, 
+						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'AddLayer'
+					name: 'AddLayer',
+					shortName: 'ADD',
 				},
 				nodeParams: {
 					type: 'MANY_ANY',
@@ -532,12 +545,13 @@ var gCommander = {
 				nodeSettings: {
 					color: '#A0A000', 
 					rect: {
-						y1: gUIApp.refPosition.y-32, 
-						x1: gUIApp.refPosition.x-32, 
-						y2: gUIApp.refPosition.y+32, 
-						x2: gUIApp.refPosition.x+32,
+						y1: gUIApp.refPosition.y-64, 
+						x1: gUIApp.refPosition.x-64, 
+						y2: gUIApp.refPosition.y+64, 
+						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'ConcatLayer'
+					name: 'ConcatLayer',
+					shortName: 'CONCAT',
 				},
 				nodeParams: {
 					type: 'MANY_ANY',
@@ -556,12 +570,13 @@ var gCommander = {
 				nodeSettings: {
 					color: '#A000A0', 
 					rect: {
-						y1: gUIApp.refPosition.y-32, 
-						x1: gUIApp.refPosition.x-32, 
-						y2: gUIApp.refPosition.y+32, 
-						x2: gUIApp.refPosition.x+32,
+						y1: gUIApp.refPosition.y-64, 
+						x1: gUIApp.refPosition.x-64, 
+						y2: gUIApp.refPosition.y+64, 
+						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'SplitLayer'
+					name: 'SplitLayer',
+					shortName: 'SPLIT',
 				},
 				nodeParams: {
 					type: 'ONE_MANY',
@@ -581,12 +596,13 @@ var gCommander = {
 				nodeSettings: {
 					color: '#A0A0A0', 
 					rect: {
-						y1: gUIApp.refPosition.y-32, 
-						x1: gUIApp.refPosition.x-32, 
-						y2: gUIApp.refPosition.y+32, 
-						x2: gUIApp.refPosition.x+32,
+						y1: gUIApp.refPosition.y-64, 
+						x1: gUIApp.refPosition.x-64, 
+						y2: gUIApp.refPosition.y+64, 
+						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'SplittedLayer'
+					name: 'SplittedLayer',
+					shortName: 'SPLITTED',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -610,7 +626,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'Conv2DBlock'
+					name: 'Conv2DBlock',
+					shortName: 'CONV2D BLK',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -637,12 +654,13 @@ var gCommander = {
 				nodeSettings: {
 					color: '#80A0A0', 
 					rect: {
-						y1: gUIApp.refPosition.y-32, 
-						x1: gUIApp.refPosition.x-32, 
-						y2: gUIApp.refPosition.y+32, 
-						x2: gUIApp.refPosition.x+32,
+						y1: gUIApp.refPosition.y-64, 
+						x1: gUIApp.refPosition.x-64, 
+						y2: gUIApp.refPosition.y+64, 
+						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'ReshapeLayer'
+					name: 'ReshapeLayer',
+					shortName: 'RESHAPE',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -661,12 +679,13 @@ var gCommander = {
 				nodeSettings: {
 					color: '#C0C0C0', 
 					rect: {
-						y1: gUIApp.refPosition.y-32, 
-						x1: gUIApp.refPosition.x-32, 
-						y2: gUIApp.refPosition.y+32, 
-						x2: gUIApp.refPosition.x+32,
+						y1: gUIApp.refPosition.y-64, 
+						x1: gUIApp.refPosition.x-64, 
+						y2: gUIApp.refPosition.y+64, 
+						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'CastLayer'
+					name: 'CastLayer',
+					shortName: 'CAST',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -690,7 +709,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'NMSBlock'
+					name: 'NMSBlock',
+					shortName: 'NMS',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -716,7 +736,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'HourglassBlock'
+					name: 'HourglassBlock',
+					shortName: 'HOURGS',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -745,7 +766,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'ResnetIdentityBlock'
+					name: 'ResnetIdentityBlock',
+					shortName: 'RESNET',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -775,7 +797,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'ResnetSIdentityBlock'
+					name: 'ResnetSIdentityBlock',
+					shortName: 'RESNETS',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -805,7 +828,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'RFEBlock'
+					name: 'RFEBlock',
+					shortName: 'RFE',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -820,7 +844,7 @@ var gCommander = {
 			});
 		gUIApp.nodeManager.snapshot();
 	},
-	OD4LossFunc: function() {
+	ODLossFunc: function() {
 		gUIApp.nodeManager.addNode(
 			UINodeManager.NODE_TYPE_CONNECTABLE,
 			{
@@ -832,7 +856,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'OD4LossFunc'
+					name: 'ODLossFunc',
+					shortName: 'OD LOSS',
 				},
 				nodeParams: {
 					type: 'ONE_NONE',
@@ -858,7 +883,8 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'ICLossFunc'
+					name: 'ICLossFunc',
+					shortName: 'IC LOSS',
 				},
 				nodeParams: {
 					type: 'ONE_NONE',
@@ -883,6 +909,7 @@ var gCommander = {
 						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'HMRLossFunc',
+					shortName: 'HM LOSS',
 				},
 				nodeParams: {
 					type: 'ONE_NONE',

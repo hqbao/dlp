@@ -136,7 +136,7 @@ export function onHeatmapRegressionDatagenChange(id, value) {
 	dlt.gCommander.onNodeUpdated(gNode);
 }
 
-export function onObjectDetection4TiersDatagenSelected() {
+export function onObjectDetectionDatagenSelected() {
 	var rectInput = document.getElementById("OBJECT_DETECTION_DATAGEN.rect");
 	var colorInput = document.getElementById("OBJECT_DETECTION_DATAGEN.color");
 	var datasetNameInput = document.getElementById("OBJECT_DETECTION_DATAGEN.dataset_name");
@@ -160,7 +160,7 @@ export function onObjectDetection4TiersDatagenSelected() {
 	epochsInput.value = gNode.nodeParams.params.epochs;
 }
 
-export function addObjectDetection4TiersDatagenChange(id, value) {
+export function addObjectDetectionDatagenChange(id, value) {
 	switch (id) {
 		case "OBJECT_DETECTION_DATAGEN.rect":
 		gNode.rect = JSON_parse(value);
@@ -1122,7 +1122,7 @@ export function onHourglassBlockChange(id, value) {
 	dlt.gCommander.onNodeUpdated(gNode);
 }
 
-export function onOD4LossFuncSelected() {
+export function onODLossFuncSelected() {
 	var rectInput = document.getElementById("LOSS_FUNC_OD4.rect");
 	var colorInput = document.getElementById("LOSS_FUNC_OD4.color");
 	var nameInput = document.getElementById("LOSS_FUNC_OD4.name");
@@ -1136,7 +1136,7 @@ export function onOD4LossFuncSelected() {
 	lamdaInput.value = gNode.nodeParams.params.lamda;
 }
 
-export function onOD4LossFuncChange(id, value) {
+export function onODLossFuncChange(id, value) {
 	switch (id) {
 		case "LOSS_FUNC_OD4.rect":
 		gNode.rect = JSON_parse(value);
@@ -1228,10 +1228,9 @@ export function onHMRLossFuncChange(id, value) {
 }
 
 dlt.gNotification.onClear = function(node) {
-	var settingsForms = document.getElementsByClassName("SettingForm");
+	var settingsForms = document.getElementsByClassName("settings-form");
 	for (var i = 0; i < settingsForms.length; i++) {
-		var settingForm = settingsForms[i];
-		settingForm.style.display = "none";
+		settingsForms[i].style.display = "none";
 	}
 };
 
@@ -1250,7 +1249,7 @@ dlt.gNotification.onNodeSelected = function(node) {
 		break;
 
 		case "OBJECT_DETECTION_DATAGEN":
-		onObjectDetection4TiersDatagenSelected();
+		onObjectDetectionDatagenSelected();
 		break;
 
 		case "INPUT_LAYER":
@@ -1338,7 +1337,7 @@ dlt.gNotification.onNodeSelected = function(node) {
 		break;
 
 		case "LOSS_FUNC_OD4":
-		onOD4LossFuncSelected();
+		onODLossFuncSelected();
 		break;
 
 		case "LOSS_FUNC_IC":
@@ -1361,7 +1360,7 @@ dlt.gNotification.onError = function(errors) {
 		errorMessages += "<li>" + error + "</li>";
 	}
 
-	var errorsUl = document.getElementById("ERROR_VALIDATION");
+	var errorsUl = document.getElementById("errorValidation");
 	errorsUl.innerHTML = errorMessages;
 };
 
@@ -1387,6 +1386,40 @@ function download(filename, text) {
 	}
 }
 
+export function save() {
+	var model = undefined;
+	try { model = JSON.parse(localStorage.getItem('MODEL')); }
+	catch (e) {}
+	if (!model) {
+		localStorage.setItem('REDIRECT_URL', '/dlt');
+		location.href = '/sign-in';
+		return;
+	}
+
+	var jBdyStr = JSON.stringify({
+		screenshot: dlt.gCommander.exportDLT(),
+	});
+	var http = new XMLHttpRequest();
+	http.open('PATCH', 'https://ai-designer.io/api/aimodel/update?id='+model._id, true);
+	http.setRequestHeader('Content-type', 'application/json');
+	http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
+	http.onreadystatechange = function() {
+		if(http.readyState == 4) {
+			if (http.status == 401) {
+				localStorage.setItem('REDIRECT_URL', '/dlt');
+				location.href = '/sign-in';
+				return;
+			}
+
+			var msg = JSON.parse(http.responseText);
+			if (msg.msgCode == 1000) {
+				alert('Saved');
+			}
+		}
+	}
+	http.send(jBdyStr);
+}
+
 export function generateCode() {
 	var errors = dlt.gCommander.validate();
 	if (errors.length > 0) {
@@ -1397,6 +1430,7 @@ export function generateCode() {
 	try { model = JSON.parse(localStorage.getItem('MODEL')); }
 	catch (e) {}
 	if (!model) {
+		localStorage.setItem('REDIRECT_URL', '/dlt');
 		location.href = '/sign-in';
 		return;
 	}
@@ -1414,6 +1448,7 @@ export function generateCode() {
 	http.onreadystatechange = function() {
 		if(http.readyState == 4) {
 			if (http.status == 401) {
+				localStorage.setItem('REDIRECT_URL', '/dlt');
 				location.href = '/sign-in';
 				return;
 			}
