@@ -4,7 +4,7 @@ import {UIApp} from './UIApp.js';
 /* Canvas setup */
 const gCanvas = document.getElementById('dltool_canvas');
 gCanvas.width = screen.width;
-gCanvas.height = screen.height;
+gCanvas.height = 0.9*screen.height;
 
 /* External events */
 var gNotification = {

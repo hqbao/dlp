@@ -93,15 +93,40 @@
 		</script>
 	</head>
 	<body style="margin: 0px;padding: 0px;">
-		<div id="loadingEffect" style="position: fixed;width: 100%;height: 100%;background-color: #000000;opacity: 0.5;text-align: center;display: none;">
-			<img src="/images/loading.gif" alt="loading" width=250 style="margin-top: 16px;" />
+		<div id="loadingEffect" style="position: fixed;width: 100%;height: 100%;background-color: #000000;opacity: 0.5;text-align: center;display: none;z-index: 100;"><img src="/images/loading.gif" alt="loading" width=250 style="margin-top: 16px;" /></div>
+		<script type="text/javascript">
+			function askName() {
+				var model = undefined;
+				try { model = JSON.parse(localStorage.getItem('MODEL')); }
+				catch (e) {}
+				if (model) {
+					document.getElementById('aiModelName').value = model.name;
+				}
+
+				document.getElementById('nameInputPopup').style.display = 'block';
+			}
+			
+			function _save(self) {
+				save(self.previousElementSibling.value, function() {
+					document.getElementById('nameInputPopup').style.display = 'none';
+				});
+			}
+		</script>
+		<div class="small-popup" id="nameInputPopup" onclick="this.style.display='none';">
+			<div class="popup-wrapper" onclick="window.event.stopPropagation();">
+				<label>Name</label>
+				<input id="aiModelName" type="text" name="name">
+				<button style="float: right;margin-left: 8px;background-color: #ff9900;" onclick="_save(this)">OK</button>
+				<button style="float: right;" onclick="this.parentNode.parentNode.style.display='none';">CANCEL</button>
+				<br>
+			</div>
 		</div>
 		<div class="dtl-action">
-			<button class="save-btn" onclick="save();"></button>
-			<button class="validate-btn" onclick="validate();"></button>
-			<button class="gencode-btn" onclick="generateCode();"></button>
-			<button class="import-btn" onclick="importFile();"></button>
-			<button class="export-btn" onclick="exportFile();"></button>
+			<button class="save-btn" onclick="askName();" title="Save"></button>
+			<button class="validate-btn" onclick="validate();" title="Validate"></button>
+			<button class="gencode-btn" onclick="generateCode();" title="Generate code"></button>
+			<button class="import-btn" onclick="importFile();" title="Import"></button>
+			<button class="export-btn" onclick="exportFile();" title="Export"></button>
 		</div>
 		<div class="dlt-errors">
 			<ul id=errorValidation></ul>

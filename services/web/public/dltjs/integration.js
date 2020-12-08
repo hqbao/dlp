@@ -1387,7 +1387,7 @@ function download(filename, text) {
 	}
 }
 
-export function save() {
+export function save(name, callback) {
 	var model = undefined;
 	try { model = JSON.parse(localStorage.getItem('MODEL')); }
 	catch (e) {}
@@ -1398,6 +1398,7 @@ export function save() {
 	}
 
 	var jBdyStr = JSON.stringify({
+		name: name,
 		screenshot: dlt.gCommander.exportDLT(),
 	});
 	var http = new XMLHttpRequest();
@@ -1414,7 +1415,7 @@ export function save() {
 
 			var msg = JSON.parse(http.responseText);
 			if (msg.msgCode == 1000) {
-				alert('Saved');
+				callback();
 			}
 		}
 	}

@@ -88,6 +88,11 @@
     }
 
     function deleteModel(id, self) {
+      var sure = confirm("Are you sure?");
+      if (!sure) {
+        return;
+      }
+      
       self.disabled = true;
       var http = new XMLHttpRequest();
       http.open('DELETE', 'https://ai-designer.io/api/aimodel/delete?id='+id, true);
