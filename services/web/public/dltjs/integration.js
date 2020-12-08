@@ -1237,6 +1237,7 @@ dlt.gNotification.onClear = function(node) {
 dlt.gNotification.onNodeSelected = function(node) {
 	dlt.gNotification.onClear();
 	gNode = node;
+	console.log('-' + gNode.nodeParams.blockType + '-');
 	document.getElementById(gNode.nodeParams.blockType).style.display = "block";
 
 	switch (gNode.nodeParams.blockType) {

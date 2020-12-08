@@ -19,7 +19,7 @@ const cAIModel = require('./controllers/AIModel');
 global.settings = {
     loginLockedTimeCoefficient: 5,
     loginAllowedRetries: 4,
-    loginJwtPeriod: 1*60,
+    loginJwtPeriod: 24*60*60,
     resetPasswordPeriod: 1*300,
     mailService: 'gmail',
     mailTransporterID: 'baofair001@gmail.com',
@@ -125,6 +125,7 @@ app.post('/upload/tfjs', upload.tfjs);
 app.get('/', cIndex.index);
 app.get('/sign-in', cUser.signIn);
 app.get('/sign-up', cUser.signUp);
+app.get('/user/profile', cUser.profile);
 app.get('/dlt', cDLT.index);
 app.get('/ai-model/list', cAIModel.list);
 app.get('/ai-model/detail-ic', cAIModel.detailIC);

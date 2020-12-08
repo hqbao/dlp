@@ -11,140 +11,140 @@
   <script src="/bootstrap/js/bootstrap.js"></script>
   <title>DLP - Sign Up</title>
 </head>
-  <body>
-    <div class="container-fluid" style="background-color: #006666;padding-top: 4%;">
-      <div class="row">
-        <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
-          <h1 style="text-align: center;font-size: 32px;font-weight: bolder;margin-bottom: 8px;color: white;">DEEP LEARNING PLATFORM</h1>
-          <div class="card">
-            <div class="card-body">
-              <h4 class="text-center">Sign up</h4>
-              <small class="form-text text-muted">Please fill in the form, <span style="color: maroon;">*</span> is mandatory.</small>
-              <small class="form-text text-muted"><a href="/sign-in">Sign-in</a>!</small>
-              <form method="post" action="">
-                <small id="genericError" style="color: maroon"></small>
-                <div class="form-group">
-                  <label>Email address<span style="color: maroon;">*</span></label>
-                  <input name="email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
-                  <small id="emailError" style="color: maroon"></small>
-                </div>
-                <div class="form-group">
-                  <label>PIN<span style="color: maroon;">*</span></label>
-                  <input name="password" type="password" class="form-control" placeholder="PIN">
-                  <small id="passwordError" style="color: maroon"></small>
-                </div>
-                <div class="form-group">
-                  <label>Re-type PIN<span style="color: maroon;">*</span></label>
-                  <input name="retypePassword" type="password" class="form-control" placeholder="Re-type PIN">
-                  <small id="retypePasswordError" style="color: maroon"></small>
-                </div>
-                <div class="form-group">
-                  <label>Name<span style="color: maroon;">*</span></label>
-                  <input name="name" type="name" class="form-control" placeholder="Enter name">
-                  <small id="nameError" style="color: maroon"></small>
-                </div>
-                <div class="form-group">
-                  <label>Phone</label>
-                  <input name="phone" type="phone" class="form-control" placeholder="Enter phone number">
-                  <small id="phoneError" style="color: maroon"></small>
-                </div>
-                <div class="form-group">
-                  <label>Postal code</label>
-                  <input name="postalCode" type="number" class="form-control" placeholder="Enter postal code">
-                  <small id="postalCodeError" style="color: maroon"></small>
-                </div>
-                <button type="submit" class="btn btn-outline-dark">Submit</button>
-              </form>
-            </div>
+<body>
+  <div class="container-fluid" style="background-color: #006666;padding-top: 4%;">
+    <div class="row">
+      <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+        <h1 style="text-align: center;font-size: 32px;font-weight: bolder;margin-bottom: 8px;color: white;">DEEP LEARNING PLATFORM</h1>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="text-center">Sign up</h4>
+            <small class="form-text text-muted">Please fill in the form, <span style="color: maroon;">*</span> is mandatory.</small>
+            <small class="form-text text-muted"><a href="/sign-in">Sign-in</a>!</small>
+            <form method="post" action="">
+              <small id="genericError" style="color: maroon"></small>
+              <div class="form-group">
+                <label>Email address<span style="color: maroon;">*</span></label>
+                <input name="email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailError" style="color: maroon"></small>
+              </div>
+              <div class="form-group">
+                <label>PIN<span style="color: maroon;">*</span></label>
+                <input name="password" type="password" class="form-control" placeholder="PIN">
+                <small id="passwordError" style="color: maroon"></small>
+              </div>
+              <div class="form-group">
+                <label>Re-type PIN<span style="color: maroon;">*</span></label>
+                <input name="retypePassword" type="password" class="form-control" placeholder="Re-type PIN">
+                <small id="retypePasswordError" style="color: maroon"></small>
+              </div>
+              <div class="form-group">
+                <label>Name<span style="color: maroon;">*</span></label>
+                <input name="name" type="name" class="form-control" placeholder="Enter name">
+                <small id="nameError" style="color: maroon"></small>
+              </div>
+              <div class="form-group">
+                <label>Phone</label>
+                <input name="phone" type="phone" class="form-control" placeholder="Enter phone number">
+                <small id="phoneError" style="color: maroon"></small>
+              </div>
+              <div class="form-group">
+                <label>Postal code</label>
+                <input name="postalCode" type="number" class="form-control" placeholder="Enter postal code">
+                <small id="postalCodeError" style="color: maroon"></small>
+              </div>
+              <button type="submit" class="btn btn-outline-dark">Submit</button>
+            </form>
           </div>
-          <br>
         </div>
+        <br>
       </div>
     </div>
-    <script type="text/javascript">
-      const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-      const phoneRegexp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+  </div>
+  <script type="text/javascript">
+    const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const phoneRegexp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
 
-      var form = document.querySelector('form');
-      form.onsubmit = function() {
-        document.getElementById('genericError').innerHTML = '';
-        document.getElementById('emailError').innerHTML = '';
-        document.getElementById('passwordError').innerHTML = '';
-        document.getElementById('retypePasswordError').innerHTML = '';
-        document.getElementById('nameError').innerHTML = '';
-        document.getElementById('phoneError').innerHTML = '';
-        document.getElementById('postalCodeError').innerHTML = '';
+    var form = document.querySelector('form');
+    form.onsubmit = function() {
+      document.getElementById('genericError').innerHTML = '';
+      document.getElementById('emailError').innerHTML = '';
+      document.getElementById('passwordError').innerHTML = '';
+      document.getElementById('retypePasswordError').innerHTML = '';
+      document.getElementById('nameError').innerHTML = '';
+      document.getElementById('phoneError').innerHTML = '';
+      document.getElementById('postalCodeError').innerHTML = '';
 
-        var valid = true;
+      var valid = true;
 
-        var email = document.getElementsByName("email")[0].value;
-        if (!email || !emailRegexp.test(email)) {
-          document.getElementById('emailError').innerHTML = 'Invalid email';
-          valid = false;
-        }
+      var email = document.getElementsByName("email")[0].value;
+      if (!email || !emailRegexp.test(email)) {
+        document.getElementById('emailError').innerHTML = 'Invalid email';
+        valid = false;
+      }
 
-        var password = document.getElementsByName("password")[0].value;
-        if (!password || password.length < 6) {
-          document.getElementById('passwordError').innerHTML = 'Invalid password';
-          valid = false;
-        }
+      var password = document.getElementsByName("password")[0].value;
+      if (!password || password.length < 6) {
+        document.getElementById('passwordError').innerHTML = 'Invalid password';
+        valid = false;
+      }
 
-        var retypePassword = document.getElementsByName("retypePassword")[0].value;
-        if (!retypePassword || retypePassword != password) {
-          document.getElementById('retypePasswordError').innerHTML = 'Invalid re-type password';
-          valid = false;
-        }
+      var retypePassword = document.getElementsByName("retypePassword")[0].value;
+      if (!retypePassword || retypePassword != password) {
+        document.getElementById('retypePasswordError').innerHTML = 'Invalid re-type password';
+        valid = false;
+      }
 
-        var name = document.getElementsByName("name")[0].value;
-        if (!name || name.length > 64) {
-          document.getElementById('nameError').innerHTML = 'Invalid name';
-          valid = false;
-        }
+      var name = document.getElementsByName("name")[0].value;
+      if (!name || name.length > 64) {
+        document.getElementById('nameError').innerHTML = 'Invalid name';
+        valid = false;
+      }
 
-        var phone = document.getElementsByName("phone")[0].value;
-        if (phone && !phoneRegexp.test(phone)) {
-          document.getElementById('phoneError').innerHTML = 'Invalid phone number';
-          valid = false;
-        }
+      var phone = document.getElementsByName("phone")[0].value;
+      if (phone && !phoneRegexp.test(phone)) {
+        document.getElementById('phoneError').innerHTML = 'Invalid phone number';
+        valid = false;
+      }
 
-        var postalCode = document.getElementsByName("postalCode")[0].value;
-        if (postalCode && postalCode.length > 6) {
-          document.getElementById('postalCodeError').innerHTML = 'Invalid postal code';
-          valid = false;
-        }
+      var postalCode = document.getElementsByName("postalCode")[0].value;
+      if (postalCode && postalCode.length > 6) {
+        document.getElementById('postalCodeError').innerHTML = 'Invalid postal code';
+        valid = false;
+      }
 
-        if (!valid) {
-          return false
-        }
+      if (!valid) {
+        return false
+      }
 
-        var jBdyStr = JSON.stringify({
-          email: email,
-          password: password,
-          name: name,
-          phone: phone,
-          postalCode: postalCode,
-        });
-        
-        var http = new XMLHttpRequest();
-        http.open('POST', 'https://ai-designer.io/api/user/register', true);
-        http.setRequestHeader('Content-type', 'application/json');
-        http.onreadystatechange = function() {
-          if(http.readyState == 4) {
-            var msg = JSON.parse(http.responseText);
-            if (msg.msgCode == 1000) {
-              localStorage.setItem('TOKEN', msg.msgResp.token);
-              var redirectUrl = localStorage.getItem('REDIRECT_URL');
-              if (redirectUrl) { location.href = redirectUrl; }
-              else { location.href = '/'; }
-            }
-            else {
-              document.getElementById('genericError').innerHTML = msg.msgResp;
-            }
+      var jBdyStr = JSON.stringify({
+        email: email,
+        password: password,
+        name: name,
+        phone: phone,
+        postalCode: postalCode,
+      });
+      
+      var http = new XMLHttpRequest();
+      http.open('POST', 'https://ai-designer.io/api/user/register', true);
+      http.setRequestHeader('Content-type', 'application/json');
+      http.onreadystatechange = function() {
+        if(http.readyState == 4) {
+          var msg = JSON.parse(http.responseText);
+          if (msg.msgCode == 1000) {
+            localStorage.setItem('TOKEN', msg.msgResp.token);
+            var redirectUrl = localStorage.getItem('REDIRECT_URL');
+            if (redirectUrl) { location.href = redirectUrl; }
+            else { location.href = '/'; }
+          }
+          else {
+            document.getElementById('genericError').innerHTML = msg.msgResp;
           }
         }
-        http.send(jBdyStr);
-        return false;
       }
-    </script>
-  </body>
+      http.send(jBdyStr);
+      return false;
+    }
+  </script>
+</body>
 </html>
