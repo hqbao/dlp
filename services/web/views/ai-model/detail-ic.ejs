@@ -198,38 +198,9 @@
           var msg = JSON.parse(http.responseText);
           if (msg.msgCode == 1000) {
             var model = msg.msgResp;
-            var trainResult = JSON.parse(model.trainResult);
 
-            var trainLossData = [];
-            var trainLoss = trainResult.trainLoss;
-            for (var i = 0; i < trainLoss.length; i++) {
-              var mean = trainLoss[i].reduce((a, b) => a + b, 0) / trainLoss[i].length;
-              trainLossData.push(mean);
-            }
-
-            var testLossData = [];
-            var testLoss = trainResult.testLoss;
-            for (var i = 0; i < testLoss.length; i++) {
-              var mean = testLoss[i].reduce((a, b) => a + b, 0) / testLoss[i].length;
-              testLossData.push(mean);
-            }
-            
-            plotLoss(trainLossData, testLossData);
-
-            var TP = trainResult.truePositive;
-            var FP = trainResult.falsePositive;
-            var FN = trainResult.falseNegative;
-            var precision = [];
-            var recall = [];
-            for (var i = 0; i < TP.length; i++) {
-              tp = TP[i][0];
-              fp = FP[i][0];
-              fn = FN[i][0];
-              precision.push(tp/(tp+fp));
-              recall.push(tp/(tp+fn));
-            }
-
-            plotPR(precision, recall);
+            plotLoss(model.trainLoss, model.testLoss);
+            plotPR(model.precision, model.recall);
 
             if (model.weights && !model.converting) {
               document.getElementById('convertBtn').disabled = '';

@@ -108,6 +108,7 @@ app.delete('/api/user/delete', user.delete);
 app.get('/api/aimodel/list', aiModel.list);
 app.post('/api/aimodel/create', aiModel.create);
 app.patch('/api/aimodel/update', aiModel.update);
+app.patch('/api/aimodel/update-train-result', aiModel.updateTrainResult);
 app.get('/api/aimodel/detail', aiModel.detail);
 app.delete('/api/aimodel/delete', aiModel.delete);
 app.patch('/api/aimodel/convert', aiModel.convert);

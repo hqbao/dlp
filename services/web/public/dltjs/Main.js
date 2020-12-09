@@ -768,7 +768,7 @@ var gCommander = {
 						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'ResnetIdentityBlock',
-					shortName: 'RESNET',
+					shortName: 'RESNET ID',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -799,7 +799,7 @@ var gCommander = {
 						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'ResnetSIdentityBlock',
-					shortName: 'RESNETS',
+					shortName: 'RESNET SID',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
