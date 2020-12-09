@@ -776,6 +776,7 @@ export function onConv2DBlockSelected() {
 	var trainableInput = document.getElementById("CONV2D_BLOCK.trainable");
 	var bnTrainableInput = document.getElementById("CONV2D_BLOCK.bn_trainable");
 	var activationInput = document.getElementById("CONV2D_BLOCK.activation");
+	var repeatInput = document.getElementById("CONV2D_BLOCK.repeat");
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
@@ -788,6 +789,7 @@ export function onConv2DBlockSelected() {
 	trainableInput.value = gNode.nodeParams.params.trainable;
 	bnTrainableInput.value = gNode.nodeParams.params.bn_trainable;
 	activationInput.value = gNode.nodeParams.params.activation;
+	repeatInput.value = gNode.nodeParams.params.repeat;
 }
 
 export function onConv2DBlockChange(id, value) {
@@ -834,6 +836,10 @@ export function onConv2DBlockChange(id, value) {
 
 		case "CONV2D_BLOCK.activation":
 		gNode.nodeParams.params.activation = value;
+		break;
+
+		case "CONV2D_BLOCK.repeat":
+		gNode.nodeParams.params.repeat = parseInt(value);
 		break;
 
 		default:
@@ -1397,9 +1403,10 @@ export function save(name, callback) {
 		return;
 	}
 
+	var screenshot = dlt.gCommander.exportDLT();
 	var jBdyStr = JSON.stringify({
 		name: name,
-		screenshot: dlt.gCommander.exportDLT(),
+		screenshot: screenshot,
 	});
 	var http = new XMLHttpRequest();
 	http.open('PATCH', 'https://ai-designer.io/api/aimodel/update?id='+model._id, true);
@@ -1415,6 +1422,10 @@ export function save(name, callback) {
 
 			var msg = JSON.parse(http.responseText);
 			if (msg.msgCode == 1000) {
+				model.name = name;
+				model.screenshot = screenshot;
+				localStorage.setItem('MODEL', JSON.stringify(model));
+				
 				callback();
 			}
 		}

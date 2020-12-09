@@ -1,7 +1,7 @@
 import {UIConnectableNode} from './UIConnectableNode.js';
 import {UIConnectionNode} from './UIConnectionNode.js';
 
-const SUPPORTED_IMAGE_CLASSIFICATION_DATASETS = ['mnist-digits'];
+const SUPPORTED_IMAGE_CLASSIFICATION_DATASETS = ['mnist-digits', 'fingers'];
 const SUPPORTED_HEATMAP_REGRESSION_DATASETS = ['faceali128x128'];
 const SUPPORTED_OBJECT_DETECTION_DATASETS = ['face1024'];
 
@@ -139,8 +139,8 @@ class TensorFlowValidator {
 						if (!name || existedNames.includes(name)) {
 							var newName = blockType+existedNames.length;
 							node.nodeParams.params.name = newName;
-							existedNames.push(newName);
 						}
+						existedNames.push(node.nodeParams.params.name);
 
 						break;
 					}
@@ -165,8 +165,8 @@ class TensorFlowValidator {
 						if (!name || existedNames.includes(name)) {
 							var newName = blockType+existedNames.length;
 							node.nodeParams.params.name = newName;
-							existedNames.push(newName);
 						}
+						existedNames.push(node.nodeParams.params.name);
 						
 						break;
 					}
@@ -179,8 +179,8 @@ class TensorFlowValidator {
 						if (!name || existedNames.includes(name)) {
 							var newName = blockType+existedNames.length;
 							node.nodeParams.params.name = newName;
-							existedNames.push(newName);
 						}
+						existedNames.push(node.nodeParams.params.name);
 
 						break;
 					}
@@ -209,8 +209,8 @@ class TensorFlowValidator {
 						if (!name || existedNames.includes(name)) {
 							var newName = blockType+existedNames.length;
 							node.nodeParams.params.name = newName;
-							existedNames.push(newName);
 						}
+						existedNames.push(node.nodeParams.params.name);
 
 						break;
 					}
@@ -341,6 +341,10 @@ class TensorFlowValidator {
 							errors.push(node.getName()+' activation must not be empty');
 						}
 
+						if (isEmpty(node.nodeParams.params.repeat)) {
+							errors.push(node.getName()+' repeat must not be empty');
+						}
+
 						// Set name if needed
 						var name = node.nodeParams.params.name;
 						var blockType = node.nodeParams.blockType;
@@ -348,8 +352,8 @@ class TensorFlowValidator {
 						if (!name || existedNames.includes(name)) {
 							var newName = blockType+existedNames.length;
 							node.nodeParams.params.name = newName;
-							existedNames.push(newName);
 						}
+						existedNames.push(node.nodeParams.params.name);
 
 						break;
 					}
@@ -387,8 +391,8 @@ class TensorFlowValidator {
 						if (!name || existedNames.includes(name)) {
 							var newName = blockType+existedNames.length;
 							node.nodeParams.params.name = newName;
-							existedNames.push(newName);
 						}
+						existedNames.push(node.nodeParams.params.name);
 
 						break;
 					}
@@ -426,8 +430,8 @@ class TensorFlowValidator {
 						if (!name || existedNames.includes(name)) {
 							var newName = blockType+existedNames.length;
 							node.nodeParams.params.name = newName;
-							existedNames.push(newName);
 						}
+						existedNames.push(node.nodeParams.params.name);
 
 						break;
 					}
@@ -452,8 +456,8 @@ class TensorFlowValidator {
 						if (!name || existedNames.includes(name)) {
 							var newName = blockType+existedNames.length;
 							node.nodeParams.params.name = newName;
-							existedNames.push(newName);
 						}
+						existedNames.push(node.nodeParams.params.name);
 
 						break;
 					}
@@ -486,8 +490,8 @@ class TensorFlowValidator {
 						if (!name || existedNames.includes(name)) {
 							var newName = blockType+existedNames.length;
 							node.nodeParams.params.name = newName;
-							existedNames.push(newName);
 						}
+						existedNames.push(node.nodeParams.params.name);
 
 						break;
 					}

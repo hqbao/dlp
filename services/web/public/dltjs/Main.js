@@ -476,7 +476,7 @@ var gCommander = {
 						x2: gUIApp.refPosition.x+64,
 					}, 
 					name: 'ActivationLayer',
-					shortName: 'ACT',
+					shortName: 'ACTIVATION',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
@@ -642,6 +642,7 @@ var gCommander = {
 						trainable: 1,
 						bn_trainable: 1,
 						activation: 'relu',
+						repeat: 1,
 					}
 				},
 			});
