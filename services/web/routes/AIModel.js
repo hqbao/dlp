@@ -65,6 +65,7 @@ exports.create = function(req, res) {
 
         var model = req.body.model;
         var type = null;
+        var datasetName = null;
         if (model) {
             var jModel = JSON.parse(model);
             for (var i = 0; i < jModel.vertices.length; i++) {
@@ -86,13 +87,15 @@ exports.create = function(req, res) {
 
                 if (type != null) break;
             }
-            doc['type'] = type;
+
+            datasetName = vertex.params.dataset_name;
         }
 
         var doc = {
             name: name,
             screenshot: screenshot,
             type: type,
+            datasetName: datasetName,
             model: model,
             uid: decoded.uid,
             colabFileId: null,
@@ -160,10 +163,10 @@ exports.update = function(req, res) {
         }
 
         var model = req.body.model;
-        var type = null;
         if (model) {
             doc['model'] = model;
             var jModel = JSON.parse(model);
+            var type = null;
             for (var i = 0; i < jModel.vertices.length; i++) {
                 var vertex = jModel.vertices[i];
                 switch (vertex.blockType) {
@@ -183,7 +186,9 @@ exports.update = function(req, res) {
 
                 if (type != null) break;
             }
+
             doc['type'] = type;
+            doc['datasetName'] = vertex.params.dataset_name;
         }
 
         var colabFileId = req.body.colabFileId;

@@ -171,7 +171,7 @@
       http.onreadystatechange = function() {
         if(http.readyState == 4) {
           if (http.status == 401) {
-            localStorage.setItem('REDIRECT_URL', '/ai-model/detail?id='+aiModelId);
+            localStorage.setItem('REDIRECT_URL', '/ai-model/detail-hm?id='+aiModelId);
             location.href = '/sign-in';
             return;
           }
@@ -237,7 +237,7 @@
 
             if (model.converted && model.tfjsModelUrl) {
               document.getElementById('playLink').style.display = 'inline';
-              document.getElementById('playLink').href = '/ai-model/play-digits?id='+aiModelId;
+              document.getElementById('playLink').href = '/ai-model/play-'+model.datasetName+'?id='+aiModelId;
             }
           }
         }

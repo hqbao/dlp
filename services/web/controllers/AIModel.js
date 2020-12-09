@@ -18,6 +18,10 @@ exports.detailHM = function(req, res) {
     res.render('ai-model/detail-hm', {});
 };
 
-exports.playDigits = function(req, res) {
-    res.render('ai-model/play-digits', {});
+exports.playMnistDigits = function(req, res) {
+    res.render('ai-model/play-mnist-digits', {});
+};
+
+exports.playFingers = function(req, res) {
+    res.render('ai-model/play-fingers', {});
 };

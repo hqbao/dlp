@@ -38,16 +38,18 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Type</th>
           <th scope="col">Name</th>
+          <th scope="col">Type</th>
+          <th scope="col">Dataset Name</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody id="aiModeTemplate" style="display: none;">
         <tr>
           <th scope="row">1</th>
-          <td>{TYPE}</td>
           <td>{NAME}</td>
+          <td>{TYPE}</td>
+          <td>{DATASET_NAME}</td>
           <td>
             <button class="btn btn-outline-warning btn-sm" onclick="openModel('{ID}')">OPEN</button>
             <a href="/ai-model/detail-{TYPE_DETAIL}?id={ID}" class="btn btn-outline-warning btn-sm">DETAIL</a>
@@ -133,10 +135,12 @@
             for (var i = 0; i < models.length; i++) {
               var model = models[i];
               var tempHtml = document.getElementById('aiModeTemplate').innerHTML;
+              tempHtml = tempHtml.replaceAll('{NAME}', model.name);
               tempHtml = tempHtml.replaceAll('{TYPE}', model.type);
               tempHtml = tempHtml.replaceAll('{TYPE_DETAIL}', typeMap[model.type]);
+              tempHtml = tempHtml.replaceAll('{DATASET_NAME}', model.datasetName);
               tempHtml = tempHtml.replaceAll('{ID}', model._id);
-              tempHtml = tempHtml.replaceAll('{NAME}', model.name);
+              
               var tempNode = document.createElement('tbody');
               tempNode.innerHTML = tempHtml.trim();
               aiModeListNode.appendChild(tempNode.firstChild);

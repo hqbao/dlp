@@ -132,7 +132,8 @@ app.get('/ai-model/detail-ic', cAIModel.detailIC);
 app.get('/ai-model/detail-od', cAIModel.detailOD);
 app.get('/ai-model/detail-od4', cAIModel.detailOD4);
 app.get('/ai-model/detail-hm', cAIModel.detailHM);
-app.get('/ai-model/play-digits', cAIModel.playDigits);
+app.get('/ai-model/play-mnist-digits', cAIModel.playMnistDigits);
+app.get('/ai-model/play-fingers', cAIModel.playFingers);
 
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://bao:123qweASD@127.0.0.1:27017/dlp";
