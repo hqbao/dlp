@@ -71,6 +71,11 @@ class TensorFlowValidator {
 							errors.push(node.getName()+' dataset not supported');
 						}
 
+						var imageShape = node.nodeParams.params.image_shape;
+						if (!imageShape || imageShape.length != 3) {
+							errors.push(node.getName()+' image shape must be 3 dims');
+						}
+
 						break;
 					}
 
@@ -79,12 +84,22 @@ class TensorFlowValidator {
 							errors.push(node.getName()+' dataset not supported');
 						}
 
+						var imageShape = node.nodeParams.params.image_shape;
+						if (!imageShape || imageShape.length != 3) {
+							errors.push(node.getName()+' image shape must be 3 dims');
+						}
+
 						break;
 					}
 
 					case 'OBJECT_DETECTION_DATAGEN': {
 						if (!SUPPORTED_OBJECT_DETECTION_DATASETS.includes(node.nodeParams.params.dataset_name)) {
 							errors.push(node.getName()+' dataset not supported');
+						}
+
+						var imageShape = node.nodeParams.params.image_shape;
+						if (!imageShape || imageShape.length != 3) {
+							errors.push(node.getName()+' image shape must be 3 dims');
 						}
 
 						break;
