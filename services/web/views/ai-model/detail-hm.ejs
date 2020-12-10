@@ -166,8 +166,14 @@
     function convert() {
       document.getElementById('convertBtn').disabled = 'disabled';
 
+      var jBdyStr = JSON.stringify({
+        settings: {
+          inference: {procedure: "heatmap_regression"}
+        },
+      });
       http.open('PATCH', 'https://ai-designer.io/api/aimodel/convert?id='+aiModelId, true);
       http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
+      http.setRequestHeader('Content-type', 'application/json');
       http.onreadystatechange = function() {
         if(http.readyState == 4) {
           if (http.status == 401) {
@@ -182,7 +188,7 @@
           }
         }
       }
-      http.send('{}');
+      http.send(jBdyStr);
     }
 
     function load() {

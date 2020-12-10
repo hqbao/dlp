@@ -19,7 +19,7 @@ const cAIModel = require('./controllers/AIModel');
 global.settings = {
     loginLockedTimeCoefficient: 5,
     loginAllowedRetries: 4,
-    loginJwtPeriod: 24*60*60,
+    loginJwtPeriod: 7*24*60*60,
     resetPasswordPeriod: 1*300,
     mailService: 'gmail',
     mailTransporterID: 'baofair001@gmail.com',

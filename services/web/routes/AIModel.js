@@ -704,12 +704,17 @@ exports.convert = function(req, res) {
                 return;
             }
 
-            var weightsFileUrl = aiModel.bestAccuracyWeights;
+            var weightsFileUrl = aiModel.bestAccuracyWeights ? aiModel.bestAccuracyWeights : aiModel.weights;
             if (!weightsFileUrl) {
                 res.writeHead(400, {});
                 res.write(JSON.stringify({msgCode: 1011, msgResp: 'Weights not exist'}));
                 res.end();
                 return;
+            }
+
+            var settings = req.body.settings;
+            if (!settings) {
+                settings = '{}';
             }
 
             function updateStatus(converted) {
@@ -729,7 +734,7 @@ exports.convert = function(req, res) {
                     response.pipe(fs.createWriteStream(weightsFilePath));
 
                     const exec = require('child_process').exec;
-                    exec('./codegen/codegen_convert.sh \''+decoded.uid+'\' \''+modelJson+'\' '+weightsFilePath+' \'{}\'', function(err, stdout, stderr) {
+                    exec('./codegen/codegen_convert.sh \''+decoded.uid+'\' \''+modelJson+'\' '+weightsFilePath+' \''+settings+'\'', function(err, stdout, stderr) {
                         if (err || stdout.slice(-7) != 'Success') {
                             updateStatus(false);
                             return;
