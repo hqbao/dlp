@@ -25,3 +25,7 @@ exports.playMnistDigits = function(req, res) {
 exports.playFingers = function(req, res) {
     res.render('ai-model/play-fingers', {});
 };
+
+exports.playFace1024 = function(req, res) {
+    res.render('ai-model/play-face1024', {});
+};

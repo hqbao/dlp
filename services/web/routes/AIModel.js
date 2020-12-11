@@ -712,7 +712,7 @@ exports.convert = function(req, res) {
                 return;
             }
 
-            var settings = req.body.settings;
+            var settings = JSON.stringify(req.body.settings);
             if (!settings) {
                 settings = '{}';
             }
@@ -734,6 +734,7 @@ exports.convert = function(req, res) {
                     response.pipe(fs.createWriteStream(weightsFilePath));
 
                     const exec = require('child_process').exec;
+                    console.log('./codegen/codegen_convert.sh \''+decoded.uid+'\' \''+modelJson+'\' '+weightsFilePath+' \''+settings+'\'');
                     exec('./codegen/codegen_convert.sh \''+decoded.uid+'\' \''+modelJson+'\' '+weightsFilePath+' \''+settings+'\'', function(err, stdout, stderr) {
                         if (err || stdout.slice(-7) != 'Success') {
                             updateStatus(false);
