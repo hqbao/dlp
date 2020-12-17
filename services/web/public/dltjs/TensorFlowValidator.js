@@ -871,6 +871,23 @@ class TensorFlowValidator {
 					
 					node.nodeParams.params.shape = shape.slice();
 					node.nodeParams.params.shape[axis] = totalDim;
+
+					// Update total chunks for Ordinal layers connected to this layer
+					var pNodes = [];
+					var totalChunks = 0
+					for (var i = 0; i < node.dstConnIdList.length; i++) {
+						var connId = node.dstConnIdList[i];
+						var conn = self.getNodeById(nodes, connId);
+						var srcNodeId = conn.srcNodeId;
+						var pNode = self.getNodeById(nodes, srcNodeId);
+						pNodes.push(pNode);
+						totalChunks += 1;
+					}
+
+					for (var i = 0; i < pNodes.length; i++) {
+						pNodes[i].nodeParams.params.total = totalChunks;
+					}
+
 					break;
 				}
 
