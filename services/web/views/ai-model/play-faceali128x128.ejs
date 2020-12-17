@@ -37,117 +37,102 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <div style="width: 896px;margin: auto;">
-          <img id="preview" src="" style="position: fixed;top: 80px;display: none;" height="28" width="28" />
-          <canvas id="paint" height="448" width="448" style="float: left;background-color: black;border-radius: 32px 0px 0px 32px;"></canvas>
-          <div id="previewNumber" style="height: 448px;width: 448px;float: left;background-color: cyan;font-size: 300px;padding-left: 140px;border-radius: 0px 32px 32px 0px;"></div>
-          <div class="clearfix"></div>
-          <span style="float: right;">Possibility: <b id="possibility"></b></span>
+        <div style="width: 100%;text-align: center;">
+          <img id="preview" src="" style="float: left;position: fixed;display: none;" />
+          <video width="448" height="448" style="position: fixed;background-color: black;z-index: 1;"></video>
+          <canvas id="overlay" width="448" height="448" style="position: relative;left: 0px;background-color: none;z-index: 2;">
         </div>
       </div>
       <div class="col-12" style="text-align: center;">
-        <button class="btn btn-success" onclick="onInferClicked()">INFER</button>
-        <button class="btn btn-danger" onclick="onClearClicked()">CLEAR</button>
+        <button class="btn btn-success" onclick="onStartClicked()">START</button>
+        <button class="btn btn-danger" onclick="onStopClicked()">STOP</button>
       </div>
     </div>
   </div>
   <script type="text/javascript">
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+
+    var overlayCanvas = document.getElementById('overlay');
+    var overlayCtx = overlayCanvas.getContext('2d');
+
+    var preview = document.getElementById('preview');
+    var isVideoReady = false;
+
+    // function drawBoxes(box) {
+    //   overlayCtx.beginPath();
+    //   overlayCtx.strokeStyle = "#00FF00";
+    //   overlayCtx.rect(box[1], box[0], (box[3]-box[1]), (box[2]-box[0]), Math.PI);
+    //   overlayCtx.stroke();
+    // }
+
+    // function handle(a, b, c, d, e) {
+    // }
+
     async function infer(blob) {
       const model = await tf.loadGraphModel(jModel);
       var pix = tf.browser.fromPixels(preview);
       pix = tf.mean(pix, -1, true);
-      // console.log(tf.cast(pix, 'int32').arraySync());
+      pix = tf.cast(pix, 'float32');
       pix = pix.expandDims(0);
       var prediction = model.execute(pix);
-      // console.log(prediction.arraySync());
-
-      var predY = tf.argMax(prediction, -1);
-      var number = predY.arraySync()[0];
-      document.getElementById('previewNumber').innerHTML = number;
-      
-      var possibility = tf.max(prediction, -1);
-      var pos = possibility.arraySync()[0];
-      document.getElementById('possibility').innerHTML = pos.toFixed(2);
+      var a = prediction[0].arraySync();
+      var b = prediction[0].arraySync();
+      var c = prediction[0].arraySync();
+      var d = prediction[0].arraySync();
+      var e = prediction[0].arraySync();
+      console.log(a, b, c, d, e);
+      // handle(a, b, c, d, e);
     }
 
-    var preview = document.getElementById('preview');
+    function initCanvas(e) {
+      canvas.width = this.videoWidth;
+      canvas.height = this.videoHeight;
+    }
 
-    function getImage(blob) {
+    function drawFrame(e) {
+      ctx.drawImage(this, 0, 0);
+      canvas.toBlob(onFrame, 'image/jpeg');
+    }
+
+    function onFrame(blob) {
       var objectURL = URL.createObjectURL(blob);
       preview.src = objectURL;
 
       infer(blob);
     }
 
-    function onInferClicked() {
-      canvas.toBlob(getImage, 'image/jpeg');
-    }
+    function onEnded(e) {}
 
-    function onClearClicked() {
-      ctx.beginPath();
-      ctx.clearRect(0, 0, WIDTH, HEIGHT);
-    }
+    var video = document.querySelector('video');
+    video.addEventListener('loadedmetadata', initCanvas, false);
+    video.addEventListener('timeupdate', drawFrame, false);
+    video.addEventListener('ended', onEnded, false);
 
-    var canvas, ctx, flag = false,
-        prevX = 0,
-        currX = 0,
-        prevY = 0,
-        currY = 0,
-        dot_flag = false;
-
-    function findxy(res, e) {
-      if (res == 'down') {
-        prevX = currX;
-        prevY = currY;
-        currX = e.offsetX;
-        currY = e.offsetY;
-
-        flag = true;
-        dot_flag = true;
-        if (dot_flag) {
-          ctx.beginPath();
-          ctx.fillStyle = '#FFFFFF';
-          ctx.fillRect(currX, currY, 2, 2);
-          ctx.closePath();
-          dot_flag = false;
-        }
-      }
-      if (res == 'up' || res == "out") {
-        flag = false;
-      }
-      if (res == 'move') {
-        if (flag) {
-          prevX = currX;
-          prevY = currY;
-          currX = e.offsetX;
-          currY = e.offsetY;
-          draw();
-        }
+    function onStopClicked() {
+      if (isVideoReady) {
+        video.pause();
       }
     }
 
-    function init() {
-      canvas = document.getElementById('paint');
-      ctx = canvas.getContext('2d');
-      HEIGHT = canvas.height;
-      WIDTH = canvas.width;
-
-      canvas.addEventListener("mousemove", function (e) { findxy('move', e); }, false);
-      canvas.addEventListener("mousedown", function (e) { findxy('down', e); }, false);
-      canvas.addEventListener("mouseup", function (e) { findxy('up', e); }, false);
-      canvas.addEventListener("mouseout", function (e) { findxy('out', e); }, false);
+    function onStartClicked() {
+      if (isVideoReady) {
+        video.play();
+      }
     }
 
-    function draw() {
-      ctx.beginPath();
-      ctx.moveTo(prevX, prevY);
-      ctx.lineTo(currX, currY);
-      ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth = 34;
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-      ctx.stroke();
-      ctx.closePath();
+    function play() {
+      var constraints = {audio: false, video: {width: 112, height: 112}}; 
+      navigator.mediaDevices.getUserMedia(constraints)
+      .then(function(mediaStream) {
+        video.srcObject = mediaStream;
+        video.onloadedmetadata = function(e) {
+          isVideoReady = true;
+        };
+      })
+      .catch(function(err) { 
+        console.log(err.name + ": " + err.message); 
+      });
     }
 
     function getParameterByName(name, url = window.location.href) {
@@ -169,7 +154,7 @@
       http.onreadystatechange = function() {
         if(http.readyState == 4) {
           if (http.status == 401) {
-            localStorage.setItem('REDIRECT_URL', '/ai-model/play-mnist-digits?id='+aiModelId);
+            localStorage.setItem('REDIRECT_URL', '/ai-model/play-fingers?id='+aiModelId);
             location.href = '/sign-in';
             return;
           }
@@ -178,7 +163,7 @@
           if (msg.msgCode == 1000) {
             var model = msg.msgResp;
             jModel = model.tfjsModelUrl;
-            init();
+            play();
           }
         }
       }

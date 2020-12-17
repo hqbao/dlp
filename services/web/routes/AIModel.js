@@ -558,13 +558,13 @@ exports.detail = function(req, res) {
     var token = req.header('Authorization');
     if (token) { token = token.replace('Bearer ', ''); }
     var cert = fs.readFileSync(global.settings.loginJwtCertPath);
-    jwt.verify(token, cert, function(err, decoded) {
-        if (err) {
-            res.writeHead(401, {});
-            res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
-            res.end();
-            return;
-        }
+    // jwt.verify(token, cert, function(err, decoded) {
+    //     if (err) {
+    //         res.writeHead(401, {});
+    //         res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
+    //         res.end();
+    //         return;
+    //     }
 
         var id = req.query.id;
         if (id.length != 12 && id.length != 24) {
@@ -583,12 +583,12 @@ exports.detail = function(req, res) {
                 return;
             }
 
-            if (aiModel.uid != decoded.uid) {
-                res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1007, msgResp: 'Invalid request'}));
-                res.end();
-                return;
-            }
+            // if (aiModel.uid != decoded.uid) {
+            //     res.writeHead(400, {});
+            //     res.write(JSON.stringify({msgCode: 1007, msgResp: 'Invalid request'}));
+            //     res.end();
+            //     return;
+            // }
 
             res.writeHead(200, {});
             res.write(JSON.stringify({msgCode: 1000, msgResp: aiModel}));
@@ -598,7 +598,7 @@ exports.detail = function(req, res) {
             res.write(JSON.stringify({msgCode: 1009, msgResp: 'Unknow error'}));
             res.end();
         });
-    });
+    // });
 };
 
 exports.delete = function(req, res) {
@@ -734,7 +734,6 @@ exports.convert = function(req, res) {
                     response.pipe(fs.createWriteStream(weightsFilePath));
 
                     const exec = require('child_process').exec;
-                    console.log('./codegen/codegen_convert.sh \''+decoded.uid+'\' \''+modelJson+'\' '+weightsFilePath+' \''+settings+'\'');
                     exec('./codegen/codegen_convert.sh \''+decoded.uid+'\' \''+modelJson+'\' '+weightsFilePath+' \''+settings+'\'', function(err, stdout, stderr) {
                         if (err || stdout.slice(-7) != 'Success') {
                             updateStatus(false);

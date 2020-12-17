@@ -136,6 +136,7 @@ app.get('/ai-model/detail-hm', cAIModel.detailHM);
 app.get('/ai-model/play-mnist-digits', cAIModel.playMnistDigits);
 app.get('/ai-model/play-fingers', cAIModel.playFingers);
 app.get('/ai-model/play-face1024', cAIModel.playFace1024);
+app.get('/ai-model/play-faceali128x128', cAIModel.playFaceali128x128);
 
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://bao:123qweASD@127.0.0.1:27017/dlp";

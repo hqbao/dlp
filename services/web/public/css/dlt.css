@@ -124,6 +124,10 @@
 	background-image: url(/images/dlt-add-node.png);
 }
 
+.add-btn-ordinal {
+	background-image: url(/images/dlt-ordinal-node.png);
+}
+
 .add-btn-concat {
 	background-image: url(/images/dlt-concat-node.png);
 }

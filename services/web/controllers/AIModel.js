@@ -29,3 +29,7 @@ exports.playFingers = function(req, res) {
 exports.playFace1024 = function(req, res) {
     res.render('ai-model/play-face1024', {});
 };
+
+exports.playFaceali128x128 = function(req, res) {
+    res.render('ai-model/play-faceali128x128', {});
+};

@@ -262,6 +262,14 @@ class TensorFlowValidator {
 						break;
 					}
 
+					case 'ORDINAL_LAYER': {
+						if (isEmpty(node.nodeParams.params.order)) {
+							errors.push(node.getName()+' order must not be empty');
+						}
+
+						break;
+					}
+
 					case 'CONCAT_LAYER': {
 						if (isEmpty(node.nodeParams.params.axis)) {
 							errors.push(node.getName()+' axis must not be empty');
@@ -794,7 +802,23 @@ class TensorFlowValidator {
 					break;
 				}
 
+				case 'ORDINAL_LAYER': {
+					var shape = prevNode.nodeParams.params.shape;
+					if (shape == undefined) {
+						errors.push('Invalid shape node connects to '+node.getName());
+						return errors;
+					}
+
+					node.nodeParams.params.shape = shape.slice();
+					break;
+				}
+
 				case 'CONCAT_LAYER': {
+					if (prevNode.nodeParams.blockType != 'ORDINAL_LAYER') {
+						errors.push('Before '+node.getName()+' must be a Ordinal');
+						break;
+					}
+
 					var axis = node.nodeParams.params.axis;
 
 					var pShapes = [];
@@ -921,6 +945,11 @@ class TensorFlowValidator {
 				}
 
 				case 'SPLITTED_LAYER': {
+					if (prevNode.nodeParams.blockType != 'SPLIT_LAYER') {
+						errors.push('Before '+node.getName()+' must be a Split');
+						break;
+					}
+
 					// Check order
 					var order = node.nodeParams.params.order;
 					if (!Number.isInteger(order)) {

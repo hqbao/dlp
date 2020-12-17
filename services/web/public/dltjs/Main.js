@@ -203,7 +203,7 @@ var gCommander = {
 					params: {
 						dataset_name: 'mnist-digits',
 						train_procedure: 'IMAGE_CLASSIFICATION',
-						image_shape: [28, 28],
+						image_shape: [28, 28, 1],
 						total_train_examples: 60000,
 						total_test_examples: 10000,
 						batch_size: 1000,
@@ -265,12 +265,12 @@ var gCommander = {
 					params: {
 						dataset_name: 'face1024',
 						train_procedure: 'OBJECT_DETECTION',
-						image_shape: [512, 512, 3],
-						anchor_sizes: [[[32, 32]], [[64, 64]], [[128, 128]], [[256, 256]]],
-						scale_sizes: [[128, 128], [64, 64], [32, 32], [16, 16]],
-						iou_thresholds: [[0.5, 0.6], [0.45, 0.55], [0.4, 0.5], [0.3, 0.4]],
-						anchor_sampling: [400, 300, 200, 100],
-						epochs: 100,
+						image_shape: [256, 256, 3],
+						anchor_sizes: [[[32, 32]], [[64, 64]], [[128, 128]]],
+						scale_sizes: [[64, 64], [32, 32], [16, 16]],
+						iou_thresholds: [[0.45, 0.55], [0.4, 0.5], [0.3, 0.4]],
+						anchor_sampling: [512, 246, 128],
+						epochs: 1000,
 					}
 				},
 			});
@@ -534,6 +534,31 @@ var gCommander = {
 					type: 'MANY_ANY',
 					blockType: 'ADD_LAYER',
 					params: {}
+				},
+			});
+		gUIApp.nodeManager.snapshot();
+	},
+	addOrdinalLayer: function() {
+		gUIApp.nodeManager.addNode(
+			UINodeManager.NODE_TYPE_CONNECTABLE,
+			{
+				nodeSettings: {
+					color: '#A04000', 
+					rect: {
+						y1: gUIApp.refPosition.y-64, 
+						x1: gUIApp.refPosition.x-64, 
+						y2: gUIApp.refPosition.y+64, 
+						x2: gUIApp.refPosition.x+64,
+					}, 
+					name: 'OrdinalLayer',
+					shortName: 'ORDINAL',
+				},
+				nodeParams: {
+					type: 'ONE_ONE',
+					blockType: 'ORDINAL_LAYER',
+					params: {
+						order: 0,
+					}
 				},
 			});
 		gUIApp.nodeManager.snapshot();

@@ -28,6 +28,7 @@
 			window.addDropoutLayer = dlt.gCommander.addDropoutLayer;
 			window.addFlattenLayer = dlt.gCommander.addFlattenLayer;
 			window.addAddLayer = dlt.gCommander.addAddLayer;
+			window.addOrdinalLayer = dlt.gCommander.addOrdinalLayer;
 			window.addConcatLayer = dlt.gCommander.addConcatLayer;
 			window.addSplitLayer = dlt.gCommander.addSplitLayer;
 			window.addSplittedLayer = dlt.gCommander.addSplittedLayer;
@@ -62,6 +63,7 @@
 			window.onBatchNormLayerChange = itg.onBatchNormLayerChange;
 			window.onActivationLayerChange = itg.onActivationLayerChange;
 			window.onAddLayerChange = itg.onAddLayerChange;
+			window.onOrdinalLayerChange = itg.onOrdinalLayerChange;
 			window.onConcatLayerChange = itg.onConcatLayerChange;
 			window.onSplitLayerChange = itg.onSplitLayerChange;
 			window.onSplittedLayerChange = itg.onSplittedLayerChange;
@@ -192,7 +194,7 @@
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.scale_sizes" placeholder="SCALE SIZES" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 				<label>IoU thresholds</label>
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.iou_thresholds" placeholder="IOU THRESHOLDS" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
-				<label>Anchro sampling</label>
+				<label>Anchor sampling</label>
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.anchor_sampling" placeholder="ANCHOR SAMPLING" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 				<label>Epochs</label>
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.epochs" placeholder="EPOCHS" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
@@ -312,6 +314,15 @@
 				<input type="text" id="ADD_LAYER.rect" placeholder="RECT" onchange="onAddLayerChange(this.id, this.value)">
 				<label>Color</label>
 				<input type="text" id="ADD_LAYER.color" placeholder="COLOR" onchange="onAddLayerChange(this.id, this.value)"><br>
+			</form>
+			<form id="ORDINAL_LAYER" class="settings-form">
+				<h5 class="settings-title">ORIDNAL LAYER</h5>
+				<label>Rect</label>
+				<input type="text" id="ORDINAL_LAYER.rect" placeholder="RECT" onchange="onOrdinalLayerChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="text" id="ORDINAL_LAYER.color" placeholder="COLOR" onchange="onOrdinalLayerChange(this.id, this.value)">
+				<label>Order</label>
+				<input type="text" id="ORDINAL_LAYER.order" placeholder="ORDER" onchange="onOrdinalLayerChange(this.id, this.value)">
 			</form>
 			<form id="CONCAT_LAYER" class="settings-form">
 				<h5 class="settings-title">CONCAT LAYER</h5>
@@ -522,6 +533,7 @@
 			<button class="add-btn-dropout" onclick="addDropoutLayer();"></button>
 			<button class="add-btn-flatten" onclick="addFlattenLayer();"></button>
 			<button class="add-btn-add" onclick="addAddLayer();"></button>
+			<button class="add-btn-ordinal" onclick="addOrdinalLayer();"></button>
 			<button class="add-btn-concat" onclick="addConcatLayer();"></button>
 			<button class="add-btn-split" onclick="addSplitLayer();"></button>
 			<button class="add-btn-splitted" onclick="addSplittedLayer();"></button>

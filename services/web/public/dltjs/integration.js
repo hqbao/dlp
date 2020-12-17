@@ -603,6 +603,37 @@ export function onAddLayerChange(id, value) {
 	dlt.gCommander.onNodeUpdated(gNode);
 }
 
+export function onOrdinalLayerSelected() {
+	var rectInput = document.getElementById("ORDINAL_LAYER.rect");
+	var colorInput = document.getElementById("ORDINAL_LAYER.color");
+	var orderInput = document.getElementById("ORDINAL_LAYER.order");
+
+	rectInput.value = JSON.stringify(gNode.rect);
+	colorInput.value = gNode.color;
+	orderInput.value = gNode.nodeParams.params.order;
+}
+
+export function onOrdinalLayerChange(id, value) {
+	switch (id) {
+		case "ORDINAL_LAYER.rect":
+		gNode.rect = JSON_parse(value);
+		break;
+
+		case "ORDINAL_LAYER.color":
+		gNode.color = value;
+		break;
+
+		case "ORDINAL_LAYER.order":
+		gNode.nodeParams.params.order = parseInt(value);
+		break;
+		
+		default:
+		break;
+	}
+
+	dlt.gCommander.onNodeUpdated(gNode);
+}
+
 export function onConcatLayerSelected() {
 	var rectInput = document.getElementById("CONCAT_LAYER.rect");
 	var colorInput = document.getElementById("CONCAT_LAYER.color");
@@ -1297,6 +1328,10 @@ dlt.gNotification.onNodeSelected = function(node) {
 
 		case "ADD_LAYER":
 		onAddLayerSelected();
+		break;
+
+		case "ORDINAL_LAYER":
+		onOrdinalLayerSelected();
 		break;
 
 		case "CONCAT_LAYER":
