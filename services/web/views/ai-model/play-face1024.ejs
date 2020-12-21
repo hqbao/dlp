@@ -9,7 +9,7 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="/bootstrap/js/bootstrap.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.4.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.7.0/dist/tf.min.js"></script>
   <title>DLP - AI Model</title>
 </head>
 <body>
@@ -76,15 +76,24 @@
     }
 
     async function infer(blob) {
+      // TFJS not working with tensorflow 2.4
       const model = await tf.loadGraphModel(jModel);
       var pix = tf.browser.fromPixels(preview);
       pix = tf.cast(pix, 'float32');
       pix = pix.expandDims(0);
       var prediction = await model.executeAsync(pix);
+      
+      var output1 = prediction[0].arraySync();
+      var output2 = prediction[1].arraySync();
+      if (Array.isArray(output1[0])) {
+        validOutputs = output2[0];
+        boxes = output1;
+      }
+      else {
+        validOutputs = output1[0];
+        boxes = output2;
+      }
 
-      var validOutputs = prediction[0].arraySync()[0]
-      var boxes = prediction[1].arraySync();
-      console.log(boxes);
       handleBoxes(validOutputs, boxes);
     }
 
