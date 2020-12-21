@@ -61,6 +61,7 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript" src="/js/global.js"></script>
   <script type="text/javascript">
     const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const phoneRegexp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
@@ -117,32 +118,23 @@
         return false
       }
 
-      var jBdyStr = JSON.stringify({
+      var params = {
         email: email,
         password: password,
         name: name,
         phone: phone,
         postalCode: postalCode,
+      };
+
+      restapi.post(AS_URL, '/api/user/register', null, JSON.stringify(params), null, '/sign-in', function(msgResp) {
+        localStorage.setItem('TOKEN', msgResp.token);
+        var redirectUrl = localStorage.getItem('REDIRECT_URL');
+        if (redirectUrl) { location.href = redirectUrl; }
+        else { location.href = '/'; }
+      }, function(msg) {
+        document.getElementById('errorMessage').innerHTML = msg.msgResp;
       });
       
-      var http = new XMLHttpRequest();
-      http.open('POST', 'https://ai-designer.io/api/user/register', true);
-      http.setRequestHeader('Content-type', 'application/json');
-      http.onreadystatechange = function() {
-        if(http.readyState == 4) {
-          var msg = JSON.parse(http.responseText);
-          if (msg.msgCode == 1000) {
-            localStorage.setItem('TOKEN', msg.msgResp.token);
-            var redirectUrl = localStorage.getItem('REDIRECT_URL');
-            if (redirectUrl) { location.href = redirectUrl; }
-            else { location.href = '/'; }
-          }
-          else {
-            document.getElementById('genericError').innerHTML = msg.msgResp;
-          }
-        }
-      }
-      http.send(jBdyStr);
       return false;
     }
   </script>

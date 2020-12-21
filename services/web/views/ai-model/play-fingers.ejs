@@ -51,6 +51,7 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript" src="/js/global.js"></script>
   <script type="text/javascript">
     async function infer(blob) {
       const model = await tf.loadGraphModel(jModel);
@@ -122,40 +123,18 @@
         console.log(err.name + ": " + err.message); 
       });
     }
-
-    function getParameterByName(name, url = window.location.href) {
-      name = name.replace(/[\[\]]/g, '\\$&');
-      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-          results = regex.exec(url);
-      if (!results) return null;
-      if (!results[2]) return '';
-      return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    }
-
-    var aiModelId = getParameterByName('id');
+    
+    var aiModelId = getParamInUrl('id');
     var jModel = null;
-    var http = new XMLHttpRequest();
     
     function load() {
-      http.open('GET', 'https://ai-designer.io/api/aimodel/detail?id='+aiModelId, true);
-      http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
-      http.onreadystatechange = function() {
-        if(http.readyState == 4) {
-          if (http.status == 401) {
-            localStorage.setItem('REDIRECT_URL', '/ai-model/play-fingers?id='+aiModelId);
-            location.href = '/sign-in';
-            return;
-          }
-
-          var msg = JSON.parse(http.responseText);
-          if (msg.msgCode == 1000) {
-            var model = msg.msgResp;
-            jModel = model.tfjsModelUrl;
-            play();
-          }
-        }
-      }
-      http.send();
+      restapi.get(DLPS_URL, '/api/aimodel/detail', {id: aiModelId}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+        var model = msgResp;
+        jModel = model.tfjsModelUrl;
+        play();
+      }, function(msg) {
+        console.log(msg);
+      });
     }
 
     load();

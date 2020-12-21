@@ -103,35 +103,25 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript" src="/js/global.js"></script>
   <script type="text/javascript">
     function make(template) {
       var http = new XMLHttpRequest();
-      http.open('GET', 'https://ai-designer.io/model-templates/'+template, true);
+      http.open('GET', '/model-templates/'+template, true);
       http.onreadystatechange = function() {
         if(http.readyState == 4 && http.status == 200) {
-          var jBdyStr = JSON.stringify({
+          var params = {
             name: 'Noname',
             screenshot: http.responseText,
-          });
-          http.open('POST', 'https://ai-designer.io/api/aimodel/create', true);
-          http.setRequestHeader('Content-type', 'application/json');
-          http.setRequestHeader('Authorization', 'Bearer '+localStorage.getItem('TOKEN'));
-          http.onreadystatechange = function() {
-            if(http.readyState == 4) {
-              if (http.status == 401) {
-                localStorage.setItem('REDIRECT_URL', '/');
-                location.href = '/sign-in';
-                return;
-              }
+          };
 
-              var msg = JSON.parse(http.responseText);
-              if (msg.msgCode == 1000) {
-                localStorage.setItem('MODEL', JSON.stringify(msg.msgResp));
-                location.href = '/dlt';
-              }
-            }
-          }
-          http.send(jBdyStr);
+          restapi.post(DLPS_URL, '/api/aimodel/create', null, JSON.stringify(params), localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+            var model = msgResp;
+            localStorage.setItem('MODEL', JSON.stringify(model));
+            location.href = '/dlt';
+          }, function(msg) {
+            console.log(msg);
+          });
         }
       }
       http.send();

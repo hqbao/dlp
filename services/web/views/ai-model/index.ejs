@@ -60,6 +60,7 @@
       <tbody id="aiModeList"></tbody>
     </table>
   </div>
+  <script type="text/javascript" src="/js/global.js"></script>
   <script type="text/javascript">
     const typeMap = {
       'IMAGE_CLASSIFICATION_DATAGEN': 'ic',
@@ -68,25 +69,13 @@
     };
 
     function openModel(id) {
-      var http = new XMLHttpRequest();
-      http.open('GET', 'https://ai-designer.io/api/aimodel/detail?id='+id, true);
-      http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
-      http.onreadystatechange = function() {
-        if(http.readyState == 4) {
-          if (http.status == 401) {
-            localStorage.setItem('REDIRECT_URL', '/ai-model/list');
-            location.href = '/sign-in';
-            return;
-          }
-
-          var msg = JSON.parse(http.responseText);
-          if (msg.msgCode == 1000) {
-            localStorage.setItem('MODEL', JSON.stringify(msg.msgResp));
-            location.href = '/dlt';
-          }
-        }
-      }
-      http.send();
+      restapi.get(DLPS_URL, '/api/aimodel/detail', {id: id}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+        var model = msgResp;
+        localStorage.setItem('MODEL', JSON.stringify(model));
+        location.href = '/dlt';
+      }, function(msg) {
+        console.log(msg);
+      });
     }
 
     function deleteModel(id, self) {
@@ -96,59 +85,34 @@
       }
       
       self.disabled = true;
-      var http = new XMLHttpRequest();
-      http.open('DELETE', 'https://ai-designer.io/api/aimodel/delete?id='+id, true);
-      http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
-      http.onreadystatechange = function() {
-        if(http.readyState == 4) {
-          if (http.status == 401) {
-            localStorage.setItem('REDIRECT_URL', '/ai-model/list');
-            location.href = '/sign-in';
-            return;
-          }
 
-          var msg = JSON.parse(http.responseText);
-          if (msg.msgCode == 1000) {
-            self.parentNode.parentNode.remove();
-          }
-        }
-      }
-      http.send();
+      restapi.delete(DLPS_URL, '/api/aimodel/delete', {id: id}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+        self.parentNode.parentNode.remove();
+      }, function(msg) {
+        console.log(msg);
+      });
     }
 
     function load() {
-      var http = new XMLHttpRequest();
-      http.open('GET', 'https://ai-designer.io/api/aimodel/list', true);
-      http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
-      http.onreadystatechange = function() {
-        if(http.readyState == 4) {
-          if (http.status == 401) {
-            localStorage.setItem('REDIRECT_URL', '/ai-model/list');
-            location.href = '/sign-in';
-            return;
-          }
-
-          var msg = JSON.parse(http.responseText);
-          if (msg.msgCode == 1000) {
-            var models = msg.msgResp;
-            var aiModeListNode = document.getElementById('aiModeList');
-            for (var i = 0; i < models.length; i++) {
-              var model = models[i];
-              var tempHtml = document.getElementById('aiModeTemplate').innerHTML;
-              tempHtml = tempHtml.replaceAll('{NAME}', model.name);
-              tempHtml = tempHtml.replaceAll('{TYPE}', model.type);
-              tempHtml = tempHtml.replaceAll('{TYPE_DETAIL}', typeMap[model.type]);
-              tempHtml = tempHtml.replaceAll('{DATASET_NAME}', model.datasetName);
-              tempHtml = tempHtml.replaceAll('{ID}', model._id);
-              
-              var tempNode = document.createElement('tbody');
-              tempNode.innerHTML = tempHtml.trim();
-              aiModeListNode.appendChild(tempNode.firstChild);
-            }
-          }
+      restapi.get(DLPS_URL, '/api/aimodel/list', null, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+        var models = msgResp;
+        var aiModeListNode = document.getElementById('aiModeList');
+        for (var i = 0; i < models.length; i++) {
+          var model = models[i];
+          var tempHtml = document.getElementById('aiModeTemplate').innerHTML;
+          tempHtml = tempHtml.replaceAll('{NAME}', model.name);
+          tempHtml = tempHtml.replaceAll('{TYPE}', model.type);
+          tempHtml = tempHtml.replaceAll('{TYPE_DETAIL}', typeMap[model.type]);
+          tempHtml = tempHtml.replaceAll('{DATASET_NAME}', model.datasetName);
+          tempHtml = tempHtml.replaceAll('{ID}', model._id);
+          
+          var tempNode = document.createElement('tbody');
+          tempNode.innerHTML = tempHtml.trim();
+          aiModeListNode.appendChild(tempNode.firstChild);
         }
-      }
-      http.send();
+      }, function(msg) {
+        console.log(msg);
+      });
     }
 
     load();

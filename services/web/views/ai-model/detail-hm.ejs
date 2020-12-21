@@ -51,6 +51,7 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript" src="/js/global.js"></script>
   <script type="text/javascript">
     function plotLoss(trainLossData, testLossData) {
       var chartCanvas = document.getElementById("lossChart");
@@ -154,76 +155,44 @@
       });
     }
 
-    function getParameterByName(name, url = window.location.href) {
-      name = name.replace(/[\[\]]/g, '\\$&');
-      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-          results = regex.exec(url);
-      if (!results) return null;
-      if (!results[2]) return '';
-      return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    }
-
-    var aiModelId = getParameterByName('id');
-    var http = new XMLHttpRequest();
+    var aiModelId = getParamInUrl('id');
 
     function convert() {
       document.getElementById('convertBtn').disabled = 'disabled';
 
-      var jBdyStr = JSON.stringify({
+      var params = {
         settings: {
           inference: {procedure: "heatmap_regression"}
         },
-      });
-      http.open('PATCH', 'https://ai-designer.io/api/aimodel/convert?id='+aiModelId, true);
-      http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
-      http.setRequestHeader('Content-type', 'application/json');
-      http.onreadystatechange = function() {
-        if(http.readyState == 4) {
-          if (http.status == 401) {
-            localStorage.setItem('REDIRECT_URL', '/ai-model/detail-hm?id='+aiModelId);
-            location.href = '/sign-in';
-            return;
-          }
+        weightLoadMode: 'weights',
+      };
 
-          var msg = JSON.parse(http.responseText);
-          if (msg.msgCode == 1000) {
-            document.getElementById('convertBtn').disabled = true;
-          }
-        }
-      }
-      http.send(jBdyStr);
+      restapi.patch(DLPS_URL, '/api/aimodel/convert', {id: aiModelId}, JSON.stringify(params), localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+        document.getElementById('convertBtn').disabled = true;
+      }, function(msg) {
+        console.log(msg);
+      });
     }
 
     function load() {
-      http.open('GET', 'https://ai-designer.io/api/aimodel/detail?id='+aiModelId, true);
-      http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
-      http.onreadystatechange = function() {
-        if(http.readyState == 4) {
-          if (http.status == 401) {
-            location.href = '/sign-in';
-            return;
-          }
-
-          var msg = JSON.parse(http.responseText);
-          if (msg.msgCode == 1000) {
-            var model = msg.msgResp;
+      restapi.get(DLPS_URL, '/api/aimodel/detail', {id: aiModelId}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+        var model = msgResp;
             
-            document.getElementById('modelName').innerHTML = model.name;
-            plotLoss(model.trainLoss, model.testLoss);
-            plotPR(model.precision, model.recall);
+        document.getElementById('modelName').innerHTML = model.name;
+        plotLoss(model.trainLoss, model.testLoss);
+        plotPR(model.precision, model.recall);
 
-            if (model.weights && !model.converting) {
-              document.getElementById('convertBtn').disabled = '';
-            }
-
-            if (model.converted && model.tfjsModelUrl) {
-              document.getElementById('playLink').style.display = 'inline';
-              document.getElementById('playLink').href = '/ai-model/play-'+model.datasetName+'?id='+aiModelId;
-            }
-          }
+        if (model.weights && !model.converting) {
+          document.getElementById('convertBtn').disabled = '';
         }
-      }
-      http.send();
+
+        if (model.converted && model.tfjsModelUrl) {
+          document.getElementById('playLink').style.display = 'inline';
+          document.getElementById('playLink').href = '/ai-model/play-'+model.datasetName+'?id='+aiModelId;
+        }
+      }, function(msg) {
+        console.log(msg);
+      });
     }
 
     load();

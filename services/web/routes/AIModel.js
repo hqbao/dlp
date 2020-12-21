@@ -31,6 +31,47 @@ exports.list = function(req, res) {
     });
 };
 
+exports.listWeightsFiles = function(req, res) {
+    const aiModelModel = require('../model/AIModel');
+    aiModelModel.find({}, {}, 0, 1000000, function(aiModels) {
+        var files = [];
+        for (var i = 0; i < aiModels.length; i++) {
+            var aiModel = aiModels[i];
+            if (aiModel.weights) { files.push(aiModel.weights); }
+            if (aiModel.bestPrecisionWeights) { files.push(aiModel.bestPrecisionWeights); }
+            if (aiModel.bestRecallWeights) { files.push(aiModel.bestRecallWeights); }
+            if (aiModel.bestAccuracyWeights) { files.push(aiModel.bestAccuracyWeights); }
+        }
+
+        res.writeHead(200, {});
+        res.write(JSON.stringify({msgCode: 1000, msgResp: files}));
+        res.end();
+    }, function(e){
+        res.writeHead(400, {});
+        res.write(JSON.stringify({msgCode: 1003, msgResp: 'Unknown error'}));
+        res.end();
+    });
+};
+
+exports.listTFJS = function(req, res) {
+    const aiModelModel = require('../model/AIModel');
+    aiModelModel.find({}, {}, 0, 1000000, function(aiModels) {
+        var files = [];
+        for (var i = 0; i < aiModels.length; i++) {
+            var aiModel = aiModels[i];
+            if (aiModel.tfjsModelUrl) { files.push(aiModel.tfjsModelUrl); }
+        }
+
+        res.writeHead(200, {});
+        res.write(JSON.stringify({msgCode: 1000, msgResp: files}));
+        res.end();
+    }, function(e){
+        res.writeHead(400, {});
+        res.write(JSON.stringify({msgCode: 1003, msgResp: 'Unknown error'}));
+        res.end();
+    });
+};
+
 exports.create = function(req, res) {
     const fs = require('fs');
     const jwt = require('jsonwebtoken');
@@ -704,7 +745,7 @@ exports.convert = function(req, res) {
                 return;
             }
 
-            var weightsFileUrl = aiModel.bestAccuracyWeights ? aiModel.bestAccuracyWeights : aiModel.weights;
+            var weightsFileUrl = aiModel[req.body.weightLoadMode];
             if (!weightsFileUrl) {
                 res.writeHead(400, {});
                 res.write(JSON.stringify({msgCode: 1011, msgResp: 'Weights not exist'}));

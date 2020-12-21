@@ -1439,33 +1439,21 @@ export function save(name, callback) {
 	}
 
 	var screenshot = dlt.gCommander.exportDLT();
-	var jBdyStr = JSON.stringify({
+
+	var params = {
 		name: name,
 		screenshot: screenshot,
-	});
-	var http = new XMLHttpRequest();
-	http.open('PATCH', 'https://ai-designer.io/api/aimodel/update?id='+model._id, true);
-	http.setRequestHeader('Content-type', 'application/json');
-	http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
-	http.onreadystatechange = function() {
-		if(http.readyState == 4) {
-			if (http.status == 401) {
-				localStorage.setItem('REDIRECT_URL', '/dlt');
-				location.href = '/sign-in';
-				return;
-			}
+	};
 
-			var msg = JSON.parse(http.responseText);
-			if (msg.msgCode == 1000) {
-				model.name = name;
-				model.screenshot = screenshot;
-				localStorage.setItem('MODEL', JSON.stringify(model));
-				
-				callback();
-			}
-		}
-	}
-	http.send(jBdyStr);
+	restapi.patch(AS_URL, '/api/aimodel/update', {id: model._id}, JSON.stringify(params), localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+		model.name = name;
+		model.screenshot = screenshot;
+		localStorage.setItem('MODEL', JSON.stringify(model));
+		
+		callback();
+	}, function(msg) {
+		console.log(msg);
+	});
 }
 
 export function generateCode() {
@@ -1485,50 +1473,22 @@ export function generateCode() {
 
 	document.getElementById('loadingEffect').style.display = 'block';
 
-	var jBdyStr = JSON.stringify({
+	var params = {
 		model: dlt.gCommander.exportModel(),
 		screenshot: dlt.gCommander.exportDLT(),
+	};
+
+	restapi.patch(DLPS_URL, '/api/aimodel/update', {id: model._id}, JSON.stringify(params), localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+		restapi.post(DLPS_URL, '/api/codegen/generate', null, JSON.stringify({aiModelId: model._id}), localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+			document.getElementById('loadingEffect').style.display = 'none';
+			var tab = window.open('about:blank');
+			tab.location = msgResp.colabUrl;
+		}, function(msg) {
+			console.log(msg);
+		});
+	}, function(msg) {
+		console.log(msg);
 	});
-	var http = new XMLHttpRequest();
-	http.open('PATCH', 'https://ai-designer.io/api/aimodel/update?id='+model._id, true);
-	http.setRequestHeader('Content-type', 'application/json');
-	http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
-	http.onreadystatechange = function() {
-		if(http.readyState == 4) {
-			if (http.status == 401) {
-				localStorage.setItem('REDIRECT_URL', '/dlt');
-				location.href = '/sign-in';
-				return;
-			}
-
-			var msg1 = JSON.parse(http.responseText);
-			if (msg1.msgCode == 1000) {
-				var jBdyStr = JSON.stringify({
-					aiModelId: model._id,
-				});
-				http.open('POST', 'https://ai-designer.io/api/codegen/generate', true);
-				http.setRequestHeader('Content-type', 'application/json');
-				http.setRequestHeader('Authorization', localStorage.getItem('TOKEN'));
-				http.onreadystatechange = function() {
-					if(http.readyState == 4) {
-						if (http.status == 401) {
-							location.href = '/sign-in';
-							return;
-						}
-
-						var msg2 = JSON.parse(http.responseText);
-						if (msg2.msgCode == 1000) {
-							document.getElementById('loadingEffect').style.display = 'none';
-							var tab2 = window.open('about:blank');
-							tab2.location = msg2.msgResp.colabUrl;
-						}
-					}
-				}
-				http.send(jBdyStr);
-			}
-		}
-	}
-	http.send(jBdyStr);
 }
 
 export function exportFile() {

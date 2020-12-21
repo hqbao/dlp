@@ -138,7 +138,7 @@ exports.refresh = function(req, res) {
                 }
 
                 res.writeHead(200, {});
-                res.write(JSON.stringify({msgCode: 1001, msgResp: 'Token refreshed'}));
+                res.write(JSON.stringify({msgCode: 1000, msgResp: 'Token refreshed'}));
                 res.end();
             });
         });

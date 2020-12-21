@@ -31,7 +31,8 @@ global.settings = {
     sslCertPath: './ssl-cert/ai-designer.io/certificate.crt',
     sslCAPath: './ssl-cert/ai-designer.io/ca_bundle.crt',
     sslPrivateKeyPath: './ssl-cert/ai-designer.io/private.key',
-    webServiceEndPoint: 'https://ai-designer.io',
+    webServiceDomain: 'ai-designer.io',
+    webServicePort: 443,
     GOOGLEAPP_redirectURI: 'https://ai-designer.io/gdrive/sign-in-return',
     GOOGLEAPP_scopes: [
         'https://www.googleapis.com/auth/drive',
@@ -45,6 +46,7 @@ global.settings = {
     GOOGLEAPP_tokenPath: './misc/token.json',
     GOOGLEAPP_refreshTokenPath: './misc/refresh_token.json',
     defaultPagingLimit: 20,
+    mongodb: [{host: '34.126.96.38', port: 27017, username: 'bao', password: '123qweASD', database: 'dlp'}],
 };
 
 // ssl
@@ -61,7 +63,7 @@ const credentials = {
 const app = express();
 
 // All environments
-app.set('port', 443);
+app.set('port', global.settings.webServicePort);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
@@ -70,8 +72,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(function (req, res, next) {
     securityAudit.check(req, function() {
         const allowedOrigins = [
-            global.settings.webServiceEndPoint,
+            req.protocol+'://'+global.settings.webServiceDomain+':'+global.settings.webServicePort,
         ];
+        for (var i = 0; i < allowedOrigins.length; i++) {
+            allowedOrigins[i] = allowedOrigins[i].replace(':80', '');
+            allowedOrigins[i] = allowedOrigins[i].replace(':443', '');
+        }
         const origin = req.headers.origin;
         if (allowedOrigins.includes(origin)) {
             res.setHeader('Access-Control-Allow-Origin', origin);
@@ -81,7 +87,6 @@ app.use(function (req, res, next) {
         res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         next();
     }, function(errorMsg) {
-        console.log(securityAudit.getLockedIPList());
         res.writeHead(520, {});
         res.write(JSON.stringify({msgCode: 1099, msgResp: errorMsg}));
         res.end();
@@ -112,6 +117,8 @@ app.patch('/api/aimodel/update-train-result', aiModel.updateTrainResult);
 app.get('/api/aimodel/detail', aiModel.detail);
 app.delete('/api/aimodel/delete', aiModel.delete);
 app.patch('/api/aimodel/convert', aiModel.convert);
+app.get('/api/aimodel/list-weights-files', aiModel.listWeightsFiles);
+app.get('/api/aimodel/list-tfjs', aiModel.listTFJS);
 
 app.post('/api/codegen/generate', codegen.generate);
 
@@ -122,6 +129,10 @@ app.get('/gdrive/refresh', gdrive.refresh);
 app.post('/upload/image', upload.image);
 app.post('/upload/weights', upload.weights);
 app.post('/upload/tfjs', upload.tfjs);
+app.get('/upload/list-weights-files', upload.listWeightsFiles);
+app.get('/upload/list-tfjs', upload.listTFJS);
+app.delete('/upload/delete-weights-files', upload.deleteWeightsFiles);
+app.delete('/upload/delete-tfjs', upload.deleteTFJS);
 
 app.get('/', cIndex.index);
 app.get('/sign-in', cUser.signIn);
@@ -139,7 +150,7 @@ app.get('/ai-model/play-face1024', cAIModel.playFace1024);
 app.get('/ai-model/play-faceali128x128', cAIModel.playFaceali128x128);
 
 const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb://bao:123qweASD@127.0.0.1:27017/dlp";
+const url = 'mongodb://'+global.settings.mongodb[0].username+':'+global.settings.mongodb[0].password+'@'+global.settings.mongodb[0].host+':'+global.settings.mongodb[0].port+'/'+global.settings.mongodb[0].database;
 MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
     if (err) {
         console.log(err);

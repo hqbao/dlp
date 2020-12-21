@@ -40,7 +40,7 @@ exports.image = function(req, res) {
             }
             
             res.writeHead(200, {});
-            res.write(JSON.stringify({msgCode: 1000, msgResp: {url: 'https://ai-designer.io/upload/images/'+type+'/'+fileName}}));
+            res.write(JSON.stringify({msgCode: 1000, msgResp: {url: req.protocol+'://'+req.headers.host+'/upload/images/'+type+'/'+fileName}}));
             res.end();
         });
     });
@@ -80,7 +80,7 @@ exports.weights = function(req, res) {
             }
             
             res.writeHead(200, {});
-            res.write(JSON.stringify({msgCode: 1000, msgResp: {url: 'https://ai-designer.io/upload/weights/'+fileName}}));
+            res.write(JSON.stringify({msgCode: 1000, msgResp: {url: req.protocol+'://'+req.headers.host+'/upload/weights/'+fileName}}));
             res.end();
         });
     });
@@ -135,9 +135,82 @@ exports.tfjs = function(req, res) {
                 fs.unlinkSync(newPath);
 
                 res.writeHead(200, {});
-                res.write(JSON.stringify({msgCode: 1000, msgResp: {url: 'https://ai-designer.io/upload/tfjs/'+subdir+'/model.json'}}));
+                res.write(JSON.stringify({msgCode: 1000, msgResp: {url: req.protocol+'://'+req.headers.host+'/upload/tfjs/'+subdir+'/model.json'}}));
                 res.end();
             });
         });
+    });
+};
+
+exports.listWeightsFiles = function(req, res) {
+    const fs = require('fs');
+    fs.readdir('./public/upload/weights/', (err, files) => {
+        res.writeHead(200, {});
+        res.write(JSON.stringify({msgCode: 1000, msgResp: files}));
+        res.end();
+    });
+};
+
+exports.listTFJS = function(req, res) {
+    const fs = require('fs');
+    fs.readdir('./public/upload/tfjs/', (err, files) => {
+        res.writeHead(200, {});
+        res.write(JSON.stringify({msgCode: 1000, msgResp: files}));
+        res.end();
+    });
+};
+
+exports.deleteWeightsFiles = function(req, res) {
+    var fs = require('fs');
+
+    var authPassword = req.header('Authorization');
+    if (authPassword != global.settings.authPassword) {
+        res.writeHead(400, {});
+        res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
+        res.end();
+        return;
+    }
+
+    var path = req.body.path;
+    if (!path) {
+        path = path.replace(req.protocol+'://'+req.headers.host, '');
+        res.writeHead(400, {});
+        res.write(JSON.stringify({msgCode: 1003, msgResp: 'Missing path'}));
+        res.end();
+        return;
+    }
+
+    fs.unlink('./public'+path, (err) => {
+        res.writeHead(200, {});
+        res.write(JSON.stringify({msgCode: 1000, msgResp: 'Success'}));
+        res.end();
+    });
+};
+
+exports.deleteTFJS = function(req, res) {
+    var fs = require('fs');
+
+    var authPassword = req.header('Authorization');
+    if (authPassword != global.settings.authPassword) {
+        res.writeHead(400, {});
+        res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
+        res.end();
+        return;
+    }
+
+    var path = req.body.path;
+    if (!path) {
+        path = path.replace(req.protocol+'://'+req.headers.host, '');
+        path = path.replace('/model.json', '');
+        res.writeHead(400, {});
+        res.write(JSON.stringify({msgCode: 1003, msgResp: 'Missing path'}));
+        res.end();
+        return;
+    }
+
+    fs.rmdir('./public'+path, { recursive: true }, function(err) {
+        res.writeHead(200, {});
+        res.write(JSON.stringify({msgCode: 1000, msgResp: 'Success'}));
+        res.end();
     });
 };
