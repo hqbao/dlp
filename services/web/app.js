@@ -1,6 +1,6 @@
 const express = require('express');
 const https = require('https');
-// const http = require('http');
+const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -162,8 +162,12 @@ MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
 
     // Start http
     var httpsServer = https.createServer(credentials, app);
-    // const httpsServer = http.createServer(app);
     httpsServer.listen(app.get('port'), function() {
         console.log('[Web Service] API server listening on port ' + app.get('port'));
     });
+
+    http.createServer(function (req, res) {
+        res.writeHead(301, {'Location': 'https://' + req.headers['host'] + req.url});
+        res.end();
+    }).listen(80);
 });

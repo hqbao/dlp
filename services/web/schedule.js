@@ -10,7 +10,7 @@ cron.schedule('*/28 * * * *', () => {
 	refreshToken();
 });
 
-cron.schedule('*/5 * * * * *', () => {
+cron.schedule('*/5 * * * *', () => {
     clearWeightFiles();
     clearTFJS();
 });
@@ -72,20 +72,17 @@ function clearWeightFiles() {
                 inUseWeightsFileDict[inUseWeightsFile] = 1;
             }
 
-            var keepIndices = [];
+            var removeIndices = [];
             for (var i = 0; i < weightsFiles.length; i++) {
                 var weightsFile = weightsFiles[i];
-                if (weightsFile in inUseWeightsFileDict) {
-                    keepIndices.push(i);
+                if (!(weightsFile in inUseWeightsFileDict)) {
+                    removeIndices.push(i);
                 }
             }
 
-            for (var i = keepIndices.length-1; i >= 0; i--) {
-                weightsFiles.splice(keepIndices[i], 1);
-            }
-
-            for (var i = 0; i < weightsFiles.length; i++) {
-                var removeFilePath = './public/upload/weights/'+weightsFiles[i];
+            for (var i = removeIndices.length-1; i >= 0; i--) {
+                var removeIdx = removeIndices[i];
+                var removeFilePath = './public/upload/weights/'+weightsFiles[removeIdx];
                 fs.unlink(removeFilePath, function(err) {
                     if (err) {
                         console.log('Can\'t remove '+removeFilePath+' because of '+err);
@@ -114,24 +111,21 @@ function clearTFJS() {
                 tobereplace = tobereplace.replace(':80', '');
                 tobereplace = tobereplace.replace(':443', '');
                 inUseTFJSFolder = inUseTFJSFolder.replace(tobereplace, '');
-                inUseTFJSFolder = inUseTFJSFolder.replace('model.json', '')
+                inUseTFJSFolder = inUseTFJSFolder.replace('/model.json', '')
                 inUseTFJSFolderDict[inUseTFJSFolder] = 1;
             }
 
-            var keepIndices = [];
+            var removeIndices = [];
             for (var i = 0; i < tfjsFolders.length; i++) {
                 var tfjsFolder = tfjsFolders[i];
-                if (tfjsFolder in inUseTFJSFolderDict) {
-                    keepIndices.push(i);
+                if (!(tfjsFolder in inUseTFJSFolderDict)) {
+                    removeIndices.push(i);
                 }
             }
 
-            for (var i = keepIndices.length-1; i >= 0; i--) {
-                tfjsFolders.splice(keepIndices[i], 1);
-            }
-
-            for (var i = 0; i < tfjsFolders.length; i++) {
-                var removeFilePath = './public/upload/weights/'+tfjsFolders[i];
+            for (var i = removeIndices.length-1; i >= 0; i--) {
+                var removeIdx = removeIndices[i];
+                var removeFilePath = './public/upload/tfjs/'+tfjsFolders[removeIdx];
                 fs.rmdir(removeFilePath, { recursive: true }, function(err) {
                     if (err) {
                         console.log('Can\'t remove '+removeFilePath+' because of '+err);
