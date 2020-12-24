@@ -40,6 +40,14 @@
         <h3 id="modelName"></h3>
       </div>
       <div class="col-12">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group mb-2">
+              <label>Min valid heat</label>
+              <input id="settingsMinValidHeat" class="form-control" type="number" placeholder="Min valid heat" value="0.4" step="0.1">
+            </div>
+          </div>
+        </div>
         <button id="convertBtn" type="button" class="btn btn-info" onclick="convert()" disabled>CONVERT</button>
         <a href="#" id="playLink" type="button" class="btn btn-success" style="display: none;">PLAY</a>
       </div>
@@ -162,7 +170,10 @@
 
       var params = {
         settings: {
-          inference: {procedure: "heatmap_regression"}
+          inference: {
+            procedure: "heatmap_regression",
+            minValidHeat: document.getElementById('settingsMinValidHeat').value, 
+          }
         },
         weightLoadMode: 'weights',
       };

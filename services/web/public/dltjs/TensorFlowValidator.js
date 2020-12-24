@@ -1,7 +1,7 @@
 import {UIConnectableNode} from './UIConnectableNode.js';
 import {UIConnectionNode} from './UIConnectionNode.js';
 
-const SUPPORTED_IMAGE_CLASSIFICATION_DATASETS = ['mnist-digits', 'fingers'];
+const SUPPORTED_IMAGE_CLASSIFICATION_DATASETS = ['mnist-digits', 'fingers', 'faceid128x128'];
 const SUPPORTED_HEATMAP_REGRESSION_DATASETS = ['faceali128x128'];
 const SUPPORTED_OBJECT_DETECTION_DATASETS = ['face1024'];
 

@@ -43,6 +43,7 @@ exports.generate = function(req, res) {
             var encodedToken = JSON.stringify({id: aiModelId, jwtToken: token})
             const exec = require('child_process').exec;
             exec('./codegen/codegen_train.sh \''+decoded.uid+'\' '+modelJson+' \''+encodedToken+'\'', function(err, stdout, stderr){
+                console.log(stderr);
                 if (err || stdout.slice(-7) != 'Success') {
                     res.writeHead(400, {});
                     res.write(JSON.stringify({msgCode: 1011, msgResp: 'Unknow error'}));
