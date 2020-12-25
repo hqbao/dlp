@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.7.0/dist/tf.min.js"></script>
+    <title>DLP - AI Model</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">DLP</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/user/profile">MY PROFILE</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ai-model/list">MY MODELS</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div style="width: 100%;text-align: center;">
+            <img id="preview" src="" width="112" height="112" style="float: left;position: fixed;display: none;" />
+            <video width="448" height="448" style="position: fixed;background-color: black;z-index: 1;"></video>
+            <canvas id="overlay" width="448" height="448" style="position: relative;left: 0px;background-color: none;z-index: 2;">
+          </div>
+        </div>
+        <div class="col-12" style="text-align: center;">
+          <button class="btn btn-success" onclick="onStartClicked()">START</button>
+          <button class="btn btn-danger" onclick="onStopClicked()">STOP</button>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/global.js"></script>
+    <script type="text/javascript">
+      var aiModelId = getParamInUrl('id');
+
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+
+      var overlayCanvas = document.getElementById('overlay');
+      var overlayCtx = overlayCanvas.getContext('2d');
+
+      var preview = document.getElementById('preview');
+      var isVideoReady = false;
+
+      var faceLandmarksDetection = null;
+      var inference = false;
+      var infering = false;
+
+      function handle(a, b, c, d, e) {
+        overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+
+        var ay = a/112;
+        var ax = a%112;
+        var by = b/112;
+        var bx = b%112;
+        var cy = c/112;
+        var cx = c%112;
+        var dy = d/112;
+        var dx = d%112;
+        var ey = e/112;
+        var ex = e%112;
+
+        var scale = 0.25;
+
+        overlayCtx.fillStyle = "#00FF00";
+        overlayCtx.beginPath();
+        overlayCtx.arc(ax/scale, ay/scale, 10, 0, 2 * Math.PI);
+        overlayCtx.fill();
+        overlayCtx.fillStyle = "#00FF00";
+        overlayCtx.beginPath();
+        overlayCtx.arc(bx/scale, by/scale, 10, 0, 2 * Math.PI);
+        overlayCtx.fill();
+        overlayCtx.fillStyle = "#00FF00";
+        overlayCtx.beginPath();
+        overlayCtx.arc(cx/scale, cy/scale, 10, 0, 2 * Math.PI);
+        overlayCtx.fill();
+        overlayCtx.fillStyle = "#00FF00";
+        overlayCtx.beginPath();
+        overlayCtx.arc(dx/scale, dy/scale, 10, 0, 2 * Math.PI);
+        overlayCtx.fill();
+        overlayCtx.fillStyle = "#00FF00";
+        overlayCtx.beginPath();
+        overlayCtx.arc(ex/scale, ey/scale, 10, 0, 2 * Math.PI);
+        overlayCtx.fill();
+      }
+
+      function infer() {
+        var pix = tf.browser.fromPixels(preview);
+        pix = tf.mean(pix, -1, true);
+        pix = tf.cast(pix, 'float32');
+        pix = pix.expandDims(0);
+        var prediction = faceLandmarksDetection.execute(pix);
+        var a = prediction[0].arraySync();
+        var b = prediction[1].arraySync();
+        var c = prediction[2].arraySync();
+        var d = prediction[3].arraySync();
+        var e = prediction[4].arraySync();
+        handle(a, b, c, d, e);
+      }
+
+      function loadedmetadata(e) {
+        canvas.width = this.videoWidth;
+        canvas.height = this.videoHeight;
+      }
+
+      function timeupdate(e) {
+        ctx.drawImage(this, 0, 0);
+        canvas.toBlob(function(blob) {
+          var objectURL = URL.createObjectURL(blob);
+          preview.src = objectURL;
+        }, 'image/jpeg');
+      }
+
+      function onEnded(e) {}
+
+      var video = document.querySelector('video');
+      video.addEventListener('loadedmetadata', loadedmetadata, false);
+      video.addEventListener('timeupdate', timeupdate, false);
+      video.addEventListener('ended', onEnded, false);
+
+      function onStopClicked() {
+        if (isVideoReady) {
+          video.pause();
+          inference = false;
+        }
+      }
+
+      function onStartClicked() {
+        if (isVideoReady) {
+          video.play();
+          inference = true;
+        }
+      }
+
+      function play() {
+        var constraints = {audio: false, video: {width: 112, height: 112}}; 
+        navigator.mediaDevices.getUserMedia(constraints)
+        .then(function(mediaStream) {
+          video.srcObject = mediaStream;
+          video.onloadedmetadata = function(e) {
+            isVideoReady = true;
+          };
+        })
+        .catch(function(err) { 
+          console.log(err.name + ": " + err.message); 
+        });
+      }
+      
+      function load() {
+        restapi.get(DLPS_URL, '/api/aimodel/detail', {id: aiModelId}, localStorage.getItem('TOKEN'), '/sign-in', async function(msgResp) {
+          var model = msgResp;
+          faceLandmarksDetection = await tf.loadGraphModel(model.tfjsModelUrl);
+          play();
+        }, function(msg) {
+          console.log(msg);
+        });
+      }
+
+      setInterval(async function(){
+        if (!inference) { return; }
+        if (infering) { return; }
+        infering = true;
+        var t = Date.now();
+        infer();
+        console.log('Face landmarks detection', Date.now()-t);
+        infering = false;
+      }, 50);
+
+      load();
+    </script>
+  </body>
+</html>

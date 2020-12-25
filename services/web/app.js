@@ -142,12 +142,12 @@ app.get('/dlt', cDLT.index);
 app.get('/ai-model/list', cAIModel.list);
 app.get('/ai-model/detail-ic', cAIModel.detailIC);
 app.get('/ai-model/detail-od', cAIModel.detailOD);
-app.get('/ai-model/detail-od4', cAIModel.detailOD4);
 app.get('/ai-model/detail-hm', cAIModel.detailHM);
-app.get('/ai-model/play-mnist-digits', cAIModel.playMnistDigits);
+app.get('/ai-model/play-digits-recognition', cAIModel.playDigitsRecognition);
+app.get('/ai-model/play-face-id', cAIModel.playFaceId);
 app.get('/ai-model/play-fingers', cAIModel.playFingers);
-app.get('/ai-model/play-face1024', cAIModel.playFace1024);
-app.get('/ai-model/play-faceali128x128', cAIModel.playFaceali128x128);
+app.get('/ai-model/play-face-detection', cAIModel.playFaceDetection);
+app.get('/ai-model/play-face-5landmarks-detection', cAIModel.playFace5landmarksDetection);
 
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://'+global.settings.mongodb[0].username+':'+global.settings.mongodb[0].password+'@'+global.settings.mongodb[0].host+':'+global.settings.mongodb[0].port+'/'+global.settings.mongodb[0].database;

@@ -519,6 +519,10 @@ class TensorFlowValidator {
 						break;
 					}
 
+					case 'OUTPUT_LAYER': {
+						break;
+					}
+
 					default: { break; }
 				}
 			}
@@ -1169,6 +1173,10 @@ class TensorFlowValidator {
 					}
 
 					node.nodeParams.params.shape = shape.slice();
+					break;
+				}
+
+				case 'OUTPUT_LAYER': {
 					break;
 				}
 

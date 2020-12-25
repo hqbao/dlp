@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.7.0/dist/tf.min.js"></script>
+    <title>DLP - AI Model</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">DLP</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/user/profile">MY PROFILE</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ai-model/list">MY MODELS</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div style="width: 100%;text-align: center;">
+            <img id="preview" src="" width="256" height="256" style="float: left;position: fixed;display: none;"/>
+            <video width="256" height="256" style="position: fixed;background-color: black;z-index: 1;"></video>
+            <canvas id="overlay" width="256" height="256" style="position: relative;left: 0px;background-color: none;z-index: 2;">
+          </div>
+        </div>
+        <div class="col-12" style="text-align: center;">
+          <button class="btn btn-success" onclick="onStartClicked()">START</button>
+          <button class="btn btn-danger" onclick="onStopClicked()">STOP</button>
+        </div>
+      </div>
+    </div>
+    <div style="height: 660px;width: 330px;position: fixed;left: 8px;top: 64px;overflow: auto;">
+      <ul id="tempItem" class="list-group" style="display: none;">
+        <li class="list-group-item">
+          <div style="float: left;">{IMAGE_TAG}</div>
+          <div style="float: left;margin-left: 8px;">
+            <input type="text" class="form-control form-control-sm" value="{NAME}" style="max-width: 100px;">
+            <a href="javascript:void(0)" class="badge bg-warning text-dark" onclick="onLabelClicked(this)">LABEL</a>
+          </div>
+        </li>
+      </ul>
+      <ul id="itemList" class="list-group"></ul>
+    </div>
+    <script type="text/javascript" src="/js/global.js"></script>
+    <script type="text/javascript">
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+
+      var overlayCanvas = document.getElementById('overlay');
+      var overlayCtx = overlayCanvas.getContext('2d');
+
+      var preview = document.getElementById('preview');
+      var isVideoReady = false;
+
+      var faceDetectionModel = null;
+      var faceIdModel = null;
+      var aiModelId = getParamInUrl('id');
+      var faceIdModel = null;
+      var inference = false;
+      var infering = false;
+
+      var faceListElem = document.getElementById('itemList');
+
+      function recognize() {
+        return 'Unknown';
+      }
+
+      function label() {
+
+      }
+
+      function updateFaceList(image, name) {
+        var imageWrapper = document.createElement('div');
+        imageWrapper.appendChild(image);
+
+        var tempItem = document.getElementById('tempItem').cloneNode(true);
+        var html = tempItem.innerHTML;
+        html = html.replaceAll('{IMAGE_TAG}', imageWrapper.innerHTML);
+        html = html.replaceAll('{NAME}', name);
+        tempItem.innerHTML = html;
+
+        if (faceListElem.childNodes.length > 16) {
+          faceListElem.removeChild(faceListElem.childNodes[faceListElem.childNodes.length-1]);
+        }
+
+        faceListElem.insertBefore(tempItem.firstElementChild, faceListElem.firstChild);
+      }
+
+      function drawText(box, text) {
+        overlayCtx.font = "16px Arial";
+        overlayCtx.fillStyle = "#FFFFFF";
+        overlayCtx.fillText(text, box[1]-4, box[0]-4);
+      }
+
+      function drawBoxes(box) {
+        overlayCtx.beginPath();
+        overlayCtx.strokeStyle = "#FFFFFF";
+        overlayCtx.rect(box[1], box[0], (box[3]-box[1]), (box[2]-box[0]), Math.PI);
+        overlayCtx.stroke();
+      }
+
+      function handleFaceId(embedding, image, box) {
+        // Recognize
+        var name = recognize(embedding)
+
+        // Draw
+        overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+        drawBoxes(box);
+        drawText(box, name);
+        updateFaceList(image, name);
+      }
+
+      async function inferFaceId(image, box) {
+        var pix = tf.browser.fromPixels(image);
+        pix = tf.cast(pix, 'float32');
+        pix = pix.expandDims(0);
+        var prediction = await faceIdModel.executeAsync(pix);
+        handleFaceId(prediction.arraySync()[0], image, box);
+      }
+
+      function handleFaceDetection(validOutputs, boxes) {
+        for (var i = 0; i < validOutputs; i++) {
+          var box = boxes[i];
+          
+          var h = box[2] - box[0];
+          var w = box[3] - box[1];
+          var size = h > w ? h : w;
+          size *= 1.2;
+          canvas.height = size;
+          canvas.width = size;
+          ctx.drawImage(video, -(box[1]+0.5*(box[3]-box[1])-0.5*size), -(box[0]+0.5*(box[2]-box[0])-0.5*size));
+          canvas.toBlob(async function(blob) {
+            var image = document.createElement('img');
+            image.height = 112;
+            image.width = 112;
+            image.src = URL.createObjectURL(blob);
+            var t = Date.now();
+            await inferFaceId(image, box);
+            console.log('Face ID', Date.now()-t);
+          }, 'image/jpeg');
+        }
+      }
+
+      async function inferFaceDetection() {
+        var pix = tf.browser.fromPixels(preview);
+        pix = tf.cast(pix, 'float32');
+        pix = pix.expandDims(0);
+        var prediction = await faceDetectionModel.executeAsync(pix); // TFJS not working with tensorflow 2.4
+        
+        var output1 = prediction[0].arraySync();
+        var output2 = prediction[1].arraySync();
+        if (Array.isArray(output1[0])) {
+          validOutputs = output2[0];
+          boxes = output1;
+        }
+        else {
+          validOutputs = output1[0];
+          boxes = output2;
+        }
+
+        await handleFaceDetection(validOutputs, boxes);
+      }
+
+      function loadedmetadata(e) {
+        
+      }
+
+      function timeupdate(e) {
+        canvas.width = this.videoWidth;
+        canvas.height = this.videoHeight;
+        ctx.drawImage(this, 0, 0);
+        canvas.toBlob(function(blob) {
+          var objectURL = URL.createObjectURL(blob);
+          preview.src = objectURL;
+        }, 'image/jpeg');
+      }
+
+      function ended(e) {}
+
+      var video = document.querySelector('video');
+      video.addEventListener('loadedmetadata', loadedmetadata, false);
+      video.addEventListener('timeupdate', timeupdate, false);
+      video.addEventListener('ended', ended, false);
+
+      function onStopClicked() {
+        if (isVideoReady) {
+          video.pause();
+          inference = false;
+        }
+      }
+
+      function onStartClicked() {
+        if (isVideoReady) {
+          video.play();
+          inference = true;
+        }
+      }
+
+      function play() {
+        var constraints = {audio: false, video: {width: 256, height: 256}};
+        navigator.mediaDevices.getUserMedia(constraints)
+        .then(function(mediaStream) {
+          video.srcObject = mediaStream;
+          video.onloadedmetadata = function(e) {
+            isVideoReady = true;
+          };
+        })
+        .catch(function(err) { 
+          console.log(err.name + ": " + err.message); 
+        });
+      }
+      
+      function load() {
+        restapi.get(DLPS_URL, '/api/aimodel/detail', {id: aiModelId}, localStorage.getItem('TOKEN'), '/sign-in', async function(msgResp) {
+          var model = msgResp;
+          faceIdModel = await tf.loadGraphModel(model.tfjsModelUrl);
+          faceDetectionModel = await tf.loadGraphModel(DLPS_URL+'/tfjs/face-detection/model.json');
+          play();
+        }, function(msg) {
+          console.log(msg);
+        });
+      }
+
+      setInterval(async function(){
+        if (!inference) { return; }
+        if (infering) { return; }
+        infering = true;
+        var t = Date.now();
+        await inferFaceDetection();
+        console.log('Face detection', Date.now()-t);
+        infering = false;
+      }, 50);
+
+      load();
+    </script>
+  </body>
+</html>

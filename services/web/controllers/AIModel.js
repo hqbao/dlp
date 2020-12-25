@@ -10,26 +10,26 @@ exports.detailOD = function(req, res) {
     res.render('ai-model/detail-od', {});
 };
 
-exports.detailOD4 = function(req, res) {
-    res.render('ai-model/detail-od4', {});
-};
-
 exports.detailHM = function(req, res) {
     res.render('ai-model/detail-hm', {});
 };
 
-exports.playMnistDigits = function(req, res) {
-    res.render('ai-model/play-mnist-digits', {});
+exports.playDigitsRecognition = function(req, res) {
+    res.render('ai-model/play-digits-recognition', {});
+};
+
+exports.playFaceId = function(req, res) {
+    res.render('ai-model/play-face-id', {});
 };
 
 exports.playFingers = function(req, res) {
     res.render('ai-model/play-fingers', {});
 };
 
-exports.playFace1024 = function(req, res) {
-    res.render('ai-model/play-face1024', {});
+exports.playFaceDetection = function(req, res) {
+    res.render('ai-model/play-face-detection', {});
 };
 
-exports.playFaceali128x128 = function(req, res) {
-    res.render('ai-model/play-faceali128x128', {});
+exports.playFace5landmarksDetection = function(req, res) {
+    res.render('ai-model/play-face-5landmarks-detection', {});
 };

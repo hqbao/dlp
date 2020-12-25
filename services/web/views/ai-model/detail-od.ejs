@@ -45,10 +45,10 @@
             <div class="form-group mb-2">
               <label>Procedure</label>
               <select id="settingsProcedure" class="form-control">
-                <option value="object_detection">Object detaction (1 tier)</option>
-                <option value="object_detection_2tiers">Object detaction (2 tier)</option>
-                <option value="object_detection_3tiers">Object detaction (3 tier)</option>
-                <option value="object_detection_4tiers">Object detaction (4 tier)</option>
+                <option value="object-detection-1tier">Object detaction (1 tier)</option>
+                <option value="object-detection-2tiers">Object detaction (2 tier)</option>
+                <option value="object-detection-3tiers">Object detaction (3 tier)</option>
+                <option value="object-detection-4tiers">Object detaction (4 tier)</option>
               </select>
             </div>
             <div class="form-group mb-2">
@@ -226,7 +226,7 @@
 
         if (model.converted && model.tfjsModelUrl) {
           document.getElementById('playLink').style.display = 'inline';
-          document.getElementById('playLink').href = '/ai-model/play-'+model.datasetName+'?id='+aiModelId;
+          document.getElementById('playLink').href = '/ai-model/play-face-detection?id='+aiModelId;
         }
       }, function(msg) {
         console.log(msg);

@@ -42,6 +42,7 @@
 			window.addResnetSIdentityBlock = dlt.gCommander.addResnetSIdentityBlock;
 			window.addRFEBlock = dlt.gCommander.addRFEBlock;
 			window.addHourglassBlock = dlt.gCommander.addHourglassBlock;
+			window.addOutputLayer = dlt.gCommander.addOutputLayer;
 			window.ICLossFunc = dlt.gCommander.ICLossFunc;
 			window.HMRLossFunc = dlt.gCommander.HMRLossFunc;
 			window.ODLossFunc = dlt.gCommander.ODLossFunc;
@@ -76,6 +77,7 @@
 			window.onResnetSIdentityBlockChange = itg.onResnetSIdentityBlockChange;
 			window.onRFEBlockChange = itg.onRFEBlockChange;
 			window.onHourglassBlockChange = itg.onHourglassBlockChange;
+			window.onOutputLayerChange = itg.onOutputLayerChange;
 			window.onODLossFuncChange = itg.onODLossFuncChange;
 			window.onICLossFuncChange = itg.onICLossFuncChange;
 			window.onHMRLossFuncChange = itg.onHMRLossFuncChange;
@@ -488,6 +490,13 @@
 				<label>Repeat</label>
 				<input type="text" id="HOURGLASS_BLOCK.repeat" placeholder="REPEAT" onchange="onHourglassBlockChange(this.id, this.value)">
 			</form>
+			<form id="OUTPUT_LAYER" class="settings-form">
+				<h5 class="settings-title">OUTPUT LAYER</h5>
+				<label>Rect</label>
+				<input type="text" id="OUTPUT_LAYER.rect" placeholder="RECT" onchange="onOutputLayerChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="text" id="OUTPUT_LAYER.color" placeholder="COLOR" onchange="onOutputLayerChange(this.id, this.value)">
+			</form>
 			<form id="LOSS_FUNC_OD4" class="settings-form">
 				<h5 class="settings-title">LOSS FUNCTION OBJECT DETECTION</h5>
 				<label>Rect</label>
@@ -546,6 +555,7 @@
 			<button class="add-btn-resnetsid" onclick="addResnetSIdentityBlock();"></button>
 			<button class="add-btn-rfe" onclick="addRFEBlock();"></button>
 			<button class="add-btn-hourglass" onclick="addHourglassBlock();"></button>
+			<button class="add-btn-output" onclick="addOutputLayer();"></button>
 			<button class="add-btn-icloss" onclick="ICLossFunc();"></button>
 			<button class="add-btn-hmloss" onclick="HMRLossFunc();"></button>
 			<button class="add-btn-odloss" onclick="ODLossFunc();"></button>

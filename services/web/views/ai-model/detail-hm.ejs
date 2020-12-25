@@ -171,7 +171,7 @@
       var params = {
         settings: {
           inference: {
-            procedure: "heatmap_regression",
+            procedure: "heatmap-regression",
             minValidHeat: document.getElementById('settingsMinValidHeat').value, 
           }
         },
@@ -199,7 +199,7 @@
 
         if (model.converted && model.tfjsModelUrl) {
           document.getElementById('playLink').style.display = 'inline';
-          document.getElementById('playLink').href = '/ai-model/play-'+model.datasetName+'?id='+aiModelId;
+          document.getElementById('playLink').href = '/ai-model/play-face-5landmarks-detection?id='+aiModelId;
         }
       }, function(msg) {
         console.log(msg);

@@ -172,6 +172,10 @@
 	background-image: url(/images/dlt-hourglass-node.png);
 }
 
+.add-btn-output {
+	background-image: url(/images/dlt-output-node.png);
+}
+
 .add-btn-icloss {
 	background-image: url(/images/dlt-icloss-node.png);
 }

@@ -229,6 +229,12 @@ exports.update = function(req, res) {
                     case 'OBJECT_DETECTION_DATAGEN':
                         type = 'OBJECT_DETECTION_DATAGEN';
                         break;
+                    case 'OBJECT_DETECTION_2TIERS_DATAGEN':
+                        type = 'OBJECT_DETECTION_2TIERS_DATAGEN';
+                        break;
+                    case 'OBJECT_DETECTION_3TIERS_DATAGEN':
+                        type = 'OBJECT_DETECTION_3TIERS_DATAGEN';
+                        break;
                     case 'OBJECT_DETECTION_4TIERS_DATAGEN':
                         type = 'OBJECT_DETECTION_4TIERS_DATAGEN';
                         break;
@@ -551,7 +557,7 @@ exports.updateTrainResult = function(req, res) {
             FN.push(eFN);
             doc['FN'] = FN;
 
-            var ePrecision = eTP/(eTP+eFP);
+            var ePrecision = eTP+eFP==0 ? 0 : eTP/(eTP+eFP);
             var precision = aiModel.precision;
             precision.push(ePrecision);
             doc['precision'] = precision;
@@ -560,7 +566,7 @@ exports.updateTrainResult = function(req, res) {
                 doc['bestPrecisionWeights'] = weights;
             }
 
-            var eRecall = eTP/(eTP+eFN);
+            var eRecall = eTP+eFN==0 ? 0 : eTP/(eTP+eFN);
             var recall = aiModel.recall;
             recall.push(eRecall);
             doc['recall'] = recall;
@@ -776,6 +782,7 @@ exports.convert = function(req, res) {
 
                     const exec = require('child_process').exec;
                     exec('./codegen/codegen_convert.sh \''+decoded.uid+'\' \''+modelJson+'\' '+weightsFilePath+' \''+settings+'\'', function(err, stdout, stderr) {
+                        console.log(stderr);
                         if (err || stdout.slice(-7) != 'Success') {
                             updateStatus(false);
                             return;

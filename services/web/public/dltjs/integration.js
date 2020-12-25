@@ -1159,6 +1159,31 @@ export function onHourglassBlockChange(id, value) {
 	dlt.gCommander.onNodeUpdated(gNode);
 }
 
+export function onOutputLayerSelected() {
+	var rectInput = document.getElementById("OUTPUT_LAYER.rect");
+	var colorInput = document.getElementById("OUTPUT_LAYER.color");
+
+	rectInput.value = JSON.stringify(gNode.rect);
+	colorInput.value = gNode.color;
+}
+
+export function onOutputLayerChange(id, value) {
+	switch (id) {
+		case "OUTPUT_LAYER.rect":
+		gNode.rect = JSON_parse(value);
+		break;
+
+		case "OUTPUT_LAYER.color":
+		gNode.color = value;
+		break;
+
+		default:
+		break;
+	}
+
+	dlt.gCommander.onNodeUpdated(gNode);
+}
+
 export function onODLossFuncSelected() {
 	var rectInput = document.getElementById("LOSS_FUNC_OD4.rect");
 	var colorInput = document.getElementById("LOSS_FUNC_OD4.color");
@@ -1376,6 +1401,10 @@ dlt.gNotification.onNodeSelected = function(node) {
 
 		case "HOURGLASS_BLOCK":
 		onHourglassBlockSelected();
+		break;
+
+		case "OUTPUT_LAYER":
+		onOutputLayerSelected();
 		break;
 
 		case "LOSS_FUNC_OD4":
