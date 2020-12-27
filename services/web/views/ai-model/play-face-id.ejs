@@ -96,9 +96,9 @@
       }
 
       function loadEmbeddingDict() {
-        try { var gEmbeddingDict = JSON.parse(localStorage.getItem('FACEID_EMBEDDING_DICT')); } catch(e) {}
-        if (!gEmbeddingDict) { gEmbeddingDict = {}; }
-        return gEmbeddingDict;
+        try { var embeddingDict = JSON.parse(localStorage.getItem('FACEID_EMBEDDING_DICT')); } catch(e) {}
+        if (!embeddingDict) { embeddingDict = {}; }
+        return embeddingDict;
       }
 
       function idgen() {

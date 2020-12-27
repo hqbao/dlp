@@ -39,7 +39,7 @@ export function onImageClassificationDatagenChange(id, value) {
 		break;
 
 		case "IMAGE_CLASSIFICATION_DATAGEN.train_procedure":
-		gNode.nodeParams.params.name = value;
+		gNode.nodeParams.params.train_procedure = value;
 		break;
 
 		case "IMAGE_CLASSIFICATION_DATAGEN.image_shape":
@@ -106,7 +106,7 @@ export function onHeatmapRegressionDatagenChange(id, value) {
 		break;
 
 		case "HEATMAP_REGRESSION_DATAGEN.train_procedure":
-		gNode.nodeParams.params.name = value;
+		gNode.nodeParams.params.train_procedure = value;
 		break;
 
 		case "HEATMAP_REGRESSION_DATAGEN.image_shape":
@@ -1299,7 +1299,7 @@ dlt.gNotification.onClear = function(node) {
 dlt.gNotification.onNodeSelected = function(node) {
 	dlt.gNotification.onClear();
 	gNode = node;
-	console.log(gNode.nodeParams.params.shape);
+	console.log(gNode.nodeParams.params);
 	document.getElementById(gNode.nodeParams.blockType).style.display = "block";
 
 	switch (gNode.nodeParams.blockType) {

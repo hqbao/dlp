@@ -202,7 +202,7 @@ var gCommander = {
 					blockType: 'IMAGE_CLASSIFICATION_DATAGEN',
 					params: {
 						dataset_name: 'mnist-digits',
-						train_procedure: 'IMAGE_CLASSIFICATION',
+						train_procedure: 'image-classification',
 						image_shape: [28, 28, 1],
 						total_train_examples: 60000,
 						total_test_examples: 10000,
@@ -233,7 +233,7 @@ var gCommander = {
 					blockType: 'HEATMAP_REGRESSION_DATAGEN',
 					params: {
 						dataset_name: 'faceali128x128',
-						train_procedure: 'HEATMAP_REGRESSION',
+						train_procedure: 'heatmap-regression',
 						image_shape: [112, 112, 1],
 						total_train_examples: 1000,
 						total_test_examples: 200,
@@ -264,7 +264,7 @@ var gCommander = {
 					blockType: 'OBJECT_DETECTION_DATAGEN',
 					params: {
 						dataset_name: 'face1024',
-						train_procedure: 'OBJECT_DETECTION',
+						train_procedure: 'object-detection-3tiers',
 						image_shape: [256, 256, 3],
 						anchor_sizes: [[[32, 32]], [[64, 64]], [[128, 128]]],
 						scale_sizes: [[64, 64], [32, 32], [16, 16]],

@@ -143,10 +143,15 @@
 				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.rect" placeholder="RECT" onchange="onImageClassificationDatagenChange(this.id, this.value)"><br>
 				<label>Color</label>
 				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.color" placeholder="COLOR" onchange="onImageClassificationDatagenChange(this.id, this.value)">
-				<label>Dataset name</label>
-				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.dataset_name" placeholder="DATASET NAME" onchange="onImageClassificationDatagenChange(this.id, this.value)">
+				<label>Dataset</label>
+				<select id="IMAGE_CLASSIFICATION_DATAGEN.dataset_name" onchange="onImageClassificationDatagenChange(this.id, this.value)">
+					<option value="mnist-digits">Digits</option>
+					<option value="faceid128x128">Face ID</option>
+				</select>
 				<label>Train procedure</label>
-				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.train_procedure" placeholder="TRAIN PROCEDURE" onchange="onImageClassificationDatagenChange(this.id, this.value)">
+				<select id="IMAGE_CLASSIFICATION_DATAGEN.train_procedure" onchange="onImageClassificationDatagenChange(this.id, this.value)">
+					<option value="image-classification">Image classification</option>
+				</select>
 				<label>Image shape</label>
 				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.image_shape" placeholder="IMAGE SHAPE" onchange="onImageClassificationDatagenChange(this.id, this.value)">
 				<label>Total train examples</label>
@@ -164,10 +169,14 @@
 				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.rect" placeholder="RECT" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)"><br>
 				<label>Color</label>
 				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.color" placeholder="COLOR" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
-				<label>Dataset name</label>
-				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.dataset_name" placeholder="DATASET NAME" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
+				<label>Dataset</label>
+				<select id="HEATMAP_REGRESSION_DATAGEN.dataset_name" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
+					<option value="faceali128x128">Face 5 landmarks</option>
+				</select>
 				<label>Train procedure</label>
-				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.train_procedure" placeholder="TRAIN PROCEDURE" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
+				<select id="HEATMAP_REGRESSION_DATAGEN.train_procedure" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
+					<option value="heatmap-regression">Heatmap regression</option>
+				</select>
 				<label>Image shape</label>
 				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.image_shape" placeholder="IMAGE SHAPE" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
 				<label>Total train examples</label>
@@ -185,10 +194,16 @@
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.rect" placeholder="RECT" onchange="addObjectDetectionDatagenChange(this.id, this.value)"><br>
 				<label>Color</label>
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.color" placeholder="COLOR" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
-				<label>Dataset name</label>
-				<input type="text" id="OBJECT_DETECTION_DATAGEN.dataset_name" placeholder="DATASET NAME" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
+				<label>Dataset</label>
+				<select id="OBJECT_DETECTION_DATAGEN.dataset_name" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
+					<option value="face1024">Face detection</option>
+				</select>
 				<label>Train procedure</label>
-				<input type="text" id="OBJECT_DETECTION_DATAGEN.train_procedure" placeholder="TRAIN PROCEDURE" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
+				<select id="OBJECT_DETECTION_DATAGEN.train_procedure" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
+					<option value="object-detection-1tier">Object detection 1 tier</option>
+					<option value="object-detection-2tiers">Object detection 2 tier</option>
+					<option value="object-detection-3tiers">Object detection 3 tier</option>
+				</select>
 				<label>Image shape</label>
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.image_shape" placeholder="IMAGE SHAPE" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 				<label>Anchor sizes</label>
