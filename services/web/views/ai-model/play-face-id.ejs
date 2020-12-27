@@ -37,19 +37,22 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <div style="width: 100%;text-align: center;">
-            <img id="preview" src="" width="256" height="256" style="float: left;position: fixed;display: none;"/>
+          <div style="max-width: 256px;margin: auto;">
             <video width="256" height="256" style="position: fixed;background-color: black;z-index: 1;"></video>
             <canvas id="overlay" width="256" height="256" style="position: relative;left: 0px;background-color: none;z-index: 2;">
           </div>
         </div>
-        <div class="col-12" style="text-align: center;">
-          <button class="btn btn-success" onclick="onStartClicked()">START</button>
-          <button class="btn btn-danger" onclick="onStopClicked()">STOP</button>
+        <div class="col-12">
+          <div style="max-width: 256px;margin: auto;">
+            <button style="width: 100%;" class="btn btn-success mb-2" onclick="onStartClicked()">Start</button>
+            <button style="width: 100%;" class="btn btn-danger mb-2" onclick="onStopClicked()">Stop</button>
+            <button style="width: 100%;" class="btn btn-warning mb-2" onclick="idgen()">Update face ID</button>
+            <button style="width: 100%;" class="btn btn-warning mb-2" onclick="clearFaceId()">Clear face ID</button>
+          </div>
         </div>
       </div>
     </div>
-    <div style="height: 660px;width: 330px;position: fixed;left: 8px;top: 64px;overflow: auto;">
+    <div style="height: 660px;width: 330px;position: fixed;left: -16px;top: 64px;overflow: auto;direction: rtl;">
       <ul id="tempItem" class="list-group" style="display: none;">
         <li class="list-group-item">
           <div style="float: left;">{IMAGE_TAG}</div>
@@ -59,18 +62,21 @@
           </div>
         </li>
       </ul>
-      <ul id="itemList" class="list-group"></ul>
+      <ul id="itemList" class="list-group" style="direction: ltr;"></ul>
     </div>
     <script type="text/javascript" src="/js/global.js"></script>
     <script type="text/javascript">
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
+      var gVideo = document.querySelector('video');
+      var isVideoReady = false;
+
+      var detectorCanvas = document.createElement('canvas');
+      var detectorCtx = detectorCanvas.getContext('2d');
+
+      var croppingCanvas = document.createElement('canvas');
+      var croppingCtx = croppingCanvas.getContext('2d');
 
       var overlayCanvas = document.getElementById('overlay');
       var overlayCtx = overlayCanvas.getContext('2d');
-
-      var preview = document.getElementById('preview');
-      var isVideoReady = false;
 
       var faceDetectionModel = null;
       var faceIdModel = null;
@@ -81,88 +87,175 @@
 
       var faceListElem = document.getElementById('itemList');
 
-      function recognize() {
-        return 'Unknown';
+      var gEmbeddingDict = {};
+
+      function clearFaceId() {
+        confirm('Are you sure?')
+        localStorage.setItem('FACEID_EMBEDDING_DICT', null);
+        localStorage.setItem('FACEID_LABELED_FACE_DICT', null);
       }
 
-      function label() {
-
+      function loadEmbeddingDict() {
+        try { var gEmbeddingDict = JSON.parse(localStorage.getItem('FACEID_EMBEDDING_DICT')); } catch(e) {}
+        if (!gEmbeddingDict) { gEmbeddingDict = {}; }
+        return gEmbeddingDict;
       }
 
-      function updateFaceList(image, name) {
-        var imageWrapper = document.createElement('div');
-        imageWrapper.appendChild(image);
+      function idgen() {
+        var embeddingDict = {};
 
-        var tempItem = document.getElementById('tempItem').cloneNode(true);
-        var html = tempItem.innerHTML;
-        html = html.replaceAll('{IMAGE_TAG}', imageWrapper.innerHTML);
-        html = html.replaceAll('{NAME}', name);
-        tempItem.innerHTML = html;
+        try { var labeledFaceDict = JSON.parse(localStorage.getItem('FACEID_LABELED_FACE_DICT')); } catch(e) {}
+        for (id in labeledFaceDict) {
+          var labeledFaces = labeledFaceDict[id];
+          var imageTensor = tf.tensor4d(labeledFaces);
+          imageTensor = tf.image.resizeBilinear(imageTensor, [112, 112]);
+          var inputTensor = tf.cast(imageTensor, 'float32');
+          var embeddings = faceIdModel.execute(inputTensor);
+          var embedding = embeddings.mean(0);
+          var embeddingArray = embedding.arraySync();
 
-        if (faceListElem.childNodes.length > 16) {
-          faceListElem.removeChild(faceListElem.childNodes[faceListElem.childNodes.length-1]);
+          embeddingDict[id] = embeddingArray;
         }
 
-        faceListElem.insertBefore(tempItem.firstElementChild, faceListElem.firstChild);
+        localStorage.setItem('FACEID_EMBEDDING_DICT', JSON.stringify(embeddingDict));
       }
 
-      function drawText(box, text) {
+      function onLabelClicked(self) {
+        self.style.display = 'none';
+
+        var id = self.previousElementSibling.value;
+        var imgElement = self.parentElement.previousElementSibling.firstElementChild;
+
+        var imageTensor = tf.browser.fromPixels(imgElement);
+        imageTensor = tf.cast(imageTensor, 'float32');
+        var imageArray = imageTensor.arraySync();
+
+        try { var labeledFaceDict = JSON.parse(localStorage.getItem('FACEID_LABELED_FACE_DICT')); } catch(e) {}
+        if (!labeledFaceDict) { labeledFaceDict = {}; }
+        if (!(id in labeledFaceDict)) { labeledFaceDict[id] = []; }
+        labeledFaceDict[id].push(imageArray);
+        localStorage.setItem('FACEID_LABELED_FACE_DICT', JSON.stringify(labeledFaceDict));
+
+        // Store in server
+        // storeImageInServer(imgElement);
+      }
+
+      function storeImageInServer(imgElement) {
+        fetch(imgElement.src)
+        .then(res => res.blob())
+        .then(blob => {
+          const file = new File([blob], id+'.png', blob);
+
+          var params = {
+            id: id,
+            file: file,
+          }
+
+          restapi.uploadFaceId('', '/upload/faceid', null, params, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+            var zipFaceidUrl = msgResp.url;
+
+          }, function(msg) {
+            console.log(msg);
+          });
+        });
+      }
+
+      function recognize(embeddingDict, embedding) {
+        var embeddingTensor = tf.tensor1d(embedding);
+        var minDistance = 1.0;
+        var id = 'Unknown';
+        for (_id in embeddingDict) {
+          var _embedding = embeddingDict[_id];
+          var _embeddingTensor = tf.tensor1d(_embedding);
+          var distanceTensor = tf.norm(tf.sub(embeddingTensor, _embeddingTensor));
+          var distance = distanceTensor.arraySync();
+          console.log(distance);
+          if (distance < minDistance) {
+            minDistance = distance;
+            id = _id;
+          }
+        }
+
+        return id;
+      }
+
+      function updateFaceList(croppedCanvas, name) {
+        croppedCanvas.toBlob(function(blob) {
+          // Create image
+          var croppedImage = new Image();
+          croppedImage.height = croppedCanvas.height;
+          croppedImage.width = croppedCanvas.width;
+          croppedImage.src = URL.createObjectURL(blob);
+
+          var imageWrapper = document.createElement('div');
+          imageWrapper.appendChild(croppedImage);
+
+          var tempItem = document.getElementById('tempItem').cloneNode(true);
+          var html = tempItem.innerHTML;
+          html = html.replaceAll('{IMAGE_TAG}', imageWrapper.innerHTML);
+          html = html.replaceAll('{NAME}', name);
+          tempItem.innerHTML = html;
+
+          if (faceListElem.childNodes.length > 16) {
+            faceListElem.removeChild(faceListElem.childNodes[faceListElem.childNodes.length-1]);
+          }
+
+          faceListElem.insertBefore(tempItem.firstElementChild, faceListElem.firstChild);
+        }, 'image/jpeg');
+      }
+
+      function drawBoxWithText(box, text) {
+        overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+
+        overlayCtx.beginPath();
+        overlayCtx.strokeStyle = "#FFFFFF";
+        overlayCtx.rect(box[1], box[0], (box[3]-box[1]), (box[2]-box[0]), Math.PI);
+        overlayCtx.stroke();
+
         overlayCtx.font = "16px Arial";
         overlayCtx.fillStyle = "#FFFFFF";
         overlayCtx.fillText(text, box[1]-4, box[0]-4);
       }
 
-      function drawBoxes(box) {
-        overlayCtx.beginPath();
-        overlayCtx.strokeStyle = "#FFFFFF";
-        overlayCtx.rect(box[1], box[0], (box[3]-box[1]), (box[2]-box[0]), Math.PI);
-        overlayCtx.stroke();
-      }
-
-      function handleFaceId(embedding, image, box) {
-        // Recognize
-        var name = recognize(embedding)
-
-        // Draw
-        overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
-        drawBoxes(box);
-        drawText(box, name);
-        updateFaceList(image, name);
-      }
-
-      async function inferFaceId(image, box) {
-        var pix = tf.browser.fromPixels(image);
+      function inferFaceId(croppedCanvas, croppedFaceBox, onFaceRecognized) {
+        var pix = tf.browser.fromPixels(croppedCanvas);
+        pix = tf.image.resizeBilinear(pix, [112, 112]);
+        // console.log(JSON.stringify(pix.arraySync()));
         pix = tf.cast(pix, 'float32');
         pix = pix.expandDims(0);
-        var prediction = await faceIdModel.executeAsync(pix);
-        handleFaceId(prediction.arraySync()[0], image, box);
+        var prediction = faceIdModel.execute(pix);
+        var embedding = prediction.arraySync()[0];
+
+        // Recognize
+        var name = recognize(gEmbeddingDict, embedding);
+        onFaceRecognized(name);
       }
 
-      function handleFaceDetection(validOutputs, boxes) {
-        for (var i = 0; i < validOutputs; i++) {
-          var box = boxes[i];
-          
-          var h = box[2] - box[0];
-          var w = box[3] - box[1];
-          var size = h > w ? h : w;
-          size *= 1.2;
-          canvas.height = size;
-          canvas.width = size;
-          ctx.drawImage(video, -(box[1]+0.5*(box[3]-box[1])-0.5*size), -(box[0]+0.5*(box[2]-box[0])-0.5*size));
-          canvas.toBlob(async function(blob) {
-            var image = document.createElement('img');
-            image.height = 112;
-            image.width = 112;
-            image.src = URL.createObjectURL(blob);
-            var t = Date.now();
-            await inferFaceId(image, box);
-            console.log('Face ID', Date.now()-t);
-          }, 'image/jpeg');
+      function handleFaceDetection(validOutputs, boxes, boxIdx, onFaceDetected) {
+        if (boxIdx >= validOutputs) {
+          onFaceDetected(null, null, null);
+          return;
         }
+
+        function next() {
+          handleFaceDetection(validOutputs, boxes, boxIdx+1, onFaceDetected);
+        }
+
+        var box = boxes[boxIdx];
+        var h = box[2] - box[0];
+        var w = box[3] - box[1];
+        var size = h > w ? h : w;
+        size *= 1.2;
+
+        croppingCanvas.height = size;
+        croppingCanvas.width = size;
+        croppingCtx.drawImage(detectorCanvas, -(box[1]+0.5*(box[3]-box[1])-0.5*size), -(box[0]+0.5*(box[2]-box[0])-0.5*size));
+        onFaceDetected(croppingCanvas, box, next);
       }
 
-      async function inferFaceDetection() {
-        var pix = tf.browser.fromPixels(preview);
+      async function inferFaceDetection(onFaceDetected) {
+        var pix = tf.browser.fromPixels(detectorCanvas);
+        pix = tf.image.resizeBilinear(pix, [256, 256]);
         pix = tf.cast(pix, 'float32');
         pix = pix.expandDims(0);
         var prediction = await faceDetectionModel.executeAsync(pix); // TFJS not working with tensorflow 2.4
@@ -178,40 +271,33 @@
           boxes = output2;
         }
 
-        await handleFaceDetection(validOutputs, boxes);
+        handleFaceDetection(validOutputs, boxes, 0, onFaceDetected);
       }
 
-      function loadedmetadata(e) {
-        
-      }
+      function loadedmetadata(e) {}
 
       function timeupdate(e) {
-        canvas.width = this.videoWidth;
-        canvas.height = this.videoHeight;
-        ctx.drawImage(this, 0, 0);
-        canvas.toBlob(function(blob) {
-          var objectURL = URL.createObjectURL(blob);
-          preview.src = objectURL;
-        }, 'image/jpeg');
+        detectorCanvas.height = 256;
+        detectorCanvas.width = 256;
+        detectorCtx.drawImage(this, 0, 0);
       }
 
       function ended(e) {}
 
-      var video = document.querySelector('video');
-      video.addEventListener('loadedmetadata', loadedmetadata, false);
-      video.addEventListener('timeupdate', timeupdate, false);
-      video.addEventListener('ended', ended, false);
+      gVideo.addEventListener('loadedmetadata', loadedmetadata, false);
+      gVideo.addEventListener('timeupdate', timeupdate, false);
+      gVideo.addEventListener('ended', ended, false);
 
       function onStopClicked() {
         if (isVideoReady) {
-          video.pause();
+          gVideo.pause();
           inference = false;
         }
       }
 
       function onStartClicked() {
         if (isVideoReady) {
-          video.play();
+          gVideo.play();
           inference = true;
         }
       }
@@ -220,8 +306,8 @@
         var constraints = {audio: false, video: {width: 256, height: 256}};
         navigator.mediaDevices.getUserMedia(constraints)
         .then(function(mediaStream) {
-          video.srcObject = mediaStream;
-          video.onloadedmetadata = function(e) {
+          gVideo.srcObject = mediaStream;
+          gVideo.onloadedmetadata = function(e) {
             isVideoReady = true;
           };
         })
@@ -235,21 +321,30 @@
           var model = msgResp;
           faceIdModel = await tf.loadGraphModel(model.tfjsModelUrl);
           faceDetectionModel = await tf.loadGraphModel(DLPS_URL+'/tfjs/face-detection/model.json');
+          gEmbeddingDict = loadEmbeddingDict();
           play();
         }, function(msg) {
           console.log(msg);
         });
       }
 
-      setInterval(async function(){
+      setInterval(function(){
         if (!inference) { return; }
         if (infering) { return; }
         infering = true;
-        var t = Date.now();
-        await inferFaceDetection();
-        console.log('Face detection', Date.now()-t);
-        infering = false;
-      }, 50);
+        inferFaceDetection(function(croppedCanvas, croppedFaceBox, next) {
+          if (next == null) {
+            infering = false;
+            return;
+          }
+
+          inferFaceId(croppedCanvas, croppedFaceBox, function(name) {
+            drawBoxWithText(croppedFaceBox, name);
+            updateFaceList(croppedCanvas, name);
+            next();
+          });
+        });
+      }, 10);
 
       load();
     </script>

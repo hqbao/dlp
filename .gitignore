@@ -119,6 +119,7 @@ dist
 services/web/public/upload/images/user/*
 services/web/public/upload/weights/*
 services/web/public/upload/tfjs/*
+services/web/public/upload/faceid/*
 
 # Misc
 **/dbscript.txt

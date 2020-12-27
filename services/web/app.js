@@ -129,10 +129,10 @@ app.get('/gdrive/refresh', gdrive.refresh);
 app.post('/upload/image', upload.image);
 app.post('/upload/weights', upload.weights);
 app.post('/upload/tfjs', upload.tfjs);
+app.post('/upload/faceid', upload.faceid);
+app.get('/upload/archive-faceid', upload.archiveFaceid);
 app.get('/upload/list-weights-files', upload.listWeightsFiles);
 app.get('/upload/list-tfjs', upload.listTFJS);
-app.delete('/upload/delete-weights-files', upload.deleteWeightsFiles);
-app.delete('/upload/delete-tfjs', upload.deleteTFJS);
 
 app.get('/', cIndex.index);
 app.get('/sign-in', cUser.signIn);

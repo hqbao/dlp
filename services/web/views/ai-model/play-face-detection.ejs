@@ -38,14 +38,13 @@
       <div class="row">
         <div class="col-12">
           <div style="width: 100%;text-align: center;">
-            <img id="preview" src="" width="256" height="256" style="float: left;position: fixed;display: none;" />
             <video width="256" height="256" style="position: fixed;background-color: black;z-index: 1;"></video>
             <canvas id="overlay" width="256" height="256" style="position: relative;left: 0px;background-color: none;z-index: 2;">
           </div>
         </div>
         <div class="col-12" style="text-align: center;">
-          <button class="btn btn-success" onclick="onStartClicked()">START</button>
-          <button class="btn btn-danger" onclick="onStopClicked()">STOP</button>
+          <button class="btn btn-success" onclick="onStartClicked()">Start</button>
+          <button class="btn btn-danger" onclick="onStopClicked()">Stop</button>
         </div>
       </div>
     </div>
@@ -54,11 +53,10 @@
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
 
+      var isVideoReady = false;
+
       var overlayCanvas = document.getElementById('overlay');
       var overlayCtx = overlayCanvas.getContext('2d');
-
-      var preview = document.getElementById('preview');
-      var isVideoReady = false;
 
       var aiModelId = getParamInUrl('id');
       var faceDetectionModel = null;
@@ -81,7 +79,7 @@
       }
 
       async function inferFaceDetection() {
-        var pix = tf.browser.fromPixels(preview);
+        var pix = tf.browser.fromPixels(canvas);
         pix = tf.cast(pix, 'float32');
         pix = pix.expandDims(0);
         var prediction = await faceDetectionModel.executeAsync(pix); // TFJS not working with tensorflow 2.4
@@ -100,16 +98,13 @@
         handleFaceDetection(validOutputs, boxes);
       }
 
-      function loadedmetadata(e) {}
+      function loadedmetadata(e) {
+        canvas.width = 256;
+        canvas.height = 256;
+      }
 
       function timeupdate(e) {
-        canvas.width = this.videoWidth;
-        canvas.height = this.videoHeight;
         ctx.drawImage(this, 0, 0);
-        canvas.toBlob(function(blob) {
-          var objectURL = URL.createObjectURL(blob);
-          preview.src = objectURL;
-        }, 'image/jpeg');
       }
 
       function ended(e) {}

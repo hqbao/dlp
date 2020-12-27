@@ -789,11 +789,11 @@ exports.convert = function(req, res) {
                         }
 
                         var zipModelFilePath = './codegen/'+decoded.uid+'/model.zip';
-                        var output = fs.createWriteStream(zipModelFilePath);
-                        var archiver =  require('archiver');
-                        var zipArchive = archiver('zip');
-                        zipArchive.on('error', function(err){
-                            updateStatus(false);
+                        var output = fs.createWriteStream(zipModelFilePath, {overwrite: true});
+                        output.on('error', function(err){
+                            res.writeHead(400, {});
+                            res.write(JSON.stringify({msgCode: 1003, msgResp: 'Error'}));
+                            res.end();
                         });
                         output.on('close', function () {
                             fs.readFile(zipModelFilePath, {}, function(err, fileData) {
@@ -813,6 +813,12 @@ exports.convert = function(req, res) {
                                     updateStatus(false);
                                 });
                             });
+                        });
+                        
+                        var archiver =  require('archiver');
+                        var zipArchive = archiver('zip');
+                        zipArchive.on('error', function(err){
+                            updateStatus(false);
                         });
                         zipArchive.pipe(output);
                         zipArchive.directory('./codegen/'+decoded.uid+'/tfjs/', false);

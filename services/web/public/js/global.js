@@ -155,7 +155,45 @@ var restapi = {
 					succeed(msg.msgResp);
 				}
 				else {
-					document.getElementById('genericError').innerHTML = 'Can\'t upload image';
+					fail(msg);
+				}
+			}
+		}
+		http.send(formData);
+	},
+	uploadFaceId: function(url, path, query, params, token, redirectUrl401, succeed, fail) {
+		var queryStr = serialize(query);
+		if (queryStr) { queryStr = '?'+queryStr; }
+		var url = url+path+queryStr;
+
+		var formData = new FormData();
+		formData.append('id', params.id);
+		formData.append('file', params.file);
+
+		var http = new XMLHttpRequest();
+		http.open('POST', url, true);
+		if (token) {
+			http.setRequestHeader('Authorization', 'Bearer '+token);
+		}
+
+		http.onreadystatechange = function() {
+			if(http.readyState == 4) {
+				if (http.status == 401) {
+					location.href = redirectUrl401;
+					return;
+				}
+
+				try { var msg = JSON.parse(http.responseText); }
+				catch (e) {
+					fail({msgCode: 2001, msgResp: 'Exception: parse JSON'})
+					return;
+				}
+
+				if (msg.msgCode == 1000) {
+					succeed(msg.msgResp);
+				}
+				else {
+					fail(msg);
 				}
 			}
 		}

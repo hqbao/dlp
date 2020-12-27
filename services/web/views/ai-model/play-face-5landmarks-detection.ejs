@@ -38,7 +38,6 @@
       <div class="row">
         <div class="col-12">
           <div style="width: 100%;text-align: center;">
-            <img id="preview" src="" width="112" height="112" style="float: left;position: fixed;display: none;" />
             <video width="448" height="448" style="position: fixed;background-color: black;z-index: 1;"></video>
             <canvas id="overlay" width="448" height="448" style="position: relative;left: 0px;background-color: none;z-index: 2;">
           </div>
@@ -105,7 +104,7 @@
       }
 
       function infer() {
-        var pix = tf.browser.fromPixels(preview);
+        var pix = tf.browser.fromPixels(canvas);
         pix = tf.mean(pix, -1, true);
         pix = tf.cast(pix, 'float32');
         pix = pix.expandDims(0);
@@ -125,10 +124,6 @@
 
       function timeupdate(e) {
         ctx.drawImage(this, 0, 0);
-        canvas.toBlob(function(blob) {
-          var objectURL = URL.createObjectURL(blob);
-          preview.src = objectURL;
-        }, 'image/jpeg');
       }
 
       function onEnded(e) {}
