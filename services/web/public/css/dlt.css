@@ -17,17 +17,20 @@ body {
 	height: 48px;
 	width: 48px;
 	margin-bottom: 8px;
+	background-color: #ffffff;
 	background-repeat: no-repeat;
 	background-position: center;
-	border: 2px solid #009933;
+	border: none;
 	border-radius: 8px;
 	cursor: pointer;
 	background-origin: content-box;
 	padding: 4px;
+	outline:none;
+	box-shadow: 4px 4px #808080;
 }
 
 .dtl-action button:active {
-	border: none;
+	transform: translateY(2px);
 }
 
 .save-btn {
@@ -72,9 +75,11 @@ body {
 	margin-bottom: 8px;
 	background-size: 106px 44px;
 	background-position: center;
-	border: 2px solid #c0c0c0;
+	border: none;
 	border-radius: 8px;
 	cursor: pointer;
+	outline:none;
+	box-shadow: 2px 2px #404040;
 }
 
 .add-btn-icdatagen {
@@ -210,6 +215,7 @@ body {
 	padding: 16px;
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 8px 0px 0px 8px;
+	display: none;
 }
 
 .settings-form {
@@ -248,9 +254,11 @@ body {
 	display: inline-block;
 	padding: 4px;
 	margin-bottom: 2px;
-	background-color: #000000;
+	background-color: #cccc00;
 	border-radius: 14px;
-	color: #e0e0e0;
+	color: #202020;
+	box-shadow: 2px 2px #404040;
+	text-transform: uppercase;
 }
 
 .settings-title {
@@ -270,6 +278,7 @@ body {
 	overflow: auto;
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 8px 0px 0px 8px;
+	display: none;
 }
 
 .dlt-errors ul {
@@ -282,11 +291,12 @@ body {
 	width: 188px;
 	border-style: solid;
 	border-width: 1px;
-	border-color: #ff0066;
+	border-color: #ff0000;
 	border-radius: 4px;
 	padding: 4px;
 	margin-bottom: 8px;
-	color: #ff0066;
+	background-color: #ffffff;
+	color: #ff0000;
 	font-size: 12px;
 }
 

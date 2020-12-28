@@ -1321,17 +1321,20 @@ export function onHMRLossFuncChange(id, value) {
 }
 
 dlt.gNotification.onClear = function(node) {
-	var settingsForms = document.getElementsByClassName("settings-form");
+	var settingsForms = document.getElementsByClassName('settings-form');
 	for (var i = 0; i < settingsForms.length; i++) {
 		settingsForms[i].style.display = "none";
 	}
+
+	document.getElementById('nodeSettingsWrapper').style.display = 'none';
 };
 
 dlt.gNotification.onNodeSelected = function(node) {
 	dlt.gNotification.onClear();
 	gNode = node;
 	console.log(gNode.nodeParams.params);
-	document.getElementById(gNode.nodeParams.blockType).style.display = "block";
+	document.getElementById(gNode.nodeParams.blockType).style.display = 'block';
+	document.getElementById('nodeSettingsWrapper').style.display = 'block';
 
 	switch (gNode.nodeParams.blockType) {
 		case "IMAGE_CLASSIFICATION_DATAGEN":
@@ -1460,14 +1463,16 @@ dlt.gNotification.onNodeSelected = function(node) {
 };
 
 dlt.gNotification.onError = function(errors) {
-	var errorMessages = "";
+	var errorMessages = '';
 	for (var i = 0; i < errors.length; i++) {
 		var error = errors[i];
-		errorMessages += "<li>" + error + "</li>";
+		errorMessages += '<li>' + error + '</li>';
 	}
 
-	var errorsUl = document.getElementById("errorValidation");
+	var errorsUl = document.getElementById('errorValidation');
 	errorsUl.innerHTML = errorMessages;
+
+	document.getElementById('errorValidationWrapper').style.display = errorMessages=='' ? 'none' : 'block';
 };
 
 function JSON_parse(value) {

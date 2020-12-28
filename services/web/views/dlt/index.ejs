@@ -99,7 +99,7 @@
 		</script>
 	</head>
 	<body>
-		<div id="loadingEffect" style="position: fixed;width: 100%;height: 100%;background-color: #000000;opacity: 0.5;text-align: center;display: none;z-index: 100;"><img src="/images/loading.gif" alt="loading" width=250 style="margin-top: 16px;" /></div>
+		<div id="loadingEffect" style="position: fixed;width: 100%;height: 100%;background-color: #000000;background-color: rgba(0, 0, 0, 0.7);text-align: center;z-index: 100;display: none;"><img src="/images/loading.gif" alt="loading" width=250 style="margin-top: 16px;" /></div>
 		<script type="text/javascript">
 			function askName() {
 				var model = undefined;
@@ -134,10 +134,10 @@
 			<button class="import-btn" onclick="importFile();" title="Import"></button>
 			<button class="export-btn" onclick="exportFile();" title="Export"></button>
 		</div>
-		<div class="dlt-errors">
-			<ul id=errorValidation></ul>
+		<div id="errorValidationWrapper" class="dlt-errors">
+			<ul id="errorValidation"></ul>
 		</div>
-		<div class="dlt-node-settings">
+		<div id="nodeSettingsWrapper" class="dlt-node-settings">
 			<form id="IMAGE_CLASSIFICATION_DATAGEN" class="settings-form">
 				<h5 class="settings-title">IMAGE CLASSIFICATION DATAGEN</h5>
 				<label>Dataset</label>
