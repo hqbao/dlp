@@ -1105,9 +1105,11 @@ export function onRFEBlockChange(id, value) {
 export function onODHeadBlockSelected() {
 	var rectInput = document.getElementById("OD_HEAD_BLOCK.rect");
 	var colorInput = document.getElementById("OD_HEAD_BLOCK.color");
+	var kInput = document.getElementById("OD_HEAD_BLOCK.k");
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
+	kInput.value = gNode.nodeParams.params.k;
 }
 
 export function onODHeadBlockChange(id, value) {
@@ -1118,6 +1120,10 @@ export function onODHeadBlockChange(id, value) {
 
 		case "OD_HEAD_BLOCK.color":
 		gNode.color = value;
+		break;
+
+		case "OD_HEAD_BLOCK.k":
+		gNode.nodeParams.params.k = parseInt(value);
 		break;
 
 		default:

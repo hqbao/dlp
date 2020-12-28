@@ -152,13 +152,13 @@
 				<label>Image shape</label>
 				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.image_shape" placeholder="IMAGE SHAPE" onchange="onImageClassificationDatagenChange(this.id, this.value)">
 				<label>Total train examples</label>
-				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.total_train_examples" placeholder="TOTAL TRAIN EXAMPLES" onchange="onImageClassificationDatagenChange(this.id, this.value)">
+				<input type="number" id="IMAGE_CLASSIFICATION_DATAGEN.total_train_examples" placeholder="TOTAL TRAIN EXAMPLES" onchange="onImageClassificationDatagenChange(this.id, this.value)">
 				<label>Total test examples</label>
-				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.total_test_examples" placeholder="TOTAL TEST EXAMPLES" onchange="onImageClassificationDatagenChange(this.id, this.value)">
+				<input type="number" id="IMAGE_CLASSIFICATION_DATAGEN.total_test_examples" placeholder="TOTAL TEST EXAMPLES" onchange="onImageClassificationDatagenChange(this.id, this.value)">
 				<label>Batch size</label>
-				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.batch_size" placeholder="BATCH SIZE" onchange="onImageClassificationDatagenChange(this.id, this.value)">
+				<input type="number" id="IMAGE_CLASSIFICATION_DATAGEN.batch_size" placeholder="BATCH SIZE" onchange="onImageClassificationDatagenChange(this.id, this.value)">
 				<label>Epochs</label>
-				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.epochs" placeholder="EPOCHS" onchange="onImageClassificationDatagenChange(this.id, this.value)">
+				<input type="number" id="IMAGE_CLASSIFICATION_DATAGEN.epochs" placeholder="EPOCHS" onchange="onImageClassificationDatagenChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.rect" placeholder="RECT" onchange="onImageClassificationDatagenChange(this.id, this.value)">
 				<label>Color</label>
@@ -177,13 +177,13 @@
 				<label>Image shape</label>
 				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.image_shape" placeholder="IMAGE SHAPE" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
 				<label>Total train examples</label>
-				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.total_train_examples" placeholder="TOTAL TRAIN EXAMPLES" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
+				<input type="number" id="HEATMAP_REGRESSION_DATAGEN.total_train_examples" placeholder="TOTAL TRAIN EXAMPLES" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
 				<label>Total test examples</label>
-				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.total_test_examples" placeholder="TOTAL TEST EXAMPLES" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
+				<input type="number" id="HEATMAP_REGRESSION_DATAGEN.total_test_examples" placeholder="TOTAL TEST EXAMPLES" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
 				<label>Batch size</label>
-				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.batch_size" placeholder="BATCH SIZE" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
+				<input type="number" id="HEATMAP_REGRESSION_DATAGEN.batch_size" placeholder="BATCH SIZE" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
 				<label>Epochs</label>
-				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.epochs" placeholder="EPOCHS" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
+				<input type="number" id="HEATMAP_REGRESSION_DATAGEN.epochs" placeholder="EPOCHS" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.rect" placeholder="RECT" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
 				<label>Color</label>
@@ -212,7 +212,7 @@
 				<label>Anchor sampling</label>
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.anchor_sampling" placeholder="ANCHOR SAMPLING" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 				<label>Epochs</label>
-				<input type="text" id="OBJECT_DETECTION_DATAGEN.epochs" placeholder="EPOCHS" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
+				<input type="number" id="OBJECT_DETECTION_DATAGEN.epochs" placeholder="EPOCHS" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.rect" placeholder="RECT" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 				<label>Color</label>
@@ -221,7 +221,7 @@
 			<form id="INPUT_LAYER" class="settings-form">
 				<h5 class="settings-title">INPUT LAYER</h5>
 				<label>Batch size</label>
-				<input type="text" id="INPUT_LAYER.batch_size" placeholder="BATCH SIZE" onchange="onInputLayerChange(this.id, this.value)">
+				<input type="number" id="INPUT_LAYER.batch_size" placeholder="BATCH SIZE" onchange="onInputLayerChange(this.id, this.value)">
 				<label>Image shape</label>
 				<input type="text" id="INPUT_LAYER.input_shape" placeholder="SHAPE" onchange="onInputLayerChange(this.id, this.value)">
 				<label>Data type</label>
@@ -241,7 +241,7 @@
 				<label>Name</label>
 				<input type="text" id="DENSE_LAYER.name" placeholder="NAME" onchange="onDenseLayerChange(this.id, this.value)">
 				<label>Units</label>
-				<input type="text" id="DENSE_LAYER.units" placeholder="UNITS" onchange="onDenseLayerChange(this.id, this.value)">
+				<input type="number" id="DENSE_LAYER.units" placeholder="UNITS" onchange="onDenseLayerChange(this.id, this.value)">
 				<label>Use bias</label>
 				<select id="DENSE_LAYER.use_bias" onchange="onDenseLayerChange(this.id, this.value)">
 					<option value="1">Yes</option>
@@ -316,7 +316,7 @@
 				<label>Name</label>
 				<input type="text" id="DROPOUT_LAYER.name" placeholder="NAME" onchange="onDropoutLayerChange(this.id, this.value)">
 				<label>Rate</label>
-				<input type="text" id="DROPOUT_LAYER.rate" placeholder="RATE" onchange="onDropoutLayerChange(this.id, this.value)">
+				<input type="number" step='0.01' id="DROPOUT_LAYER.rate" placeholder="RATE" onchange="onDropoutLayerChange(this.id, this.value)">
 				<label>Trainable</label>
 				<input type="text" id="DROPOUT_LAYER.trainable" placeholder="TRAINABLE" onchange="onDropoutLayerChange(this.id, this.value)">
 				<label>Rect</label>
@@ -366,7 +366,7 @@
 			<form id="ORDINAL_LAYER" class="settings-form">
 				<h5 class="settings-title">ORIDNAL LAYER</h5>
 				<label>Order</label>
-				<input type="text" id="ORDINAL_LAYER.order" placeholder="ORDER" onchange="onOrdinalLayerChange(this.id, this.value)">
+				<input type="number" id="ORDINAL_LAYER.order" placeholder="ORDER" onchange="onOrdinalLayerChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="ORDINAL_LAYER.rect" placeholder="RECT" onchange="onOrdinalLayerChange(this.id, this.value)">
 				<label>Color</label>
@@ -375,7 +375,7 @@
 			<form id="CONCAT_LAYER" class="settings-form">
 				<h5 class="settings-title">CONCAT LAYER</h5>
 				<label>Axis</label>
-				<input type="text" id="CONCAT_LAYER.axis" placeholder="AXIS" onchange="onConcatLayerChange(this.id, this.value)">
+				<input type="number" id="CONCAT_LAYER.axis" placeholder="AXIS" onchange="onConcatLayerChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="CONCAT_LAYER.rect" placeholder="RECT" onchange="onConcatLayerChange(this.id, this.value)">
 				<label>Color</label>
@@ -384,7 +384,7 @@
 			<form id="SPLIT_LAYER" class="settings-form">
 				<h5 class="settings-title">SPLIT LAYER</h5>
 				<label>Axis</label>
-				<input type="text" id="SPLIT_LAYER.axis" placeholder="AXIS" onchange="onSplitLayerChange(this.id, this.value)">
+				<input type="number" id="SPLIT_LAYER.axis" placeholder="AXIS" onchange="onSplitLayerChange(this.id, this.value)">
 				<label>Size splits</label>
 				<input type="text" id="SPLIT_LAYER.size_splits" placeholder="SIZE SPLITS" onchange="onSplitLayerChange(this.id, this.value)">
 				<label>Rect</label>
@@ -395,7 +395,7 @@
 			<form id="SPLITTED_LAYER" class="settings-form">
 				<h5 class="settings-title">SPLITTED LAYER</h5>
 				<label>Order</label>
-				<input type="text" id="SPLITTED_LAYER.order" placeholder="ORDER" onchange="onSplittedLayerChange(this.id, this.value)">
+				<input type="number" id="SPLITTED_LAYER.order" placeholder="ORDER" onchange="onSplittedLayerChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="SPLITTED_LAYER.rect" placeholder="RECT" onchange="onSplittedLayerChange(this.id, this.value)">
 				<label>Color</label>
@@ -462,7 +462,7 @@
 					<option value="linear">Linear</option>
 				</select>
 				<label>Repeat</label>
-				<input type="text" id="CONV2D_BLOCK.repeat" placeholder="REPEAT" onchange="onConv2DBlockChange(this.id, this.value)">
+				<input type="number" id="CONV2D_BLOCK.repeat" placeholder="REPEAT" onchange="onConv2DBlockChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="CONV2D_BLOCK.rect" placeholder="RECT" onchange="onConv2DBlockChange(this.id, this.value)">
 				<label>Color</label>
@@ -505,7 +505,7 @@
 					<option value="0">No</option>
 				</select>
 				<label>Repeat</label>
-				<input type="text" id="RESNET_IDENTITY_BLOCK.repeat" placeholder="REPEAT" onchange="onResnetIdentityBlockChange(this.id, this.value)">
+				<input type="number" id="RESNET_IDENTITY_BLOCK.repeat" placeholder="REPEAT" onchange="onResnetIdentityBlockChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="RESNET_IDENTITY_BLOCK.rect" placeholder="RECT" onchange="onResnetIdentityBlockChange(this.id, this.value)">
 				<label>Color</label>
@@ -567,6 +567,8 @@
 			</form>
 			<form id="OD_HEAD_BLOCK" class="settings-form">
 				<h5 class="settings-title">OBJECT DETECTION HEAD BLOCK</h5>
+				<label>Anchors per point</label>
+				<input type="number" id="OD_HEAD_BLOCK.k" placeholder="K" onchange="onODHeadBlockChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="OD_HEAD_BLOCK.rect" placeholder="RECT" onchange="onODHeadBlockChange(this.id, this.value)">
 				<label>Color</label>
@@ -577,7 +579,7 @@
 				<label>Name</label>
 				<input type="text" id="HOURGLASS_BLOCK.name" placeholder="NAME" onchange="onHourglassBlockChange(this.id, this.value)">
 				<label>Deepth</label>
-				<input type="text" id="HOURGLASS_BLOCK.depth" placeholder="DEPTH" onchange="onHourglassBlockChange(this.id, this.value)">
+				<input type="number" id="HOURGLASS_BLOCK.depth" placeholder="DEPTH" onchange="onHourglassBlockChange(this.id, this.value)">
 				<label>Use bias</label>
 				<select id="HOURGLASS_BLOCK.use_bias" onchange="onHourglassBlockChange(this.id, this.value)">
 					<option value="1">Yes</option>
@@ -594,7 +596,7 @@
 					<option value="0">No</option>
 				</select>
 				<label>Repeat</label>
-				<input type="text" id="HOURGLASS_BLOCK.repeat" placeholder="REPEAT" onchange="onHourglassBlockChange(this.id, this.value)">
+				<input type="number" id="HOURGLASS_BLOCK.repeat" placeholder="REPEAT" onchange="onHourglassBlockChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="HOURGLASS_BLOCK.rect" placeholder="RECT" onchange="onHourglassBlockChange(this.id, this.value)">
 				<label>Color</label>
@@ -614,9 +616,9 @@
 					<option value="od-loss">OD Loss</option>
 				</select>
 				<label>Total classes</label>
-				<input type="text" id="LOSS_FUNC_OD.total_classes" placeholder="TOTAL CLASSES" onchange="onODLossFuncChange(this.id, this.value)">
+				<input type="number" id="LOSS_FUNC_OD.total_classes" placeholder="TOTAL CLASSES" onchange="onODLossFuncChange(this.id, this.value)">
 				<label>Lambda</label>
-				<input type="text" id="LOSS_FUNC_OD.lamda" placeholder="LAMDA" onchange="onODLossFuncChange(this.id, this.value)">
+				<input type="number" step="0.01" id="LOSS_FUNC_OD.lamda" placeholder="LAMDA" onchange="onODLossFuncChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="LOSS_FUNC_OD.rect" placeholder="RECT" onchange="onODLossFuncChange(this.id, this.value)">
 				<label>Color</label>

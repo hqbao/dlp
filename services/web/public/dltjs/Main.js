@@ -911,7 +911,9 @@ var gCommander = {
 				nodeParams: {
 					type: 'ONE_ANY',
 					blockType: 'OD_HEAD_BLOCK',
-					params: {}
+					params: {
+						k: 1,
+					}
 				},
 			});
 		gUIApp.nodeManager.snapshot();
