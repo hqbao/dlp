@@ -485,6 +485,10 @@ class TensorFlowValidator {
 						break;
 					}
 
+					case 'OD_HEAD_BLOCK': {
+						break;
+					}
+
 					case 'HOURGLASS_BLOCK': {
 						if (!Number.isInteger(node.nodeParams.params.depth)) {
 							errors.push(node.getName()+' depth must be integer');
@@ -1155,6 +1159,17 @@ class TensorFlowValidator {
 				}
 
 				case 'RFE_BLOCK': {
+					var shape = prevNode.nodeParams.params.shape;
+					if (shape == undefined) {
+						errors.push('Invalid shape node connects to '+node.getName());
+						return errors;
+					}
+
+					node.nodeParams.params.shape = shape.slice();
+					break;
+				}
+
+				case 'OD_HEAD_BLOCK': {
 					var shape = prevNode.nodeParams.params.shape;
 					if (shape == undefined) {
 						errors.push('Invalid shape node connects to '+node.getName());

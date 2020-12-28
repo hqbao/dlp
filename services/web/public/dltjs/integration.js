@@ -1102,6 +1102,31 @@ export function onRFEBlockChange(id, value) {
 	dlt.gCommander.onNodeUpdated(gNode);
 }
 
+export function onODHeadBlockSelected() {
+	var rectInput = document.getElementById("OD_HEAD_BLOCK.rect");
+	var colorInput = document.getElementById("OD_HEAD_BLOCK.color");
+
+	rectInput.value = JSON.stringify(gNode.rect);
+	colorInput.value = gNode.color;
+}
+
+export function onODHeadBlockChange(id, value) {
+	switch (id) {
+		case "OD_HEAD_BLOCK.rect":
+		gNode.rect = JSON_parse(value);
+		break;
+
+		case "OD_HEAD_BLOCK.color":
+		gNode.color = value;
+		break;
+
+		default:
+		break;
+	}
+
+	dlt.gCommander.onNodeUpdated(gNode);
+}
+
 export function onHourglassBlockSelected() {
 	var rectInput = document.getElementById("HOURGLASS_BLOCK.rect");
 	var colorInput = document.getElementById("HOURGLASS_BLOCK.color");
@@ -1397,6 +1422,10 @@ dlt.gNotification.onNodeSelected = function(node) {
 
 		case "RFE_BLOCK":
 		onRFEBlockSelected();
+		break;
+
+		case "OD_HEAD_BLOCK":
+		onODHeadBlockSelected();
 		break;
 
 		case "HOURGLASS_BLOCK":

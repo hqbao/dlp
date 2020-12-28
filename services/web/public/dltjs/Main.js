@@ -893,6 +893,29 @@ var gCommander = {
 			});
 		gUIApp.nodeManager.snapshot();
 	},
+	addODHeadBlock: function() {
+		gUIApp.nodeManager.addNode(
+			UINodeManager.NODE_TYPE_CONNECTABLE,
+			{
+				nodeSettings: {
+					color: '#660066', 
+					rect: {
+						y1: gUIApp.refPosition.y-64, 
+						x1: gUIApp.refPosition.x-64, 
+						y2: gUIApp.refPosition.y+64, 
+						x2: gUIApp.refPosition.x+64,
+					}, 
+					name: 'ODHeadBlock',
+					shortName: 'OD HEAD',
+				},
+				nodeParams: {
+					type: 'ONE_ANY',
+					blockType: 'OD_HEAD_BLOCK',
+					params: {}
+				},
+			});
+		gUIApp.nodeManager.snapshot();
+	},
 	ODLossFunc: function() {
 		gUIApp.nodeManager.addNode(
 			UINodeManager.NODE_TYPE_CONNECTABLE,

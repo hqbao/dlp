@@ -173,6 +173,10 @@ body {
 	background-image: url(/images/dlt-rfe-node.png);
 }
 
+.add-btn-odhead {
+	background-image: url(/images/dlt-odhead-node.png);
+}
+
 .add-btn-hourglass {
 	background-image: url(/images/dlt-hourglass-node.png);
 }

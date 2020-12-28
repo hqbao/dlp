@@ -40,6 +40,7 @@
 			window.addResnetIdentityBlock = dlt.gCommander.addResnetIdentityBlock;
 			window.addResnetSIdentityBlock = dlt.gCommander.addResnetSIdentityBlock;
 			window.addRFEBlock = dlt.gCommander.addRFEBlock;
+			window.addODHeadBlock = dlt.gCommander.addODHeadBlock;
 			window.addHourglassBlock = dlt.gCommander.addHourglassBlock;
 			window.addOutputLayer = dlt.gCommander.addOutputLayer;
 			window.ICLossFunc = dlt.gCommander.ICLossFunc;
@@ -75,6 +76,7 @@
 			window.onResnetIdentityBlockChange = itg.onResnetIdentityBlockChange;
 			window.onResnetSIdentityBlockChange = itg.onResnetSIdentityBlockChange;
 			window.onRFEBlockChange = itg.onRFEBlockChange;
+			window.onODHeadBlockChange = itg.onODHeadBlockChange;
 			window.onHourglassBlockChange = itg.onHourglassBlockChange;
 			window.onOutputLayerChange = itg.onOutputLayerChange;
 			window.onODLossFuncChange = itg.onODLossFuncChange;
@@ -563,6 +565,13 @@
 				<label>Color</label>
 				<input type="color" id="RFE_BLOCK.color" placeholder="COLOR" onchange="onRFEBlockChange(this.id, this.value)">
 			</form>
+			<form id="OD_HEAD_BLOCK" class="settings-form">
+				<h5 class="settings-title">OBJECT DETECTION HEAD BLOCK</h5>
+				<label>Rect</label>
+				<input type="text" id="OD_HEAD_BLOCK.rect" placeholder="RECT" onchange="onODHeadBlockChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="OD_HEAD_BLOCK.color" placeholder="COLOR" onchange="onODHeadBlockChange(this.id, this.value)">
+			</form>
 			<form id="HOURGLASS_BLOCK" class="settings-form">
 				<h5 class="settings-title">HOURGLASS BLOCK</h5>
 				<label>Name</label>
@@ -657,6 +666,7 @@
 			<button class="add-btn-resnetid" onclick="addResnetIdentityBlock();"></button>
 			<button class="add-btn-resnetsid" onclick="addResnetSIdentityBlock();"></button>
 			<button class="add-btn-rfe" onclick="addRFEBlock();"></button>
+			<button class="add-btn-odhead" onclick="addODHeadBlock();"></button>
 			<button class="add-btn-hourglass" onclick="addHourglassBlock();"></button>
 			<button class="add-btn-output" onclick="addOutputLayer();"></button>
 			<button class="add-btn-icloss" onclick="ICLossFunc();"></button>
