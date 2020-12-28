@@ -3,7 +3,6 @@
 	<head>
 		<title>DLP - Deep Learning Tool</title>
 		<link rel="stylesheet" href="/css/dlt.css">
-		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript" src="/js/global.js"></script>
 		<script src="/dltjs/UINode.js" type="module"></script>
 		<script src="/dltjs/UIBackgroundNode.js" type="module"></script>
@@ -97,7 +96,7 @@
 			}
 		</script>
 	</head>
-	<body style="margin: 0px;padding: 0px;">
+	<body>
 		<div id="loadingEffect" style="position: fixed;width: 100%;height: 100%;background-color: #000000;opacity: 0.5;text-align: center;display: none;z-index: 100;"><img src="/images/loading.gif" alt="loading" width=250 style="margin-top: 16px;" /></div>
 		<script type="text/javascript">
 			function askName() {
@@ -139,10 +138,6 @@
 		<div class="dlt-node-settings">
 			<form id="IMAGE_CLASSIFICATION_DATAGEN" class="settings-form">
 				<h5 class="settings-title">IMAGE CLASSIFICATION DATAGEN</h5>
-				<label>Rect</label>
-				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.rect" placeholder="RECT" onchange="onImageClassificationDatagenChange(this.id, this.value)"><br>
-				<label>Color</label>
-				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.color" placeholder="COLOR" onchange="onImageClassificationDatagenChange(this.id, this.value)">
 				<label>Dataset</label>
 				<select id="IMAGE_CLASSIFICATION_DATAGEN.dataset_name" onchange="onImageClassificationDatagenChange(this.id, this.value)">
 					<option value="mnist-digits">Digits</option>
@@ -162,13 +157,13 @@
 				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.batch_size" placeholder="BATCH SIZE" onchange="onImageClassificationDatagenChange(this.id, this.value)">
 				<label>Epochs</label>
 				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.epochs" placeholder="EPOCHS" onchange="onImageClassificationDatagenChange(this.id, this.value)">
+				<label>Rect</label>
+				<input type="text" id="IMAGE_CLASSIFICATION_DATAGEN.rect" placeholder="RECT" onchange="onImageClassificationDatagenChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="IMAGE_CLASSIFICATION_DATAGEN.color" placeholder="COLOR" onchange="onImageClassificationDatagenChange(this.id, this.value)">
 			</form>
 			<form id="HEATMAP_REGRESSION_DATAGEN" class="settings-form">
 				<h5 class="settings-title">HEATMAP REGRESSION DATAGEN</h5>
-				<label>Rect</label>
-				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.rect" placeholder="RECT" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)"><br>
-				<label>Color</label>
-				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.color" placeholder="COLOR" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
 				<label>Dataset</label>
 				<select id="HEATMAP_REGRESSION_DATAGEN.dataset_name" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
 					<option value="faceali128x128">Face 5 landmarks</option>
@@ -187,13 +182,13 @@
 				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.batch_size" placeholder="BATCH SIZE" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
 				<label>Epochs</label>
 				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.epochs" placeholder="EPOCHS" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
+				<label>Rect</label>
+				<input type="text" id="HEATMAP_REGRESSION_DATAGEN.rect" placeholder="RECT" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="HEATMAP_REGRESSION_DATAGEN.color" placeholder="COLOR" onchange="onHeatmapRegressionDatagenChange(this.id, this.value)">
 			</form>
 			<form id="OBJECT_DETECTION_DATAGEN" class="settings-form">
 				<h5 class="settings-title">OBJECT DETECTION DATAGEN</h5>
-				<label>Rect</label>
-				<input type="text" id="OBJECT_DETECTION_DATAGEN.rect" placeholder="RECT" onchange="addObjectDetectionDatagenChange(this.id, this.value)"><br>
-				<label>Color</label>
-				<input type="text" id="OBJECT_DETECTION_DATAGEN.color" placeholder="COLOR" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 				<label>Dataset</label>
 				<select id="OBJECT_DETECTION_DATAGEN.dataset_name" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 					<option value="face1024">Face detection</option>
@@ -216,41 +211,52 @@
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.anchor_sampling" placeholder="ANCHOR SAMPLING" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 				<label>Epochs</label>
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.epochs" placeholder="EPOCHS" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
+				<label>Rect</label>
+				<input type="text" id="OBJECT_DETECTION_DATAGEN.rect" placeholder="RECT" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="OBJECT_DETECTION_DATAGEN.color" placeholder="COLOR" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 			</form>
 			<form id="INPUT_LAYER" class="settings-form">
 				<h5 class="settings-title">INPUT LAYER</h5>
-				<label>Rect</label>
-				<input type="text" id="INPUT_LAYER.rect" placeholder="RECT" onchange="onInputLayerChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="INPUT_LAYER.color" placeholder="COLOR" onchange="onInputLayerChange(this.id, this.value)">
 				<label>Batch size</label>
 				<input type="text" id="INPUT_LAYER.batch_size" placeholder="BATCH SIZE" onchange="onInputLayerChange(this.id, this.value)">
 				<label>Image shape</label>
 				<input type="text" id="INPUT_LAYER.input_shape" placeholder="SHAPE" onchange="onInputLayerChange(this.id, this.value)">
 				<label>Data type</label>
-				<input type="text" id="INPUT_LAYER.dtype" placeholder="DATA TYPE" onchange="onInputLayerChange(this.id, this.value)">
+				<select id="INPUT_LAYER.dtype" onchange="onInputLayerChange(this.id, this.value)">
+					<option value="float32">float32</option>
+					<option value="float64">float64</option>
+					<option value="int32">int32</option>
+					<option value="int64">int64</option>
+				</select>
+				<label>Rect</label>
+				<input type="text" id="INPUT_LAYER.rect" placeholder="RECT" onchange="onInputLayerChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="INPUT_LAYER.color" placeholder="COLOR" onchange="onInputLayerChange(this.id, this.value)">
 			</form>
 			<form id="DENSE_LAYER" class="settings-form">
 				<h5 class="settings-title">DENSE LAYER</h5>
-				<label>Rect</label>
-				<input type="text" id="DENSE_LAYER.rect" placeholder="RECT" onchange="onDenseLayerChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="DENSE_LAYER.color" placeholder="COLOR" onchange="onDenseLayerChange(this.id, this.value)">
 				<label>Name</label>
 				<input type="text" id="DENSE_LAYER.name" placeholder="NAME" onchange="onDenseLayerChange(this.id, this.value)">
 				<label>Units</label>
 				<input type="text" id="DENSE_LAYER.units" placeholder="UNITS" onchange="onDenseLayerChange(this.id, this.value)">
 				<label>Use bias</label>
-				<input type="text" id="DENSE_LAYER.use_bias" placeholder="USE BIAS" onchange="onDenseLayerChange(this.id, this.value)">
+				<select id="DENSE_LAYER.use_bias" onchange="onDenseLayerChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Trainable</label>
-				<input type="text" id="DENSE_LAYER.trainable" placeholder="TRAINABLE" onchange="onDenseLayerChange(this.id, this.value)"><br>
+				<select id="DENSE_LAYER.trainable" onchange="onDenseLayerChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
+				<label>Rect</label>
+				<input type="text" id="DENSE_LAYER.rect" placeholder="RECT" onchange="onDenseLayerChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="DENSE_LAYER.color" placeholder="COLOR" onchange="onDenseLayerChange(this.id, this.value)">
 			</form>
 			<form id="CONV2D_LAYER" class="settings-form">
 				<h5 class="settings-title">CONV2D LAYER</h5>
-				<label>Rect</label>
-				<input type="text" id="CONV2D_LAYER.rect" placeholder="RECT" onchange="onConv2DLayerChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="CONV2D_LAYER.color" placeholder="COLOR" onchange="onConv2DLayerChange(this.id, this.value)">
 				<label>Name</label>
 				<input type="text" id="CONV2D_LAYER.name" placeholder="NAME" onchange="onConv2DLayerChange(this.id, this.value)">
 				<label>Filters</label>
@@ -259,142 +265,165 @@
 				<input type="text" id="CONV2D_LAYER.kernel_size" placeholder="KERNEL SIZE" onchange="onConv2DLayerChange(this.id, this.value)"><label>Strides</label>
 				<input type="text" id="CONV2D_LAYER.strides" placeholder="STRIDES" onchange="onConv2DLayerChange(this.id, this.value)">
 				<label>Padding</label>
-				<input type="text" id="CONV2D_LAYER.padding" placeholder="PADDING" onchange="onConv2DLayerChange(this.id, this.value)">
+				<select id="CONV2D_LAYER.padding" onchange="onConv2DLayerChange(this.id, this.value)">
+					<option value="same">Same</option>
+					<option value="valid">Valid</option>
+				</select>
 				<label>Use bias</label>
-				<input type="text" id="CONV2D_LAYER.use_bias" placeholder="USE BIAS" onchange="onConv2DLayerChange(this.id, this.value)">
+				<select id="CONV2D_LAYER.use_bias" onchange="onConv2DLayerChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Trainable</label>
-				<input type="text" id="CONV2D_LAYER.trainable" placeholder="TRAINABLE" onchange="onConv2DLayerChange(this.id, this.value)">
+				<select id="CONV2D_LAYER.trainable" onchange="onConv2DLayerChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
+				<label>Rect</label>
+				<input type="text" id="CONV2D_LAYER.rect" placeholder="RECT" onchange="onConv2DLayerChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="CONV2D_LAYER.color" placeholder="COLOR" onchange="onConv2DLayerChange(this.id, this.value)">
 			</form>
 			<form id="MAXPOOL2D_LAYER" class="settings-form">
 				<h5 class="settings-title">MAXPOOL2D LAYER</h5>
-				<label>Rect</label>
-				<input type="text" id="MAXPOOL2D_LAYER.rect" placeholder="RECT" onchange="onMaxPool2DLayerChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="MAXPOOL2D_LAYER.color" placeholder="COLOR" onchange="onMaxPool2DLayerChange(this.id, this.value)">
 				<label>Pool size</label>
 				<input type="text" id="MAXPOOL2D_LAYER.pool_size" placeholder="POOL SIZE" onchange="onMaxPool2DLayerChange(this.id, this.value)">
 				<label>Strides</label>
 				<input type="text" id="MAXPOOL2D_LAYER.strides" placeholder="STRIDES" onchange="onMaxPool2DLayerChange(this.id, this.value)">
 				<label>Padding</label>
-				<input type="text" id="MAXPOOL2D_LAYER.padding" placeholder="PADDING" onchange="onMaxPool2DLayerChange(this.id, this.value)">
+				<select id="MAXPOOL2D_LAYER.padding" onchange="onMaxPool2DLayerChange(this.id, this.value)">
+					<option value="same">Same</option>
+					<option value="valid">Valid</option>
+				</select>
+				<label>Rect</label>
+				<input type="text" id="MAXPOOL2D_LAYER.rect" placeholder="RECT" onchange="onMaxPool2DLayerChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="MAXPOOL2D_LAYER.color" placeholder="COLOR" onchange="onMaxPool2DLayerChange(this.id, this.value)">
 			</form>
 			<form id="UPSAMPLING2D_LAYER" class="settings-form">
 				<h5 class="settings-title">UPSAMPLING2D LAYER</h5>
+				<label>Size</label>
+				<input type="text" id="UPSAMPLING2D_LAYER.size" placeholder="SIZE" onchange="onUpSampling2DLayerChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="UPSAMPLING2D_LAYER.rect" placeholder="RECT" onchange="onUpSampling2DLayerChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="text" id="UPSAMPLING2D_LAYER.color" placeholder="COLOR" onchange="onUpSampling2DLayerChange(this.id, this.value)"><label>Size</label>
-				<input type="text" id="UPSAMPLING2D_LAYER.size" placeholder="SIZE" onchange="onUpSampling2DLayerChange(this.id, this.value)">
+				<input type="color" id="UPSAMPLING2D_LAYER.color" placeholder="COLOR" onchange="onUpSampling2DLayerChange(this.id, this.value)">
 			</form>
 			<form id="DROPOUT_LAYER" class="settings-form">
 				<h5 class="settings-title">DROPOUT LAYER</h5>
-				<label>Rect</label>
-				<input type="text" id="DROPOUT_LAYER.rect" placeholder="RECT" onchange="onDropoutLayerChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="DROPOUT_LAYER.color" placeholder="COLOR" onchange="onDropoutLayerChange(this.id, this.value)">
 				<label>Name</label>
 				<input type="text" id="DROPOUT_LAYER.name" placeholder="NAME" onchange="onDropoutLayerChange(this.id, this.value)">
 				<label>Rate</label>
 				<input type="text" id="DROPOUT_LAYER.rate" placeholder="RATE" onchange="onDropoutLayerChange(this.id, this.value)">
 				<label>Trainable</label>
 				<input type="text" id="DROPOUT_LAYER.trainable" placeholder="TRAINABLE" onchange="onDropoutLayerChange(this.id, this.value)">
+				<label>Rect</label>
+				<input type="text" id="DROPOUT_LAYER.rect" placeholder="RECT" onchange="onDropoutLayerChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="DROPOUT_LAYER.color" placeholder="COLOR" onchange="onDropoutLayerChange(this.id, this.value)">
 			</form>
 			<form id="FLATTEN_LAYER" class="settings-form">
 				<h5 class="settings-title">FLATTEN LAYER</h5>
 				<label>Rect</label>
 				<input type="text" id="FLATTEN_LAYER.rect" placeholder="RECT" onchange="onFlattenLayerChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="text" id="FLATTEN_LAYER.color" placeholder="COLOR" onchange="onFlattenLayerChange(this.id, this.value)">
+				<input type="color" id="FLATTEN_LAYER.color" placeholder="COLOR" onchange="onFlattenLayerChange(this.id, this.value)">
 			</form>
 			<form id="BATCH_NORM_LAYER" class="settings-form">
 				<h5 class="settings-title">BATCH NORM LAYER</h5>
-				<label>Rect</label>
-				<input type="text" id="BATCH_NORM_LAYER.rect" placeholder="RECT" onchange="onBatchNormLayerChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="BATCH_NORM_LAYER.color" placeholder="COLOR" onchange="onBatchNormLayerChange(this.id, this.value)">
 				<label>Name</label>
 				<input type="text" id="BATCH_NORM_LAYER.name" placeholder="NAME" onchange="onBatchNormLayerChange(this.id, this.value)">
 				<label>Trainable</label>
 				<input type="text" id="BATCH_NORM_LAYER.trainable" placeholder="TRAINABLE" onchange="onBatchNormLayerChange(this.id, this.value)">
+				<label>Rect</label>
+				<input type="text" id="BATCH_NORM_LAYER.rect" placeholder="RECT" onchange="onBatchNormLayerChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="BATCH_NORM_LAYER.color" placeholder="COLOR" onchange="onBatchNormLayerChange(this.id, this.value)">
 			</form>
 			<form id="ACTIVATION_LAYER" class="settings-form">
 				<h5 class="settings-title">ACTIVATION LAYER</h5>
+				<label>Activation</label>
+				<select id="ACTIVATION_LAYER.activation" onchange="onActivationLayerChange(this.id, this.value)">
+					<option value="relu">ReLU</option>
+					<option value="softmax">Softmax</option>
+					<option value="sigmoid">Sigmoid</option>
+					<option value="linear">Linear</option>
+				</select>
 				<label>Rect</label>
 				<input type="text" id="ACTIVATION_LAYER.rect" placeholder="RECT" onchange="onActivationLayerChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="text" id="ACTIVATION_LAYER.color" placeholder="COLOR" onchange="onActivationLayerChange(this.id, this.value)">
-				<label>Activation</label>
-				<input type="text" id="ACTIVATION_LAYER.activation" placeholder="ACTIVATION" onchange="onActivationLayerChange(this.id, this.value)">
+				<input type="color" id="ACTIVATION_LAYER.color" placeholder="COLOR" onchange="onActivationLayerChange(this.id, this.value)">
 			</form>
 			<form id="ADD_LAYER" class="settings-form">
 				<h5 class="settings-title">ADD LAYER</h5>
 				<label>Rect</label>
 				<input type="text" id="ADD_LAYER.rect" placeholder="RECT" onchange="onAddLayerChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="text" id="ADD_LAYER.color" placeholder="COLOR" onchange="onAddLayerChange(this.id, this.value)"><br>
+				<input type="color" id="ADD_LAYER.color" placeholder="COLOR" onchange="onAddLayerChange(this.id, this.value)">
 			</form>
 			<form id="ORDINAL_LAYER" class="settings-form">
 				<h5 class="settings-title">ORIDNAL LAYER</h5>
+				<label>Order</label>
+				<input type="text" id="ORDINAL_LAYER.order" placeholder="ORDER" onchange="onOrdinalLayerChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="ORDINAL_LAYER.rect" placeholder="RECT" onchange="onOrdinalLayerChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="text" id="ORDINAL_LAYER.color" placeholder="COLOR" onchange="onOrdinalLayerChange(this.id, this.value)">
-				<label>Order</label>
-				<input type="text" id="ORDINAL_LAYER.order" placeholder="ORDER" onchange="onOrdinalLayerChange(this.id, this.value)">
+				<input type="color" id="ORDINAL_LAYER.color" placeholder="COLOR" onchange="onOrdinalLayerChange(this.id, this.value)">
 			</form>
 			<form id="CONCAT_LAYER" class="settings-form">
 				<h5 class="settings-title">CONCAT LAYER</h5>
+				<label>Axis</label>
+				<input type="text" id="CONCAT_LAYER.axis" placeholder="AXIS" onchange="onConcatLayerChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="CONCAT_LAYER.rect" placeholder="RECT" onchange="onConcatLayerChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="text" id="CONCAT_LAYER.color" placeholder="COLOR" onchange="onConcatLayerChange(this.id, this.value)">
-				<label>Axis</label>
-				<input type="text" id="CONCAT_LAYER.axis" placeholder="AXIS" onchange="onConcatLayerChange(this.id, this.value)">
+				<input type="color" id="CONCAT_LAYER.color" placeholder="COLOR" onchange="onConcatLayerChange(this.id, this.value)">
 			</form>
 			<form id="SPLIT_LAYER" class="settings-form">
 				<h5 class="settings-title">SPLIT LAYER</h5>
-				<label>Rect</label>
-				<input type="text" id="SPLIT_LAYER.rect" placeholder="RECT" onchange="onSplitLayerChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="SPLIT_LAYER.color" placeholder="COLOR" onchange="onSplitLayerChange(this.id, this.value)">
 				<label>Axis</label>
 				<input type="text" id="SPLIT_LAYER.axis" placeholder="AXIS" onchange="onSplitLayerChange(this.id, this.value)">
 				<label>Size splits</label>
 				<input type="text" id="SPLIT_LAYER.size_splits" placeholder="SIZE SPLITS" onchange="onSplitLayerChange(this.id, this.value)">
+				<label>Rect</label>
+				<input type="text" id="SPLIT_LAYER.rect" placeholder="RECT" onchange="onSplitLayerChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="SPLIT_LAYER.color" placeholder="COLOR" onchange="onSplitLayerChange(this.id, this.value)">
 			</form>
 			<form id="SPLITTED_LAYER" class="settings-form">
 				<h5 class="settings-title">SPLITTED LAYER</h5>
+				<label>Order</label>
+				<input type="text" id="SPLITTED_LAYER.order" placeholder="ORDER" onchange="onSplittedLayerChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="SPLITTED_LAYER.rect" placeholder="RECT" onchange="onSplittedLayerChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="text" id="SPLITTED_LAYER.color" placeholder="COLOR" onchange="onSplittedLayerChange(this.id, this.value)">
-				<label>Order</label>
-				<input type="text" id="SPLITTED_LAYER.order" placeholder="ORDER" onchange="onSplittedLayerChange(this.id, this.value)">
+				<input type="color" id="SPLITTED_LAYER.color" placeholder="COLOR" onchange="onSplittedLayerChange(this.id, this.value)">
 			</form>
 			<form id="RESHAPE_LAYER" class="settings-form">
 				<h5 class="settings-title">RESHAPE LAYER</h5>
+				<label>New shape</label>
+				<input type="text" id="RESHAPE_LAYER.new_shape" placeholder="SHAPE" onchange="onReshapeLayerChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="RESHAPE_LAYER.rect" placeholder="RECT" onchange="onReshapeLayerChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="text" id="RESHAPE_LAYER.color" placeholder="COLOR" onchange="onReshapeLayerChange(this.id, this.value)">
-				<label>New shape</label>
-				<input type="text" id="RESHAPE_LAYER.new_shape" placeholder="SHAPE" onchange="onReshapeLayerChange(this.id, this.value)">
+				<input type="color" id="RESHAPE_LAYER.color" placeholder="COLOR" onchange="onReshapeLayerChange(this.id, this.value)">
 			</form>
 			<form id="CAST_LAYER" class="settings-form">
 				<h5 class="settings-title">CAST LAYER</h5>
+				<label>Data type</label>
+				<select id="CAST_LAYER.dtype" onchange="onCastLayerChange(this.id, this.value)">
+					<option value="float32">float32</option>
+					<option value="float64">float64</option>
+					<option value="int32">int32</option>
+					<option value="int64">int64</option>
+				</select>
 				<label>Rect</label>
 				<input type="text" id="CAST_LAYER.rect" placeholder="RECT" onchange="onCastLayerChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="text" id="CAST_LAYER.color" placeholder="COLOR" onchange="onCastLayerChange(this.id, this.value)">
-				<label>Data type</label>
-				<input type="text" id="CAST_LAYER.dtype" placeholder="DATE TYPE" onchange="onCastLayerChange(this.id, this.value)">
+				<input type="color" id="CAST_LAYER.color" placeholder="COLOR" onchange="onCastLayerChange(this.id, this.value)">
 			</form>
 			<form id="CONV2D_BLOCK" class="settings-form">
 				<h5 class="settings-title">CONV2D BLOCK</h5>
-				<label>Rect</label>
-				<input type="text" id="CONV2D_BLOCK.rect" placeholder="RECT" onchange="onConv2DBlockChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="CONV2D_BLOCK.color" placeholder="COLOR" onchange="onConv2DBlockChange(this.id, this.value)">
 				<label>Name</label>
 				<input type="text" id="CONV2D_BLOCK.name" placeholder="NAME" onchange="onConv2DBlockChange(this.id, this.value)">
 				<label>Filters</label>
@@ -404,37 +433,54 @@
 				<label>Strides</label>
 				<input type="text" id="CONV2D_BLOCK.strides" placeholder="STRIDES" onchange="onConv2DBlockChange(this.id, this.value)">
 				<label>Padding</label>
-				<input type="text" id="CONV2D_BLOCK.padding" placeholder="PADDING" onchange="onConv2DBlockChange(this.id, this.value)">
+				<select id="CONV2D_BLOCK.padding" onchange="onConv2DBlockChange(this.id, this.value)">
+					<option value="same">Same</option>
+					<option value="valid">Valid</option>
+				</select>
 				<label>Use bias</label>
-				<input type="text" id="CONV2D_BLOCK.use_bias" placeholder="USE BIAS" onchange="onConv2DBlockChange(this.id, this.value)">
+				<select id="CONV2D_BLOCK.use_bias" onchange="onConv2DBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Trainable</label>
-				<input type="text" id="CONV2D_BLOCK.trainable" placeholder="TRAINABLE" onchange="onConv2DBlockChange(this.id, this.value)">
+				<select id="CONV2D_BLOCK.trainable" onchange="onConv2DBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Batch norm trainable</label>
-				<input type="text" id="CONV2D_BLOCK.bn_trainable" placeholder="BATCH NORM TRAINABLE" onchange="onConv2DBlockChange(this.id, this.value)">
+				<select id="CONV2D_BLOCK.bn_trainable" onchange="onConv2DBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Activation</label>
-				<input type="text" id="CONV2D_BLOCK.activation" placeholder="ACTIVATION" onchange="onConv2DBlockChange(this.id, this.value)">
+				<select id="CONV2D_BLOCK.activation" onchange="onConv2DBlockChange(this.id, this.value)">
+					<option value="relu">ReLU</option>
+					<option value="softmax">Softmax</option>
+					<option value="sigmoid">Sigmoid</option>
+					<option value="linear">Linear</option>
+				</select>
 				<label>Repeat</label>
 				<input type="text" id="CONV2D_BLOCK.repeat" placeholder="REPEAT" onchange="onConv2DBlockChange(this.id, this.value)">
+				<label>Rect</label>
+				<input type="text" id="CONV2D_BLOCK.rect" placeholder="RECT" onchange="onConv2DBlockChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="CONV2D_BLOCK.color" placeholder="COLOR" onchange="onConv2DBlockChange(this.id, this.value)">
 			</form>
 			<form id="NMS_BLOCK" class="settings-form">
 				<h5 class="settings-title">NMS BLOCK</h5>
-				<label>Rect</label>
-				<input type="text" id="NMS_BLOCK.rect" placeholder="RECT" onchange="onNMSLayerChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="NMS_BLOCK.color" placeholder="COLOR" onchange="onNMSLayerChange(this.id, this.value)">
 				<label>Max output size</label>
 				<input type="text" id="NMS_BLOCK.max_output_size" placeholder="MAX OUTPUT SIZE" onchange="onNMSLayerChange(this.id, this.value)">
 				<label>IoU threshold</label>
 				<input type="text" id="NMS_BLOCK.iou_threshold" placeholder="IOU THRESHOLD" onchange="onNMSLayerChange(this.id, this.value)">
 				<label>Score threshold</label>
 				<input type="text" id="NMS_BLOCK.score_threshold" placeholder="SCORE THRESHOLD" onchange="onNMSLayerChange(this.id, this.value)">
+				<label>Rect</label>
+				<input type="text" id="NMS_BLOCK.rect" placeholder="RECT" onchange="onNMSLayerChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="NMS_BLOCK.color" placeholder="COLOR" onchange="onNMSLayerChange(this.id, this.value)">
 			</form>
 			<form id="RESNET_IDENTITY_BLOCK" class="settings-form">
 				<h5 class="settings-title">RESNET IDENTITY BLOCK</h5>
-				<label>Rect</label>
-				<input type="text" id="RESNET_IDENTITY_BLOCK.rect" placeholder="RECT" onchange="onResnetIdentityBlockChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="RESNET_IDENTITY_BLOCK.color" placeholder="COLOR" onchange="onResnetIdentityBlockChange(this.id, this.value)">
 				<label>Name</label>
 				<input type="text" id="RESNET_IDENTITY_BLOCK.name" placeholder="NAME" onchange="onResnetIdentityBlockChange(this.id, this.value)">
 				<label>Filters</label>
@@ -442,20 +488,29 @@
 				<label>Kernel size</label>
 				<input type="text" id="RESNET_IDENTITY_BLOCK.kernel_size" placeholder="KERNEL SIZE" onchange="onResnetIdentityBlockChange(this.id, this.value)">
 				<label>Use bias</label>
-				<input type="text" id="RESNET_IDENTITY_BLOCK.use_bias" placeholder="USE BIAS" onchange="onResnetIdentityBlockChange(this.id, this.value)">
+				<select id="RESNET_IDENTITY_BLOCK.use_bias" onchange="onResnetIdentityBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Trainable</label>
-				<input type="text" id="RESNET_IDENTITY_BLOCK.trainable" placeholder="TRAINABLE" onchange="onResnetIdentityBlockChange(this.id, this.value)">
+				<select id="RESNET_IDENTITY_BLOCK.trainable" onchange="onResnetIdentityBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Batch norm trainable</label>
-				<input type="text" id="RESNET_IDENTITY_BLOCK.bn_trainable" placeholder="BATCH NORM TRAINABLE" onchange="onResnetIdentityBlockChange(this.id, this.value)">
+				<select id="RESNET_IDENTITY_BLOCK.bn_trainable" onchange="onResnetIdentityBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Repeat</label>
 				<input type="text" id="RESNET_IDENTITY_BLOCK.repeat" placeholder="REPEAT" onchange="onResnetIdentityBlockChange(this.id, this.value)">
+				<label>Rect</label>
+				<input type="text" id="RESNET_IDENTITY_BLOCK.rect" placeholder="RECT" onchange="onResnetIdentityBlockChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="RESNET_IDENTITY_BLOCK.color" placeholder="COLOR" onchange="onResnetIdentityBlockChange(this.id, this.value)">
 			</form>
 			<form id="RESNET_SIDENTITY_BLOCK" class="settings-form">
 				<h5 class="settings-title">RESNET SIDENTITY BLOCK</h5>
-				<label>Rect</label>
-				<input type="text" id="RESNET_SIDENTITY_BLOCK.rect" placeholder="RECT" onchange="onResnetSIdentityBlockChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="RESNET_SIDENTITY_BLOCK.color" placeholder="COLOR" onchange="onResnetSIdentityBlockChange(this.id, this.value)">
 				<label>Name</label>
 				<input type="text" id="RESNET_SIDENTITY_BLOCK.name" placeholder="NAME" onchange="onResnetSIdentityBlockChange(this.id, this.value)">
 				<label>Filters</label>
@@ -465,83 +520,116 @@
 				<label>Strides</label>
 				<input type="text" id="RESNET_SIDENTITY_BLOCK.strides" placeholder="STRIDES" onchange="onResnetSIdentityBlockChange(this.id, this.value)">
 				<label>Use bias</label>
-				<input type="text" id="RESNET_SIDENTITY_BLOCK.use_bias" placeholder="USE BIAS" onchange="onResnetSIdentityBlockChange(this.id, this.value)">
+				<select id="RESNET_SIDENTITY_BLOCK.use_bias" onchange="onResnetSIdentityBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Trainable</label>
-				<input type="text" id="RESNET_SIDENTITY_BLOCK.trainable" placeholder="TRAINABLE" onchange="onResnetSIdentityBlockChange(this.id, this.value)">
+				<select id="RESNET_SIDENTITY_BLOCK.trainable" onchange="onResnetSIdentityBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Batch norm trainable</label>
-				<input type="text" id="RESNET_SIDENTITY_BLOCK.bn_trainable" placeholder="BATCH NORM TRAINABLE" onchange="onResnetSIdentityBlockChange(this.id, this.value)">
+				<select id="RESNET_SIDENTITY_BLOCK.bn_trainable" onchange="onResnetSIdentityBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
+				<label>Rect</label>
+				<input type="text" id="RESNET_SIDENTITY_BLOCK.rect" placeholder="RECT" onchange="onResnetSIdentityBlockChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="RESNET_SIDENTITY_BLOCK.color" placeholder="COLOR" onchange="onResnetSIdentityBlockChange(this.id, this.value)">
 			</form>
 			<form id="RFE_BLOCK" class="settings-form">
 				<h5 class="settings-title">RFE BLOCK</h5>
-				<label>Rect</label>
-				<input type="text" id="RFE_BLOCK.rect" placeholder="RECT" onchange="onRFEBlockChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="RFE_BLOCK.color" placeholder="COLOR" onchange="onRFEBlockChange(this.id, this.value)">
 				<label>Name</label>
 				<input type="text" id="RFE_BLOCK.name" placeholder="NAME" onchange="onRFEBlockChange(this.id, this.value)">
 				<label>Use bias</label>
-				<input type="text" id="RFE_BLOCK.use_bias" placeholder="USE BIAS" onchange="onRFEBlockChange(this.id, this.value)">
+				<select id="RFE_BLOCK.use_bias" onchange="onRFEBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Trainable</label>
-				<input type="text" id="RFE_BLOCK.trainable" placeholder="TRAINABLE" onchange="onRFEBlockChange(this.id, this.value)">
+				<select id="RFE_BLOCK.trainable" onchange="onRFEBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Batch norm trainable</label>
-				<input type="text" id="RFE_BLOCK.bn_trainable" placeholder="BATCH NORM TRAINABLE" onchange="onRFEBlockChange(this.id, this.value)">
+				<select id="RFE_BLOCK.bn_trainable" onchange="onRFEBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
+				<label>Rect</label>
+				<input type="text" id="RFE_BLOCK.rect" placeholder="RECT" onchange="onRFEBlockChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="RFE_BLOCK.color" placeholder="COLOR" onchange="onRFEBlockChange(this.id, this.value)">
 			</form>
 			<form id="HOURGLASS_BLOCK" class="settings-form">
 				<h5 class="settings-title">HOURGLASS BLOCK</h5>
-				<label>Rect</label>
-				<input type="text" id="HOURGLASS_BLOCK.rect" placeholder="RECT" onchange="onHourglassBlockChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="HOURGLASS_BLOCK.color" placeholder="COLOR" onchange="onHourglassBlockChange(this.id, this.value)">
 				<label>Name</label>
 				<input type="text" id="HOURGLASS_BLOCK.name" placeholder="NAME" onchange="onHourglassBlockChange(this.id, this.value)">
 				<label>Deepth</label>
 				<input type="text" id="HOURGLASS_BLOCK.depth" placeholder="DEPTH" onchange="onHourglassBlockChange(this.id, this.value)">
 				<label>Use bias</label>
-				<input type="text" id="HOURGLASS_BLOCK.use_bias" placeholder="USE BIAS" onchange="onHourglassBlockChange(this.id, this.value)">
+				<select id="HOURGLASS_BLOCK.use_bias" onchange="onHourglassBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Trainable</label>
-				<input type="text" id="HOURGLASS_BLOCK.trainable" placeholder="TRAINABLE" onchange="onHourglassBlockChange(this.id, this.value)">
+				<select id="HOURGLASS_BLOCK.trainable" onchange="onHourglassBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Batch norm trainable</label>
-				<input type="text" id="HOURGLASS_BLOCK.bn_trainable" placeholder="BATCH NORM TRAINABLE" onchange="onHourglassBlockChange(this.id, this.value)">
+				<select id="HOURGLASS_BLOCK.bn_trainable" onchange="onHourglassBlockChange(this.id, this.value)">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</select>
 				<label>Repeat</label>
 				<input type="text" id="HOURGLASS_BLOCK.repeat" placeholder="REPEAT" onchange="onHourglassBlockChange(this.id, this.value)">
+				<label>Rect</label>
+				<input type="text" id="HOURGLASS_BLOCK.rect" placeholder="RECT" onchange="onHourglassBlockChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="HOURGLASS_BLOCK.color" placeholder="COLOR" onchange="onHourglassBlockChange(this.id, this.value)">
 			</form>
 			<form id="OUTPUT_LAYER" class="settings-form">
 				<h5 class="settings-title">OUTPUT LAYER</h5>
 				<label>Rect</label>
 				<input type="text" id="OUTPUT_LAYER.rect" placeholder="RECT" onchange="onOutputLayerChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="text" id="OUTPUT_LAYER.color" placeholder="COLOR" onchange="onOutputLayerChange(this.id, this.value)">
+				<input type="color" id="OUTPUT_LAYER.color" placeholder="COLOR" onchange="onOutputLayerChange(this.id, this.value)">
 			</form>
-			<form id="LOSS_FUNC_OD4" class="settings-form">
+			<form id="LOSS_FUNC_OD" class="settings-form">
 				<h5 class="settings-title">LOSS FUNCTION OBJECT DETECTION</h5>
-				<label>Rect</label>
-				<input type="text" id="LOSS_FUNC_OD4.rect" placeholder="RECT" onchange="onODLossFuncChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="text" id="LOSS_FUNC_OD4.color" placeholder="COLOR" onchange="onODLossFuncChange(this.id, this.value)">
 				<label>Name</label>
-				<input type="text" id="LOSS_FUNC_OD4.name" placeholder="NAME" onchange="onODLossFuncChange(this.id, this.value)">
+				<select id="LOSS_FUNC_OD.name" onchange="onODLossFuncChange(this.id, this.value)">
+					<option value="od-loss">OD Loss</option>
+				</select>
 				<label>Total classes</label>
-				<input type="text" id="LOSS_FUNC_OD4.total_classes" placeholder="TOTAL CLASSES" onchange="onODLossFuncChange(this.id, this.value)">
+				<input type="text" id="LOSS_FUNC_OD.total_classes" placeholder="TOTAL CLASSES" onchange="onODLossFuncChange(this.id, this.value)">
 				<label>Lambda</label>
-				<input type="text" id="LOSS_FUNC_OD4.lamda" placeholder="LAMDA" onchange="onODLossFuncChange(this.id, this.value)">
+				<input type="text" id="LOSS_FUNC_OD.lamda" placeholder="LAMDA" onchange="onODLossFuncChange(this.id, this.value)">
+				<label>Rect</label>
+				<input type="text" id="LOSS_FUNC_OD.rect" placeholder="RECT" onchange="onODLossFuncChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="LOSS_FUNC_OD.color" placeholder="COLOR" onchange="onODLossFuncChange(this.id, this.value)">
 			</form>
 			<form id="LOSS_FUNC_IC" class="settings-form">
 				<h5 class="settings-title">LOSS FUNCTION IMAGE CLASSIFICATION</h5>
+				<label>Name</label>
+				<input type="text" id="LOSS_FUNC_IC.name" placeholder="NAME" onchange="onICLossFuncChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="LOSS_FUNC_IC.rect" placeholder="RECT" onchange="onICLossFuncChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="text" id="LOSS_FUNC_IC.color" placeholder="COLOR" onchange="onICLossFuncChange(this.id, this.value)">
-				<label>Name</label>
-				<input type="text" id="LOSS_FUNC_IC.name" placeholder="NAME" onchange="onICLossFuncChange(this.id, this.value)">
+				<input type="color" id="LOSS_FUNC_IC.color" placeholder="COLOR" onchange="onICLossFuncChange(this.id, this.value)">
 			</form>
 			<form id="LOSS_FUNC_HMR" class="settings-form">
 				<h5 class="settings-title">LOSS FUNCTION HEATMAP REGRESSION</h5>
+				<label>Name</label>
+				<input type="text" id="LOSS_FUNC_HMR.name" placeholder="NAME" onchange="onHMRLossFuncChange(this.id, this.value)">
 				<label>Rect</label>
 				<input type="text" id="LOSS_FUNC_HMR.rect" placeholder="RECT" onchange="onHMRLossFuncChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="text" id="LOSS_FUNC_HMR.color" placeholder="COLOR" onchange="onHMRLossFuncChange(this.id, this.value)">
-				<label>Name</label>
-				<input type="text" id="LOSS_FUNC_HMR.name" placeholder="NAME" onchange="onHMRLossFuncChange(this.id, this.value)">
+				<input type="color" id="LOSS_FUNC_HMR.color" placeholder="COLOR" onchange="onHMRLossFuncChange(this.id, this.value)">
 			</form>
 		</div>
 		<div class="dlt-nodes">

@@ -910,9 +910,9 @@ var gCommander = {
 				},
 				nodeParams: {
 					type: 'ONE_NONE',
-					blockType: 'LOSS_FUNC_OD4',
+					blockType: 'LOSS_FUNC_OD',
 					params: {
-						name: 'SSD',
+						name: 'OD LOSS',
 						total_classes: 1,
 						lamda: 1.0
 					}

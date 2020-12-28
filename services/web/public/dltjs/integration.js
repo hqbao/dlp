@@ -1185,11 +1185,11 @@ export function onOutputLayerChange(id, value) {
 }
 
 export function onODLossFuncSelected() {
-	var rectInput = document.getElementById("LOSS_FUNC_OD4.rect");
-	var colorInput = document.getElementById("LOSS_FUNC_OD4.color");
-	var nameInput = document.getElementById("LOSS_FUNC_OD4.name");
-	var totalClassesInput = document.getElementById("LOSS_FUNC_OD4.total_classes");
-	var lamdaInput = document.getElementById("LOSS_FUNC_OD4.lamda");
+	var rectInput = document.getElementById("LOSS_FUNC_OD.rect");
+	var colorInput = document.getElementById("LOSS_FUNC_OD.color");
+	var nameInput = document.getElementById("LOSS_FUNC_OD.name");
+	var totalClassesInput = document.getElementById("LOSS_FUNC_OD.total_classes");
+	var lamdaInput = document.getElementById("LOSS_FUNC_OD.lamda");
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
@@ -1200,23 +1200,23 @@ export function onODLossFuncSelected() {
 
 export function onODLossFuncChange(id, value) {
 	switch (id) {
-		case "LOSS_FUNC_OD4.rect":
+		case "LOSS_FUNC_OD.rect":
 		gNode.rect = JSON_parse(value);
 		break;
 
-		case "LOSS_FUNC_OD4.color":
+		case "LOSS_FUNC_OD.color":
 		gNode.color = value;
 		break;
 
-		case "LOSS_FUNC_OD4.name":
+		case "LOSS_FUNC_OD.name":
 		gNode.nodeParams.params.name = value;
 		break;
 
-		case "LOSS_FUNC_OD4.total_classes":
+		case "LOSS_FUNC_OD.total_classes":
 		gNode.nodeParams.params.total_classes = parseInt(value);
 		break;
 
-		case "LOSS_FUNC_OD4.lamda":
+		case "LOSS_FUNC_OD.lamda":
 		gNode.nodeParams.params.lamda = parseFloat(value);
 		break;
 		
@@ -1407,7 +1407,7 @@ dlt.gNotification.onNodeSelected = function(node) {
 		onOutputLayerSelected();
 		break;
 
-		case "LOSS_FUNC_OD4":
+		case "LOSS_FUNC_OD":
 		onODLossFuncSelected();
 		break;
 
