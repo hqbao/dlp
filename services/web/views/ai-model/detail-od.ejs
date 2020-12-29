@@ -1,240 +1,243 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="/bootstrap/js/bootstrap.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
-  <title>DLP - AI Model</title>
-</head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">DLP</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/user/profile">MY PROFILE</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/ai-model/list">MY MODELS</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-      </form>
-    </div>
-  </nav>
-  <br>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <h3 id="modelName"></h3>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <title>Artificial brains - Detail</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">ARTIFICIAL BRAINS</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/ai-model/list-top-models">TOP BRAINS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ai-model/list-my-models">MY BRAINS</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/user/profile" style="padding: 0px;">
+              <img src="/images/user-icon.png" width="40" height="40" class="rounded-circle">
+            </a>
+          </li>
+        </ul>
       </div>
-      <div class="col-12">
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="form-group mb-2">
-              <label>Procedure</label>
-              <select id="settingsProcedure" class="form-control">
-                <option value="object-detection-1tier">Object detaction (1 tier)</option>
-                <option value="object-detection-2tiers">Object detaction (2 tier)</option>
-                <option value="object-detection-3tiers">Object detaction (3 tier)</option>
-                <option value="object-detection-4tiers">Object detaction (4 tier)</option>
-              </select>
-            </div>
-            <div class="form-group mb-2">
-              <label>NMS IoU threshold</label>
-              <input id="settingsNMSIoUThreshold" class="form-control" type="number" placeholder="NMS IoU threshold" value="0.2" step="0.1">
-            </div>
-            <div class="form-group mb-2">
-              <label>NMS score threshold</label>
-              <input id="settingsNMSScoreThreshold" class="form-control" type="number" placeholder="NMS score threshold" value="0.8" step="0.1">
-            </div>
-            <div class="form-group mb-2">
-              <label>NMS max output size</label>
-              <input id="settingsNMSMaxOutputSize" class="form-control" type="number" placeholder="NMS max output size" value="10" step="1">
-            </div>
-            <div class="form-group mb-2">
-              <label>Weight load mode</label>
-              <select id="settingsWeightLoadMode" class="form-control">
-                <option value="bestAccuracyWeights">Best precision and recall</option>
-                <option value="bestPrecisionWeights">Best precision</option>
-                <option value="bestRecallWeights">Best recall</option>
-              </select>
+    </nav>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <h3 id="modelName"></h3>
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group mb-2">
+                <label>Procedure</label>
+                <select id="settingsProcedure" class="form-control">
+                  <option value="object-detection-1tier">Object detaction (1 tier)</option>
+                  <option value="object-detection-2tiers">Object detaction (2 tier)</option>
+                  <option value="object-detection-3tiers">Object detaction (3 tier)</option>
+                  <option value="object-detection-4tiers">Object detaction (4 tier)</option>
+                </select>
+              </div>
+              <div class="form-group mb-2">
+                <label>NMS IoU threshold</label>
+                <input id="settingsNMSIoUThreshold" class="form-control" type="number" placeholder="NMS IoU threshold" value="0.2" step="0.1">
+              </div>
+              <div class="form-group mb-2">
+                <label>NMS score threshold</label>
+                <input id="settingsNMSScoreThreshold" class="form-control" type="number" placeholder="NMS score threshold" value="0.8" step="0.1">
+              </div>
+              <div class="form-group mb-2">
+                <label>NMS max output size</label>
+                <input id="settingsNMSMaxOutputSize" class="form-control" type="number" placeholder="NMS max output size" value="10" step="1">
+              </div>
+              <div class="form-group mb-2">
+                <label>Weight load mode</label>
+                <select id="settingsWeightLoadMode" class="form-control">
+                  <option value="bestAccuracyWeights">Best precision and recall</option>
+                  <option value="bestPrecisionWeights">Best precision</option>
+                  <option value="bestRecallWeights">Best recall</option>
+                </select>
+              </div>
             </div>
           </div>
+          <button id="convertBtn" type="button" class="btn btn-info" onclick="convert()" disabled>CONVERT</button>
+          <a href="#" id="playLink" type="button" class="btn btn-success" style="display: none;">PLAY</a>
         </div>
-        <button id="convertBtn" type="button" class="btn btn-info" onclick="convert()" disabled>CONVERT</button>
-        <a href="#" id="playLink" type="button" class="btn btn-success" style="display: none;">PLAY</a>
-      </div>
-      <div class="col-12 col-lg-6 col-sm-12">
-        <canvas id="lossChart" width="600" height="400"></canvas>
-      </div>
-      <div class="col-12 col-lg-6 col-sm-12">
-        <canvas id="prChart" width="600" height="400"></canvas>
+        <div class="col-12 col-lg-6 col-sm-12">
+          <canvas id="lossChart" width="600" height="400"></canvas>
+        </div>
+        <div class="col-12 col-lg-6 col-sm-12">
+          <canvas id="prChart" width="600" height="400"></canvas>
+        </div>
       </div>
     </div>
-  </div>
-  <script type="text/javascript" src="/js/global.js"></script>
-  <script type="text/javascript">
-    function plotLoss(trainLossData, testLossData) {
-      var chartCanvas = document.getElementById("lossChart");
+    <script type="text/javascript" src="/js/global.js"></script>
+    <script type="text/javascript">
+      function plotLoss(trainLossData, testLossData) {
+        var chartCanvas = document.getElementById("lossChart");
 
-      var trainLoss = {
-        label: "Train loss",
-        data: trainLossData,
-        lineTension: 0.3,
-        fill: false,
-        borderColor: 'cyan'
-      };
+        var trainLoss = {
+          label: "Train loss",
+          data: trainLossData,
+          lineTension: 0.3,
+          fill: false,
+          borderColor: 'cyan'
+        };
 
-      var testLoss = {
-        label: "Test loss",
-        data: testLossData,
-        lineTension: 0.3,
-        fill: false,
-        borderColor: 'orange'
-      };
+        var testLoss = {
+          label: "Test loss",
+          data: testLossData,
+          lineTension: 0.3,
+          fill: false,
+          borderColor: 'orange'
+        };
 
-      var epoch = Math.max(trainLossData.length, testLossData.length)
-      var labels = [];
-      for (var i = 0; i < epoch; i++) {
-        labels.push(i+1);
+        var epoch = Math.max(trainLossData.length, testLossData.length)
+        var labels = [];
+        for (var i = 0; i < epoch; i++) {
+          labels.push(i+1);
+        }
+
+        var data = {
+          labels: labels,
+          datasets: [trainLoss, testLoss]
+        };
+
+        var chartOptions = {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              boxWidth: 80,
+              fontColor: 'black'
+            }
+          },
+          animation: {
+            duration: 0
+          },
+        };
+
+        var lineChart = new Chart(chartCanvas, {
+          type: 'line',
+          data: data,
+          options: chartOptions
+        });
       }
 
-      var data = {
-        labels: labels,
-        datasets: [trainLoss, testLoss]
-      };
+      function plotPR(precisionData, recallData) {
+        var chartCanvas = document.getElementById("prChart");
 
-      var chartOptions = {
-        legend: {
-          display: true,
-          position: 'top',
-          labels: {
-            boxWidth: 80,
-            fontColor: 'black'
+        var precision = {
+          label: "Precision",
+          data: precisionData,
+          lineTension: 0.3,
+          fill: false,
+          borderColor: 'blue'
+        };
+
+        var recall = {
+          label: "Recall",
+          data: recallData,
+          lineTension: 0.3,
+          fill: false,
+          borderColor: 'red'
+        };
+
+        var epoch = Math.max(precisionData.length, recallData.length)
+        var labels = [];
+        for (var i = 0; i < epoch; i++) {
+          labels.push(i+1);
+        }
+
+        var data = {
+          labels: labels,
+          datasets: [precision, recall]
+        };
+
+        var chartOptions = {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              boxWidth: 80,
+              fontColor: 'black'
+            }
+          },
+          animation: {
+            duration: 0
           }
-        },
-        animation: {
-          duration: 0
-        },
-      };
+        };
 
-      var lineChart = new Chart(chartCanvas, {
-        type: 'line',
-        data: data,
-        options: chartOptions
-      });
-    }
-
-    function plotPR(precisionData, recallData) {
-      var chartCanvas = document.getElementById("prChart");
-
-      var precision = {
-        label: "Precision",
-        data: precisionData,
-        lineTension: 0.3,
-        fill: false,
-        borderColor: 'blue'
-      };
-
-      var recall = {
-        label: "Recall",
-        data: recallData,
-        lineTension: 0.3,
-        fill: false,
-        borderColor: 'red'
-      };
-
-      var epoch = Math.max(precisionData.length, recallData.length)
-      var labels = [];
-      for (var i = 0; i < epoch; i++) {
-        labels.push(i+1);
+        var lineChart = new Chart(chartCanvas, {
+          type: 'line',
+          data: data,
+          options: chartOptions
+        });
       }
 
-      var data = {
-        labels: labels,
-        datasets: [precision, recall]
-      };
+      var aiModelId = getParamInUrl('id');
 
-      var chartOptions = {
-        legend: {
-          display: true,
-          position: 'top',
-          labels: {
-            boxWidth: 80,
-            fontColor: 'black'
+      function convert() {
+        document.getElementById('convertBtn').disabled = 'disabled';
+
+        var params = {
+          settings: {
+            inference: {
+              procedure: document.getElementById('settingsProcedure').value, 
+              nmsIouThreshold: document.getElementById('settingsNMSIoUThreshold').value, 
+              nmsScoreThreshold: document.getElementById('settingsNMSScoreThreshold').value, 
+              nmsMaxOutputSize: document.getElementById('settingsNMSMaxOutputSize').value, 
+            }
+          },
+          weightLoadMode: document.getElementById('settingsWeightLoadMode').value, 
+        };
+
+        restapi.patch(DLPS_URL, '/api/aimodel/convert', {id: aiModelId}, JSON.stringify(params), localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+          document.getElementById('convertBtn').disabled = true;
+        }, function(msg) {
+          console.log(msg);
+        });
+      }
+
+      function load() {
+        restapi.get(DLPS_URL, '/api/aimodel/detail', {id: aiModelId}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+          var model = msgResp;
+              
+          document.getElementById('modelName').innerHTML = model.name;
+          plotLoss(model.trainLoss, model.testLoss);
+          plotPR(model.precision, model.recall);
+
+          if (model.weights && !model.converting) {
+            document.getElementById('convertBtn').disabled = '';
           }
-        },
-        animation: {
-          duration: 0
-        }
-      };
 
-      var lineChart = new Chart(chartCanvas, {
-        type: 'line',
-        data: data,
-        options: chartOptions
-      });
-    }
-
-    var aiModelId = getParamInUrl('id');
-
-    function convert() {
-      document.getElementById('convertBtn').disabled = 'disabled';
-
-      var params = {
-        settings: {
-          inference: {
-            procedure: document.getElementById('settingsProcedure').value, 
-            nmsIouThreshold: document.getElementById('settingsNMSIoUThreshold').value, 
-            nmsScoreThreshold: document.getElementById('settingsNMSScoreThreshold').value, 
-            nmsMaxOutputSize: document.getElementById('settingsNMSMaxOutputSize').value, 
+          if (model.converted && model.tfjsModelUrl) {
+            document.getElementById('playLink').style.display = 'inline';
+            document.getElementById('playLink').href = '/ai-model/play-face-detection?id='+aiModelId;
           }
-        },
-        weightLoadMode: document.getElementById('settingsWeightLoadMode').value, 
-      };
+        }, function(msg) {
+          console.log(msg);
+        });
+      }
 
-      restapi.patch(DLPS_URL, '/api/aimodel/convert', {id: aiModelId}, JSON.stringify(params), localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
-        document.getElementById('convertBtn').disabled = true;
-      }, function(msg) {
-        console.log(msg);
-      });
-    }
-
-    function load() {
-      restapi.get(DLPS_URL, '/api/aimodel/detail', {id: aiModelId}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
-        var model = msgResp;
-            
-        document.getElementById('modelName').innerHTML = model.name;
-        plotLoss(model.trainLoss, model.testLoss);
-        plotPR(model.precision, model.recall);
-
-        if (model.weights && !model.converting) {
-          document.getElementById('convertBtn').disabled = '';
-        }
-
-        if (model.converted && model.tfjsModelUrl) {
-          document.getElementById('playLink').style.display = 'inline';
-          document.getElementById('playLink').href = '/ai-model/play-face-detection?id='+aiModelId;
-        }
-      }, function(msg) {
-        console.log(msg);
-      });
-    }
-
-    load();
-    setInterval(load, 1000);
-  </script>
-</body>
+      load();
+      setInterval(load, 1000);
+    </script>
+  </body>
 </html>

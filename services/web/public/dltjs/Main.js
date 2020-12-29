@@ -270,6 +270,7 @@ var gCommander = {
 						scale_sizes: [[64, 64], [32, 32], [16, 16]],
 						iou_thresholds: [[0.45, 0.55], [0.4, 0.5], [0.3, 0.4]],
 						anchor_sampling: [512, 246, 128],
+						scale_range: [250, 1000],
 						epochs: 1000,
 					}
 				},
@@ -937,7 +938,7 @@ var gCommander = {
 					type: 'ONE_NONE',
 					blockType: 'LOSS_FUNC_OD',
 					params: {
-						name: 'OD LOSS',
+						name: 'object-detection',
 						total_classes: 1,
 						lamda: 1.0
 					}
@@ -964,7 +965,7 @@ var gCommander = {
 					type: 'ONE_NONE',
 					blockType: 'LOSS_FUNC_IC',
 					params: {
-						name: 'CategoricalCrossEntropy',
+						name: 'categorical-cross-entropy',
 					}
 				},
 			});
@@ -989,7 +990,7 @@ var gCommander = {
 					type: 'ONE_NONE',
 					blockType: 'LOSS_FUNC_HMR',
 					params: {
-						name: 'HeatmapRegression',
+						name: 'heatmap-regression',
 					}
 				},
 			});

@@ -61,3 +61,33 @@ module.exports.delete = function(_id, success, failure) {
         success();
     });
 };
+
+module.exports.groupByUser = function(search, sort, skip, limit, success, failure) {
+    const dbo = global.mongoDB.db('dlp');
+    dbo.collection('AIModel').aggregate([
+        {
+            '$match': search
+        },
+        {
+            '$group': {
+                '_id': '$uid',
+                'bestAccuracy': {'$max': '$bestAccuracy'},
+                'bestPrecision': {'$first': '$bestPrecision'},
+                'bestRecall': {'$first': '$bestRecall'},
+                'uid': {'$first': '$uid'},
+                'modelId': {'$first': '$_id'},
+                'tfjsModelUrl': {'$first': '$tfjsModelUrl'},
+            }
+        },
+        {
+            '$sort' : sort
+        }
+    ]).limit(limit).skip(skip).toArray(function(err, result) {
+        if (err) {
+            failure(err);
+            return;
+        }
+
+        success(result);
+    });
+};

@@ -317,15 +317,17 @@ exports.detail = function(req, res) {
     if (token) { token = token.replace('Bearer ', ''); }
     var cert = fs.readFileSync(global.settings.loginJwtCertPath);
     jwt.verify(token, cert, function(err, decoded) {
-        if (err) {
-            res.writeHead(401, {});
-            res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
+        var userId = req.query.id;
+        if (!userId) { userId = decoded.uid; }
+        if (!userId || ![12, 24].includes(userId.length)) {
+            res.writeHead(400, {});
+            res.write(JSON.stringify({msgCode: 1001, msgResp: 'Invalid user ID'}));
             res.end();
             return;
         }
 
         const userModel = require('../model/User');
-        userModel.findById(decoded.uid, function(user) {
+        userModel.findById(userId, function(user) {
             if (!user) {
                 res.writeHead(400, {});
                 res.write(JSON.stringify({msgCode: 1003, msgResp: 'User not found'}));

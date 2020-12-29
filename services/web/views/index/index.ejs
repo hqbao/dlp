@@ -1,142 +1,169 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="/bootstrap/js/bootstrap.js"></script>
-  <title>DLP - Home</title>
-</head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">DLP</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/user/profile">MY PROFILE</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/ai-model/list">MY MODELS</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-      </form>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.js"></script>
+    <title>Artificial brains - Home</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">ARTIFICIAL BRAINS</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/ai-model/list-top-models">TOP BRAINS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ai-model/list-my-models">MY BRAINS</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/user/profile" style="padding: 0px;">
+              <img src="/images/user-icon.png" width="40" height="40" class="rounded-circle">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
+          <div class="card">
+            <a href="javascript:void(0)" onclick="createEmptyModel()">
+              <img src="/images/add-model-icon.png" class="card-img-top" alt="object detection">
+            </a>
+            <div class="card-body" style="height: 96px;">
+              <h5 class="card-title">Blank</h5>
+              <select id="modelType" style="width: 100%;border: none;font-size: 80%;outline: none;">
+                <option value="image-classification">IMAGE CLASSIFICATION</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
+          <div class="card">
+            <a href="javascript:void(0)" onclick="make('screenshot_ic_digits.json')">
+              <img src="/images/template-model-digits-recognition.png" class="card-img-top" alt="image classification">
+            </a>
+            <div class="card-body" style="height: 96px;">
+              <h5 class="card-title">Digits recognition</h5>
+              <small>IMAGE CLASSFICATION</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
+          <div class="card">
+            <a href="javascript:void(0)" onclick="make('screenshot_ic_digits_advance.json')">
+              <img src="/images/template-model-digits-recognition-advance.png" class="card-img-top" alt="image classification">
+            </a>
+            <div class="card-body" style="height: 96px;">
+              <h5 class="card-title">Digits recognition</h5>
+              <span class="badge bg-warning text-dark">ADVANCED</span>
+              <small>IMAGE CLASSFICATION</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
+          <div class="card">
+            <a href="javascript:void(0)" onclick="make('screenshot_ic_faceid.json')">
+              <img src="/images/template-model-faceid.png" class="card-img-top" alt="object detection">
+            </a>
+            <div class="card-body" style="height: 96px;">
+              <h5 class="card-title">Face recognition</h5>
+              <span class="badge bg-warning text-dark">ADVANCED</span>
+              <small>IMAGE CLASSIFICATION</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
+          <div class="card">
+            <a href="javascript:void(0)" onclick="make('screenshot_od1_face.json')">
+              <img src="/images/template-model-face-detection-1tier.png" class="card-img-top" alt="object detection">
+            </a>
+            <div class="card-body" style="height: 96px;">
+              <h5 class="card-title">Face detection (1 tier)</h5>
+              <small>OBJECT DETECTION</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
+          <div class="card">
+            <a href="javascript:void(0)" onclick="make('screenshot_od3_face.json')">
+              <img src="/images/template-model-face-detection-3tiers.png" class="card-img-top" alt="object detection">
+            </a>
+            <div class="card-body" style="height: 96px;">
+              <h5 class="card-title">Face detection (3 tiers)</h5>
+              <span class="badge bg-warning text-dark">ADVANCED</span>
+              <small>OBJECT DETECTION</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
+          <div class="card">
+            <a href="javascript:void(0)" onclick="make('screenshot_hm_face_5landmarks.json')">
+              <img src="/images/template-model-face-5landmarks-detection.png" class="card-img-top" alt="object detection">
+            </a>
+            <div class="card-body" style="height: 96px;">
+              <h5 class="card-title">Face 5 landmarks detection</h5>
+              <small>HEATMAP REGRESSION</small>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </nav>
-  <br>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
-        <div class="card">
-          <a href="javascript:void(0)" onclick="make('screenshot_ic_digits.json')">
-            <img src="/images/template-model-digits-recognition.png" class="card-img-top" alt="image classification">
-          </a>
-          <div class="card-body" style="height: 96px;">
-            <h5 class="card-title">Digits recognition</h5>
-            <small>IMAGE CLASSFICATION</small>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
-        <div class="card">
-          <a href="javascript:void(0)" onclick="make('screenshot_od1_face.json')">
-            <img src="/images/template-model-face-detection-1tier.png" class="card-img-top" alt="object detection">
-          </a>
-          <div class="card-body" style="height: 96px;">
-            <h5 class="card-title">Face detection (1 tier)</h5>
-            <small>OBJECT DETECTION</small>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
-        <div class="card">
-          <a href="javascript:void(0)" onclick="make('screenshot_od2_face.json')">
-            <img src="/images/template-model-face-detection-2tiers.png" class="card-img-top" alt="object detection">
-          </a>
-          <div class="card-body" style="height: 96px;">
-            <h5 class="card-title">Face detection (2 tiers)</h5>
-            <small>OBJECT DETECTION</small>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
-        <div class="card">
-          <a href="javascript:void(0)" onclick="make('screenshot_od3_face.json')">
-            <img src="/images/template-model-face-detection-3tiers.png" class="card-img-top" alt="object detection">
-          </a>
-          <div class="card-body" style="height: 96px;">
-            <h5 class="card-title">Face detection (3 tiers)</h5>
-            <small>OBJECT DETECTION</small>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
-        <div class="card">
-          <a href="javascript:void(0)" onclick="make('screenshot_hm_face_5landmarks.json')">
-            <img src="/images/template-model-face-5landmarks-detection.png" class="card-img-top" alt="object detection">
-          </a>
-          <div class="card-body" style="height: 96px;">
-            <h5 class="card-title">Face 5 landmarks detection</h5>
-            <small>HEATMAP REGRESSION</small>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
-        <div class="card">
-          <a href="javascript:void(0)" onclick="make('screenshot_ic_faceid.json')">
-            <img src="/images/template-model-faceid.png" class="card-img-top" alt="object detection">
-          </a>
-          <div class="card-body" style="height: 96px;">
-            <h5 class="card-title">Face recognition</h5>
-            <small>IMAGE CLASSIFICATION</small>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 col-xm-12" style="margin-bottom: 28px;">
-        <div class="card">
-          <a href="javascript:void(0)" onclick="make('screenshot_empty.json')">
-            <img src="/images/add-model-icon.png" class="card-img-top" alt="object detection">
-          </a>
-          <div class="card-body" style="height: 96px;">
-            <h5 class="card-title">Empty model</h5>
-            <small>ANY</small>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script type="text/javascript" src="/js/global.js"></script>
-  <script type="text/javascript">
-    function make(template) {
-      var http = new XMLHttpRequest();
-      http.open('GET', '/model-templates/'+template, true);
-      http.onreadystatechange = function() {
-        if(http.readyState == 4 && http.status == 200) {
-          var params = {
-            name: 'Noname',
-            screenshot: http.responseText,
-          };
+    <script type="text/javascript" src="/js/global.js"></script>
+    <script type="text/javascript">
+      localStorage.removeItem('GUIDE_HTML');
+      localStorage.removeItem('GUIDE_HTML_SHOW');
 
-          restapi.post(DLPS_URL, '/api/aimodel/create', null, JSON.stringify(params), localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
-            var model = msgResp;
-            localStorage.setItem('MODEL', JSON.stringify(model));
-            location.href = '/dlt';
-          }, function(msg) {
-            console.log(msg);
-          });
+      function make(template) {
+        var http = new XMLHttpRequest();
+        http.open('GET', '/model-templates/'+template, true);
+        http.onreadystatechange = function() {
+          if(http.readyState == 4 && http.status == 200) {
+            var params = {
+              name: 'Noname',
+              screenshot: http.responseText,
+            };
+
+            restapi.post(DLPS_URL, '/api/aimodel/create', null, JSON.stringify(params), localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+              var model = msgResp;
+              localStorage.setItem('MODEL', JSON.stringify(model));
+              location.href = '/dlt';
+            }, function(msg) {
+              console.log(msg);
+            });
+          }
         }
+        http.send();
       }
-      http.send();
-    }
-  </script>
-</body>
+
+      function createEmptyModel() {
+        var modelType = document.getElementById('modelType').value;
+        switch (modelType) {
+          case 'image-classification':
+          var html = '<ul class="steps"> <li> <b>Step 1</b> <p>Create an ID DATEGEN block, make sure settings as follow:</p> <p> Dataset: Digits<br> Train procedure: Image classification<br> Image shape: [28,28,1]<br> Total train examples: 60000<br> Total test examples: 10000<br> Batch size: 1000 </p> </li> <li> <b>Step 1</b> <p>Create an INPUT block, make sure settings as follow:</p> <p> Batch size: 1000<br> Image shape: [28,28,1]<br> Data type: float32 </p> <p>Right click on IC DATAGEN block, then drag the connection to INPUT block</p> </li> <li> <b>Step 3</b> <p>Create a FLATTEN block. This reshapes 3-axis input image to 1-axis tensor (a vector)</p> <p>Create a connection from the INPUT block to the FLATTEN block</p> </li> <li> <b>Step 4</b> <p>Create a DENSE block</p> <p> Set units value to 64<br> Set both use bias and trainble to YES </p> <p>Create a connection from the FLATTEN block to the DENSE block</p> </li> <li> <b>Step 5</b> <p>Create an ACTIVATION block</p> <p>Set activation value to ReLU</p> <p>Create a connection from the FLATTEN block to the ACTIVATION block</p> </li> <li> <b>Step 6</b> <p>Create another DENSE block</p> <p> Set units value to 32<br> Set both use bias and trainble to YES </p> <p>Create a connection from the ACTIVATION block to the new DENSE block</p> </li> <li> <b>Step 7</b> <p>Create an ACTIVATION block</p> <p>Set activation value to ReLU</p> <p>Create a connection from the previous DENSE block to the new ACTIVATION block</p> </li> <li> <b>Step 8</b> <p>Create another DENSE block. Set units value to 10</p> <p>Create a connection from the previous ACTIVATION block to the new DENSE block</p> </li> <li> <b>Step 9</b> <p>Create an ACTIVATION block</p> <p>Set activation value to Softmax</p> <p>Create a connection from the previous DENSE block to the new ACTIVATION block</p> </li> <li> <b>Step 10</b> <p>Create an IC LOSS block</p> <p>Create a connection from the previous ACTIVATION block to the IC LOSS block</p> </li> <li> <b>Step 11</b> <p>Validate model: Click on validate button on top left menu</p> <p>Make sure no errors show</p> </li> <li> <b>Step 12</b> <p>Train model: Click on train button on top left menu. You are redirected to Colab site. You need to click on play button</p> </li> <li> <b>Step 13</b> <p>Finish: you can go to model detail to see the training result updated. Note, the train process take long time. Be patient!</p> </li> </ul>';
+          localStorage.setItem('GUIDE_HTML', html);
+          localStorage.setItem('GUIDE_HTML_SHOW', 'YES');
+          break;
+
+          default:
+          break;
+        }
+
+        make('screenshot_empty.json');
+      }
+    </script>
+  </body>
 </html>

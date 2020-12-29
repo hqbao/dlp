@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.js"></script>
+    <title>Artificial brains - Top brains</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">ARTIFICIAL BRAINS</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/ai-model/list-top-models">TOP BRAINS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ai-model/list-my-models">MY BRAINS</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/user/profile" style="padding: 0px;">
+              <img src="/images/user-icon.png" width="40" height="40" class="rounded-circle">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-6 col-sm-12">
+          <h5>Digits recognition</h5>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Designer</th>
+                <th scope="col">Precision</th>
+                <th scope="col">Recall</th>
+                <th scope="col">Test</th>
+              </tr>
+            </thead>
+            <tbody id="tempItem1" style="display: none;">
+              <tr>
+                <th scope="row">{IDX}</th>
+                <td>{DESIGNER}</td>
+                <td>{PRECISION}</td>
+                <td>{RECALL}</td>
+                <td>{PLAY_URL}</td>
+              </tr>
+            </tbody>
+            <tbody id="itemList1"></tbody>
+          </table>
+        </div>
+        <div class="col-lg-6 col-sm-12">
+          <h5>Face detection</h5>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Designer</th>
+                <th scope="col">Precision</th>
+                <th scope="col">Recall</th>
+                <th scope="col">Test</th>
+              </tr>
+            </thead>
+            <tbody id="tempItem2" style="display: none;">
+              <tr>
+                <th scope="row">{IDX}</th>
+                <td>{DESIGNER}</td>
+                <td>{PRECISION}</td>
+                <td>{RECALL}</td>
+                <td>{PLAY_URL}</td>
+              </tr>
+            </tbody>
+            <tbody id="itemList2"></tbody>
+          </table>
+        </div>
+        <div class="col-lg-6 col-sm-12">
+          <h5>Face recognition</h5>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Designer</th>
+                <th scope="col">Precision</th>
+                <th scope="col">Recall</th>
+                <th scope="col">Test</th>
+              </tr>
+            </thead>
+            <tbody id="tempItem3" style="display: none;">
+              <tr>
+                <th scope="row">{IDX}</th>
+                <td>{DESIGNER}</td>
+                <td>{PRECISION}</td>
+                <td>{RECALL}</td>
+                <td>{PLAY_URL}</td>
+              </tr>
+            </tbody>
+            <tbody id="itemList3"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="/js/global.js"></script>
+    <script type="text/javascript">
+      restapi.get(DLPS_URL, '/api/aimodel/list-top-models', {datasetName: 'mnist-digits'}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+        var models = msgResp;
+
+        // Update designer info
+        function updateDesignerInfo(models, idx, done) {
+          if (idx >= models.length) { done(); return; }
+          var model = models[idx];
+          var userId = model.uid;
+          restapi.get(DLPS_URL, '/api/user/detail', {id: userId}, null, '/sign-in', function(msgResp) {
+            var designer = msgResp;
+            model.designer = designer;
+            updateDesignerInfo(models, idx+1, done);
+          }, function(msg) {
+            console.log(msg);
+          });
+        }
+
+        updateDesignerInfo(models, 0, function() {
+          var itemList = document.getElementById('itemList1');
+          for (var i = 0; i < models.length; i++) {
+            var model = models[i];
+            console.log(model);
+            var tempHtml = document.getElementById('tempItem1').innerHTML;
+            tempHtml = tempHtml.replaceAll('{IDX}', i+1);
+            tempHtml = tempHtml.replaceAll('{MODEL_ID}', model.modelId);
+            tempHtml = tempHtml.replaceAll('{DESIGNER}', model.designer.name);
+            tempHtml = tempHtml.replaceAll('{PRECISION}', model.bestPrecision.toFixed(3));
+            tempHtml = tempHtml.replaceAll('{RECALL}', model.bestRecall.toFixed(3));
+            if (model.tfjsModelUrl) { tempHtml = tempHtml.replaceAll('{PLAY_URL}', '<a href="/ai-model/play-digits-recognition?id='+model.modelId+'" class="btn btn-outline-info btn-sm">Play it</a>'); }
+            else { tempHtml = tempHtml.replaceAll('{PLAY_URL}', ''); }
+            
+            var tempNode = document.createElement('tbody');
+            tempNode.innerHTML = tempHtml.trim();
+            itemList.appendChild(tempNode.firstChild);
+          }
+        });
+      }, function(msg) {
+        console.log(msg);
+      });
+
+      restapi.get(DLPS_URL, '/api/aimodel/list-top-models', {datasetName: 'face1024'}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+        var models = msgResp;
+
+        // Update designer info
+        function updateDesignerInfo(models, idx, done) {
+          if (idx >= models.length) { done(); return; }
+          var model = models[idx];
+          var userId = model.uid;
+          restapi.get(DLPS_URL, '/api/user/detail', {id: userId}, null, '/sign-in', function(msgResp) {
+            var designer = msgResp;
+            model.designer = designer;
+            updateDesignerInfo(models, idx+1, done);
+          }, function(msg) {
+            model.designer = {
+              name: 'Unknown',
+            };
+            updateDesignerInfo(models, idx+1, done);
+          });
+        }
+
+        updateDesignerInfo(models, 0, function() {
+          var itemList = document.getElementById('itemList2');
+          for (var i = 0; i < models.length; i++) {
+            var model = models[i];
+            var tempHtml = document.getElementById('tempItem2').innerHTML;
+            tempHtml = tempHtml.replaceAll('{IDX}', i+1);
+            tempHtml = tempHtml.replaceAll('{MODEL_ID}', model.modelId);
+            tempHtml = tempHtml.replaceAll('{DESIGNER}', model.designer.name);
+            tempHtml = tempHtml.replaceAll('{PRECISION}', model.bestPrecision.toFixed(3));
+            tempHtml = tempHtml.replaceAll('{RECALL}', model.bestRecall.toFixed(3));
+            if (model.tfjsModelUrl) { tempHtml = tempHtml.replaceAll('{PLAY_URL}', '<a href="/ai-model/play-face-detection?id='+model.modelId+'" class="btn btn-outline-info btn-sm">Play it</a>'); }
+            else { tempHtml = tempHtml.replaceAll('{PLAY_URL}', ''); }
+            
+            var tempNode = document.createElement('tbody');
+            tempNode.innerHTML = tempHtml.trim();
+            itemList.appendChild(tempNode.firstChild);
+          }
+        });
+      }, function(msg) {
+        console.log(msg);
+      });
+
+      restapi.get(DLPS_URL, '/api/aimodel/list-top-models', {datasetName: 'faceid128x128'}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+        var models = msgResp;
+
+        // Update designer info
+        function updateDesignerInfo(models, idx, done) {
+          if (idx >= models.length) { done(); return; }
+          var model = models[idx];
+          var userId = model.uid;
+          restapi.get(DLPS_URL, '/api/user/detail', {id: userId}, null, '/sign-in', function(msgResp) {
+            var designer = msgResp;
+            model.designer = designer;
+            updateDesignerInfo(models, idx+1, done);
+          }, function(msg) {
+            model.designer = {
+              name: 'Unknown',
+            };
+            updateDesignerInfo(models, idx+1, done);
+          });
+        }
+
+        updateDesignerInfo(models, 0, function() {
+          var itemList = document.getElementById('itemList3');
+          for (var i = 0; i < models.length; i++) {
+            var model = models[i];
+            var tempHtml = document.getElementById('tempItem3').innerHTML;
+            tempHtml = tempHtml.replaceAll('{IDX}', i+1);
+            tempHtml = tempHtml.replaceAll('{MODEL_ID}', model.modelId);
+            tempHtml = tempHtml.replaceAll('{DESIGNER}', model.designer.name);
+            tempHtml = tempHtml.replaceAll('{PRECISION}', model.bestPrecision.toFixed(3));
+            tempHtml = tempHtml.replaceAll('{RECALL}', model.bestRecall.toFixed(3));
+            if (model.tfjsModelUrl) { tempHtml = tempHtml.replaceAll('{PLAY_URL}', '<a href="/ai-model/play-face-id?id='+model.modelId+'" class="btn btn-outline-info btn-sm">Play it</a>'); }
+            else { tempHtml = tempHtml.replaceAll('{PLAY_URL}', ''); }
+            
+            var tempNode = document.createElement('tbody');
+            tempNode.innerHTML = tempHtml.trim();
+            itemList.appendChild(tempNode.firstChild);
+          }
+        });
+      }, function(msg) {
+        console.log(msg);
+      });
+    </script>
+  </body>
+</html>

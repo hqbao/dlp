@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>DLP - Deep Learning Tool</title>
+		<title>Artificial brains - Deep Learning Tool</title>
 		<link rel="stylesheet" href="/css/dlt.css">
 		<script type="text/javascript" src="/js/global.js"></script>
 		<script src="/dltjs/UINode.js" type="module"></script>
@@ -100,24 +100,6 @@
 	</head>
 	<body>
 		<div id="loadingEffect" style="position: fixed;width: 100%;height: 100%;background-color: #000000;background-color: rgba(0, 0, 0, 0.7);text-align: center;z-index: 100;display: none;"><img src="/images/loading.gif" alt="loading" width=250 style="margin-top: 16px;" /></div>
-		<script type="text/javascript">
-			function askName() {
-				var model = undefined;
-				try { model = JSON.parse(localStorage.getItem('MODEL')); }
-				catch (e) {}
-				if (model) {
-					document.getElementById('aiModelName').value = model.name;
-				}
-
-				document.getElementById('nameInputPopup').style.display = 'block';
-			}
-			
-			function _save(self) {
-				save(self.previousElementSibling.value, function() {
-					document.getElementById('nameInputPopup').style.display = 'none';
-				});
-			}
-		</script>
 		<div class="small-popup" id="nameInputPopup" onclick="this.style.display='none';">
 			<div class="popup-wrapper" onclick="window.event.stopPropagation();">
 				<label>Name</label>
@@ -134,6 +116,11 @@
 			<button class="import-btn" onclick="importFile();" title="Import"></button>
 			<button class="export-btn" onclick="exportFile();" title="Export"></button>
 		</div>
+		<!-- Guide -->
+		<button id="guideBtn" class="guide-btn" onclick="guide();" title="Guide">?</button>
+		<div id="guideContent" class="guide-content" style="display: none;">
+		</div>
+		<!-- End guide -->
 		<div id="errorValidationWrapper" class="dlt-errors">
 			<ul id="errorValidation"></ul>
 		</div>
@@ -211,6 +198,8 @@
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.iou_thresholds" placeholder="IOU THRESHOLDS" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 				<label>Anchor sampling</label>
 				<input type="text" id="OBJECT_DETECTION_DATAGEN.anchor_sampling" placeholder="ANCHOR SAMPLING" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
+				<label>Image scale range</label>
+				<input type="text" id="OBJECT_DETECTION_DATAGEN.scale_range" placeholder="IMAGE SCALE RANGE" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 				<label>Epochs</label>
 				<input type="number" id="OBJECT_DETECTION_DATAGEN.epochs" placeholder="EPOCHS" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 				<label>Rect</label>
@@ -609,6 +598,17 @@
 				<label>Color</label>
 				<input type="color" id="OUTPUT_LAYER.color" placeholder="COLOR" onchange="onOutputLayerChange(this.id, this.value)">
 			</form>
+			<form id="LOSS_FUNC_IC" class="settings-form">
+				<h5 class="settings-title">LOSS FUNCTION IMAGE CLASSIFICATION</h5>
+				<label>Name</label>
+				<select id="LOSS_FUNC_IC.name" onchange="onICLossFuncChange(this.id, this.value)">
+					<option value="categorical-cross-entropy">Cateforical cross entropy</option>
+				</select>
+				<label>Rect</label>
+				<input type="text" id="LOSS_FUNC_IC.rect" placeholder="RECT" onchange="onICLossFuncChange(this.id, this.value)">
+				<label>Color</label>
+				<input type="color" id="LOSS_FUNC_IC.color" placeholder="COLOR" onchange="onICLossFuncChange(this.id, this.value)">
+			</form>
 			<form id="LOSS_FUNC_OD" class="settings-form">
 				<h5 class="settings-title">LOSS FUNCTION OBJECT DETECTION</h5>
 				<label>Name</label>
@@ -624,19 +624,12 @@
 				<label>Color</label>
 				<input type="color" id="LOSS_FUNC_OD.color" placeholder="COLOR" onchange="onODLossFuncChange(this.id, this.value)">
 			</form>
-			<form id="LOSS_FUNC_IC" class="settings-form">
-				<h5 class="settings-title">LOSS FUNCTION IMAGE CLASSIFICATION</h5>
-				<label>Name</label>
-				<input type="text" id="LOSS_FUNC_IC.name" placeholder="NAME" onchange="onICLossFuncChange(this.id, this.value)">
-				<label>Rect</label>
-				<input type="text" id="LOSS_FUNC_IC.rect" placeholder="RECT" onchange="onICLossFuncChange(this.id, this.value)">
-				<label>Color</label>
-				<input type="color" id="LOSS_FUNC_IC.color" placeholder="COLOR" onchange="onICLossFuncChange(this.id, this.value)">
-			</form>
 			<form id="LOSS_FUNC_HMR" class="settings-form">
 				<h5 class="settings-title">LOSS FUNCTION HEATMAP REGRESSION</h5>
 				<label>Name</label>
-				<input type="text" id="LOSS_FUNC_HMR.name" placeholder="NAME" onchange="onHMRLossFuncChange(this.id, this.value)">
+				<select id="LOSS_FUNC_HMR.name" onchange="onHMRLossFuncChange(this.id, this.value)">
+					<option value="heatmap-regression">Heatmap regression</option>
+				</select>
 				<label>Rect</label>
 				<input type="text" id="LOSS_FUNC_HMR.rect" placeholder="RECT" onchange="onHMRLossFuncChange(this.id, this.value)">
 				<label>Color</label>
@@ -676,5 +669,46 @@
 			<button class="add-btn-odloss" onclick="ODLossFunc();"></button>
 		</div>
 		<canvas id="dltool_canvas"></canvas>
+		<script type="text/javascript">
+			function askName() {
+				var model = undefined;
+				try { model = JSON.parse(localStorage.getItem('MODEL')); }
+				catch (e) {}
+				if (model) {
+					document.getElementById('aiModelName').value = model.name;
+				}
+
+				document.getElementById('nameInputPopup').style.display = 'block';
+			}
+			
+			function _save(self) {
+				save(self.previousElementSibling.value, function() {
+					document.getElementById('nameInputPopup').style.display = 'none';
+				});
+			}
+
+			function guide() {
+				var guideContent = document.getElementById('guideContent');
+				if (guideContent.style.display == 'none') {
+					var html = localStorage.getItem('GUIDE_HTML');
+					guideContent.innerHTML = html;
+					localStorage.setItem('GUIDE_HTML_SHOW', 'YES');
+					guideContent.style.display = 'block';
+				}
+				else {
+					localStorage.setItem('GUIDE_HTML_SHOW', 'NO');
+					guideContent.style.display = 'none';
+				}
+			}
+
+			function load() {
+				var show = localStorage.getItem('GUIDE_HTML_SHOW');
+				if (show == 'YES') {
+					guide();
+				}
+			}
+
+			load();
+		</script>
 	</body>
 </html>

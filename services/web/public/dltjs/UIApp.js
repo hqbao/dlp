@@ -32,7 +32,7 @@ class UIApp {
 			this.width,
 			this.movingUnit);
 
-		this.refPosition = {y: 256, x: 256};
+		this.refPosition = {y: 400, x: 240};
 	}
 
 	run() {

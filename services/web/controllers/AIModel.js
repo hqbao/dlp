@@ -1,5 +1,9 @@
-exports.list = function(req, res) {
-    res.render('ai-model/index', {});
+exports.listMyModels = function(req, res) {
+    res.render('ai-model/list-my-models', {});
+};
+
+exports.listTopModels = function(req, res) {
+    res.render('ai-model/list-top-models', {});
 };
 
 exports.detailIC = function(req, res) {

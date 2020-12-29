@@ -146,6 +146,7 @@ export function onObjectDetectionDatagenSelected() {
 	var scaleSizesInput = document.getElementById("OBJECT_DETECTION_DATAGEN.scale_sizes");
 	var iouThresholdsInput = document.getElementById("OBJECT_DETECTION_DATAGEN.iou_thresholds");
 	var anchorSamplingsInput = document.getElementById("OBJECT_DETECTION_DATAGEN.anchor_sampling");
+	var scaleRangeInput = document.getElementById("OBJECT_DETECTION_DATAGEN.scale_range");
 	var epochsInput = document.getElementById("OBJECT_DETECTION_DATAGEN.epochs");
 
 	rectInput.value = JSON.stringify(gNode.rect);
@@ -157,6 +158,7 @@ export function onObjectDetectionDatagenSelected() {
 	scaleSizesInput.value = JSON.stringify(gNode.nodeParams.params.scale_sizes);
 	iouThresholdsInput.value = JSON.stringify(gNode.nodeParams.params.iou_thresholds);
 	anchorSamplingsInput.value = JSON.stringify(gNode.nodeParams.params.anchor_sampling);
+	scaleRangeInput.value = JSON.stringify(gNode.nodeParams.params.scale_range);
 	epochsInput.value = gNode.nodeParams.params.epochs;
 }
 
@@ -196,6 +198,10 @@ export function addObjectDetectionDatagenChange(id, value) {
 
 		case "OBJECT_DETECTION_DATAGEN.anchor_sampling":
 		gNode.nodeParams.params.anchor_sampling = JSON_parse(value);
+		break;
+
+		case "OBJECT_DETECTION_DATAGEN.scale_range":
+		gNode.nodeParams.params.scale_range = JSON_parse(value);
 		break;
 
 		case "OBJECT_DETECTION_DATAGEN.epochs":

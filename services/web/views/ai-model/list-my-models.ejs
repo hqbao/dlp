@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.js"></script>
+    <title>Artificial brains - My brains</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">ARTIFICIAL BRAINS</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/ai-model/list-top-models">TOP BRAINS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ai-model/list-my-models">MY BRAINS</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/user/profile" style="padding: 0px;">
+              <img src="/images/user-icon.png" width="40" height="40" class="rounded-circle">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <br>
+    <div class="container-fluid">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Dataset Name</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="aiModeTemplate" style="display: none;">
+          <tr>
+            <th scope="row">{IDX}</th>
+            <td>{NAME}</td>
+            <td>{TYPE}</td>
+            <td>{DATASET_NAME}</td>
+            <td>
+              <button class="btn btn-outline-warning btn-sm" onclick="openModel('{ID}')">OPEN</button>
+              <a href="/ai-model/detail-{TYPE_DETAIL}?id={ID}" class="btn btn-outline-warning btn-sm">DETAIL</a>
+              <button class="btn btn-outline-danger btn-sm" onclick="deleteModel('{ID}', this)">DELETE</button>
+            </td>
+          </tr>
+        </tbody>
+        <tbody id="aiModeList"></tbody>
+      </table>
+    </div>
+    <script type="text/javascript" src="/js/global.js"></script>
+    <script type="text/javascript">
+      const typeMap = {
+        'IMAGE_CLASSIFICATION_DATAGEN': 'ic',
+        'OBJECT_DETECTION_DATAGEN': 'od',
+        'HEATMAP_REGRESSION_DATAGEN': 'hm',
+      };
+
+      const datasetNameMap = {
+        'mnist-digits': 'Digits',
+        'face1024': 'Face box-labeled',
+        'faceali128x128': 'Face 5 landmarks',
+        'faceid128x128': 'Face ID',
+      };
+
+      function openModel(id) {
+        restapi.get(DLPS_URL, '/api/aimodel/detail', {id: id}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+          var model = msgResp;
+          localStorage.setItem('MODEL', JSON.stringify(model));
+          location.href = '/dlt';
+        }, function(msg) {
+          console.log(msg);
+        });
+      }
+
+      function deleteModel(id, self) {
+        var sure = confirm("Are you sure?");
+        if (!sure) {
+          return;
+        }
+        
+        self.disabled = true;
+
+        restapi.delete(DLPS_URL, '/api/aimodel/delete', {id: id}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+          self.parentNode.parentNode.remove();
+        }, function(msg) {
+          console.log(msg);
+        });
+      }
+
+      function load() {
+        restapi.get(DLPS_URL, '/api/aimodel/list-my-models', null, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+          var models = msgResp;
+          var aiModeListNode = document.getElementById('aiModeList');
+          for (var i = 0; i < models.length; i++) {
+            var model = models[i];
+
+            var type = model.type;
+            type = type.replaceAll('_', ' ');
+            type = type.replaceAll('DATAGEN', '');
+
+            var tempHtml = document.getElementById('aiModeTemplate').innerHTML;
+            tempHtml = tempHtml.replaceAll('{IDX}', i+1);
+            tempHtml = tempHtml.replaceAll('{NAME}', model.name);
+            tempHtml = tempHtml.replaceAll('{TYPE}', type);
+            tempHtml = tempHtml.replaceAll('{TYPE_DETAIL}', typeMap[model.type]);
+            tempHtml = tempHtml.replaceAll('{DATASET_NAME}', datasetNameMap[model.datasetName]);
+            tempHtml = tempHtml.replaceAll('{ID}', model._id);
+            
+            var tempNode = document.createElement('tbody');
+            tempNode.innerHTML = tempHtml.trim();
+            aiModeListNode.appendChild(tempNode.firstChild);
+          }
+        }, function(msg) {
+          console.log(msg);
+        });
+      }
+
+      load();
+    </script>
+  </body>
+</html>

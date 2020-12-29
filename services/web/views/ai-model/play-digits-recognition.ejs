@@ -1,164 +1,167 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="/bootstrap/js/bootstrap.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.7.0/dist/tf.min.js"></script>
-  <title>DLP - AI Model</title>
-</head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">DLP</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/user/profile">MY PROFILE</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/ai-model/list">MY MODELS</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-      </form>
-    </div>
-  </nav>
-  <br>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <div style="width: 896px;margin: auto;">
-          <img id="preview" src="" style="position: fixed;top: 80px;display: none;" height="28" width="28" />
-          <canvas id="paint" height="448" width="448" style="float: left;background-color: black;border-radius: 32px 0px 0px 32px;"></canvas>
-          <div id="previewNumber" style="height: 448px;width: 448px;float: left;background-color: cyan;font-size: 300px;padding-left: 140px;border-radius: 0px 32px 32px 0px;"></div>
-          <div class="clearfix"></div><br>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.7.0/dist/tf.min.js"></script>
+    <title>Artificial brains - Test your brain</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">ARTIFICIAL BRAINS</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/ai-model/list-top-models">TOP BRAINS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ai-model/list-my-models">MY BRAINS</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/user/profile" style="padding: 0px;">
+              <img src="/images/user-icon.png" width="40" height="40" class="rounded-circle">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div style="width: 896px;margin: auto;">
+            <img id="preview" src="" style="position: fixed;top: 80px;display: none;" height="28" width="28" />
+            <canvas id="paint" height="448" width="448" style="float: left;background-color: black;border-radius: 32px 0px 0px 32px;"></canvas>
+            <div id="previewNumber" style="height: 448px;width: 448px;float: left;background-color: cyan;font-size: 300px;padding-left: 140px;border-radius: 0px 32px 32px 0px;"></div>
+            <div class="clearfix"></div><br>
+          </div>
+        </div>
+        <div class="col-12" style="text-align: center;">
+          <button class="btn btn-success" onclick="onInferClicked()">INFER</button>
+          <button class="btn btn-danger" onclick="onClearClicked()">CLEAR</button>
         </div>
       </div>
-      <div class="col-12" style="text-align: center;">
-        <button class="btn btn-success" onclick="onInferClicked()">INFER</button>
-        <button class="btn btn-danger" onclick="onClearClicked()">CLEAR</button>
-      </div>
     </div>
-  </div>
-  <script type="text/javascript" src="/js/global.js"></script>
-  <script type="text/javascript">
-    async function infer(blob) {
-      const model = await tf.loadGraphModel(jModel);
-      var pix = tf.browser.fromPixels(preview);
-      pix = tf.mean(pix, -1, true);
-      // console.log(tf.cast(pix, 'int32').arraySync());
-      pix = pix.expandDims(0);
-      var prediction = model.execute(pix);
-      // console.log(prediction.arraySync());
+    <script type="text/javascript" src="/js/global.js"></script>
+    <script type="text/javascript">
+      async function infer(blob) {
+        const model = await tf.loadGraphModel(jModel);
+        var pix = tf.browser.fromPixels(preview);
+        pix = tf.mean(pix, -1, true);
+        // console.log(tf.cast(pix, 'int32').arraySync());
+        pix = pix.expandDims(0);
+        var prediction = model.execute(pix);
+        // console.log(prediction.arraySync());
 
-      var number = prediction.arraySync()[0];
-      document.getElementById('previewNumber').innerHTML = number;
-    }
+        var number = prediction.arraySync()[0];
+        document.getElementById('previewNumber').innerHTML = number;
+      }
 
-    var preview = document.getElementById('preview');
+      var preview = document.getElementById('preview');
 
-    function getImage(blob) {
-      var objectURL = URL.createObjectURL(blob);
-      preview.src = objectURL;
+      function getImage(blob) {
+        var objectURL = URL.createObjectURL(blob);
+        preview.src = objectURL;
 
-      infer(blob);
-    }
+        infer(blob);
+      }
 
-    function onInferClicked() {
-      canvas.toBlob(getImage, 'image/jpeg');
-    }
+      function onInferClicked() {
+        canvas.toBlob(getImage, 'image/jpeg');
+      }
 
-    function onClearClicked() {
-      ctx.beginPath();
-      ctx.clearRect(0, 0, WIDTH, HEIGHT);
-    }
+      function onClearClicked() {
+        ctx.beginPath();
+        ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      }
 
-    var canvas, ctx, flag = false,
-        prevX = 0,
-        currX = 0,
-        prevY = 0,
-        currY = 0,
-        dot_flag = false;
-
-    function findxy(res, e) {
-      if (res == 'down') {
-        prevX = currX;
-        prevY = currY;
-        currX = e.offsetX;
-        currY = e.offsetY;
-
-        flag = true;
-        dot_flag = true;
-        if (dot_flag) {
-          ctx.beginPath();
-          ctx.fillStyle = '#FFFFFF';
-          ctx.fillRect(currX, currY, 2, 2);
-          ctx.closePath();
+      var canvas, ctx, flag = false,
+          prevX = 0,
+          currX = 0,
+          prevY = 0,
+          currY = 0,
           dot_flag = false;
-        }
-      }
-      if (res == 'up' || res == "out") {
-        flag = false;
-      }
-      if (res == 'move') {
-        if (flag) {
+
+      function findxy(res, e) {
+        if (res == 'down') {
           prevX = currX;
           prevY = currY;
           currX = e.offsetX;
           currY = e.offsetY;
-          draw();
+
+          flag = true;
+          dot_flag = true;
+          if (dot_flag) {
+            ctx.beginPath();
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(currX, currY, 2, 2);
+            ctx.closePath();
+            dot_flag = false;
+          }
+        }
+        if (res == 'up' || res == "out") {
+          flag = false;
+        }
+        if (res == 'move') {
+          if (flag) {
+            prevX = currX;
+            prevY = currY;
+            currX = e.offsetX;
+            currY = e.offsetY;
+            draw();
+          }
         }
       }
-    }
 
-    function play() {
-      canvas = document.getElementById('paint');
-      ctx = canvas.getContext('2d');
-      HEIGHT = canvas.height;
-      WIDTH = canvas.width;
+      function play() {
+        canvas = document.getElementById('paint');
+        ctx = canvas.getContext('2d');
+        HEIGHT = canvas.height;
+        WIDTH = canvas.width;
 
-      canvas.addEventListener("mousemove", function (e) { findxy('move', e); }, false);
-      canvas.addEventListener("mousedown", function (e) { findxy('down', e); }, false);
-      canvas.addEventListener("mouseup", function (e) { findxy('up', e); }, false);
-      canvas.addEventListener("mouseout", function (e) { findxy('out', e); }, false);
-    }
+        canvas.addEventListener("mousemove", function (e) { findxy('move', e); }, false);
+        canvas.addEventListener("mousedown", function (e) { findxy('down', e); }, false);
+        canvas.addEventListener("mouseup", function (e) { findxy('up', e); }, false);
+        canvas.addEventListener("mouseout", function (e) { findxy('out', e); }, false);
+      }
 
-    function draw() {
-      ctx.beginPath();
-      ctx.moveTo(prevX, prevY);
-      ctx.lineTo(currX, currY);
-      ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth = 34;
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-      ctx.stroke();
-      ctx.closePath();
-    }
+      function draw() {
+        ctx.beginPath();
+        ctx.moveTo(prevX, prevY);
+        ctx.lineTo(currX, currY);
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 34;
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.stroke();
+        ctx.closePath();
+      }
 
-    var aiModelId = getParamInUrl('id');
-    var jModel = null;
-    
-    function load() {
-      restapi.get(DLPS_URL, '/api/aimodel/detail', {id: aiModelId}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
-        var model = msgResp;
-        jModel = model.tfjsModelUrl;
-        play();
-      }, function(msg) {
-        console.log(msg);
-      });
-    }
+      var aiModelId = getParamInUrl('id');
+      var jModel = null;
+      
+      function load() {
+        restapi.get(DLPS_URL, '/api/aimodel/detail', {id: aiModelId}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+          var model = msgResp;
+          jModel = model.tfjsModelUrl;
+          play();
+        }, function(msg) {
+          console.log(msg);
+        });
+      }
 
-    load();
-  </script>
-</body>
+      load();
+    </script>
+  </body>
 </html>

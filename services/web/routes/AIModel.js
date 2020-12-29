@@ -1,4 +1,4 @@
-exports.list = function(req, res) {
+exports.listMyModels = function(req, res) {
     const fs = require('fs');
     const jwt = require('jsonwebtoken');
 
@@ -26,6 +26,46 @@ exports.list = function(req, res) {
         }, function(e){
             res.writeHead(400, {});
             res.write(JSON.stringify({msgCode: 1003, msgResp: 'Unknown error'}));
+            res.end();
+        });
+    });
+};
+
+exports.listTopModels = function(req, res) {
+    const fs = require('fs');
+    const jwt = require('jsonwebtoken');
+
+    var token = req.header('Authorization');
+    if (token) { token = token.replace('Bearer ', ''); }
+    const cert = fs.readFileSync(global.settings.loginJwtCertPath);
+    jwt.verify(token, cert, function(err, decoded) {
+        if (err) {
+            res.writeHead(401, {});
+            res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
+            res.end();
+            return;
+        }
+
+        var datasetName = req.query.datasetName;
+        if (!datasetName || datasetName.length > 256) {
+            res.writeHead(400, {});
+            res.write(JSON.stringify({msgCode: 1003, msgResp: 'Invalid dataset name'}));
+            res.end();
+            return;
+        }
+
+        var search = {datasetName: datasetName, bestAccuracy: {'$gt': 0.5}};
+        var sort = {bestAccuracy: -1};
+
+        const aiModelModel = require('../model/AIModel');
+        aiModelModel.groupByUser(search, sort, 0, 20, function(aiModels) {
+            res.writeHead(200, {});
+            res.write(JSON.stringify({msgCode: 1000, msgResp: aiModels}));
+            res.end();
+        }, function(err){
+            console.log(err)
+            res.writeHead(400, {});
+            res.write(JSON.stringify({msgCode: 1005, msgResp: 'Unknown error'}));
             res.end();
         });
     });
