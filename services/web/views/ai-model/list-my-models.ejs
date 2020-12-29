@@ -29,7 +29,7 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a class="nav-link" href="/user/profile" style="padding: 0px;">
-              <img src="/images/user-icon.png" width="40" height="40" class="rounded-circle">
+              <img id="userAvatar" src="/images/user-icon.png" width="40" height="40" class="rounded-circle">
             </a>
           </li>
         </ul>
@@ -43,7 +43,7 @@
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Type</th>
-            <th scope="col">Dataset Name</th>
+            <th scope="col">Task</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -64,6 +64,7 @@
       </table>
     </div>
     <script type="text/javascript" src="/js/global.js"></script>
+    <script type="text/javascript" src="/js/common-authorized.js"></script>
     <script type="text/javascript">
       const typeMap = {
         'IMAGE_CLASSIFICATION_DATAGEN': 'ic',
@@ -72,9 +73,9 @@
       };
 
       const datasetNameMap = {
-        'mnist-digits': 'Digits',
-        'face1024': 'Face box-labeled',
-        'faceali128x128': 'Face 5 landmarks',
+        'mnist-digits': 'Digits recognition',
+        'face1024': 'Face detection',
+        'faceali128x128': 'Landmarks detection',
         'faceid128x128': 'Face ID',
       };
 
@@ -110,16 +111,19 @@
           for (var i = 0; i < models.length; i++) {
             var model = models[i];
 
-            var type = model.type;
+            var type = model.type ? model.type : '';
             type = type.replaceAll('_', ' ');
             type = type.replaceAll('DATAGEN', '');
+
+            var task = datasetNameMap[model.datasetName];
+            if (!task) { task = ''; }
 
             var tempHtml = document.getElementById('aiModeTemplate').innerHTML;
             tempHtml = tempHtml.replaceAll('{IDX}', i+1);
             tempHtml = tempHtml.replaceAll('{NAME}', model.name);
             tempHtml = tempHtml.replaceAll('{TYPE}', type);
             tempHtml = tempHtml.replaceAll('{TYPE_DETAIL}', typeMap[model.type]);
-            tempHtml = tempHtml.replaceAll('{DATASET_NAME}', datasetNameMap[model.datasetName]);
+            tempHtml = tempHtml.replaceAll('{DATASET_NAME}', task);
             tempHtml = tempHtml.replaceAll('{ID}', model._id);
             
             var tempNode = document.createElement('tbody');

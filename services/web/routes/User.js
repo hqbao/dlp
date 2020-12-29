@@ -272,7 +272,7 @@ exports.update = function(req, res) {
             doc['phone'] = phone;
         }
 
-        var postalCode = req.body.postal_code;
+        var postalCode = req.body.postalCode;
         if (postalCode) {
             if (postalCode.length > 6) {
                 res.writeHead(400, {});
@@ -284,7 +284,7 @@ exports.update = function(req, res) {
             doc['postalCode'] = postalCode;
         }
 
-        var photoUrl = req.body.photo_url;
+        var photoUrl = req.body.photoUrl;
         if (photoUrl) {
             if (photoUrl.length > 1024) {
                 res.writeHead(400, {});
@@ -301,7 +301,7 @@ exports.update = function(req, res) {
             res.writeHead(200, {});
             res.write(JSON.stringify({msgCode: 1000, msgResp: 'Success'}));
             res.end();
-        }, function(e) {
+        }, function(err) {
             res.writeHead(400, {});
             res.write(JSON.stringify({msgCode: 1013, msgResp: 'Unknown error'}));
             res.end();

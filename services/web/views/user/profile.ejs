@@ -29,20 +29,162 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a class="nav-link" href="/user/profile" style="padding: 0px;">
-              <img src="/images/user-icon.png" width="40" height="40" class="rounded-circle">
+              <img id="userAvatar" src="/images/user-icon.png" width="40" height="40" class="rounded-circle">
             </a>
           </li>
         </ul>
       </div>
     </nav>
-    <br>
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
-        <div class="col-12">
-          <h1>Coming soon</h1>
-          <br>
+        <div class="col-md-4 border-right">
+          <div class="d-flex flex-column align-items-center text-center p-3 py-3">
+            <img id="userAvatarImg" class="rounded-circle mt-5" src="/images/user-icon.png" width="90" onclick="this.nextElementSibling.click()">
+            <input id="userAvatarInput" type="file" style="display: none;" onchange="onUserImageUploaded(this)">
+            <span id="userNameText" class="font-weight-bold"></span>
+            <span id="userEmailText" class="text-black-50"></span>
+            <a href="javascript:void(0)" class="badge badge-secondary" onclick="signOut()">SIGN OUT</a>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="p-3 py-5">
+            <small id="notify"></small>
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <label>Email</label>
+                <input id="userEmail" type="email" class="form-control" placeholder="Email" disabled>
+              </div>
+              <div class="col-md-6 mb-2">
+                <label>Name</label>
+                <input id="userName" type="text" class="form-control" placeholder="Name">
+                <small id="nameError" style="color: red;"></small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <label>Phone</label>
+                <input id="userPhone" type="phone" class="form-control" placeholder="Phone">
+                <small id="phoneError" style="color: red;"></small>
+              </div>
+              <div class="col-md-6 mb-2">
+                <label>Postal code</label>
+                <input id="userPostalCode" type="text" class="form-control" placeholder="Postal code">
+                <small id="postalCodeError" style="color: red;"></small>
+              </div>
+            </div>
+            <div class="mt-5 text-right"><button class="btn btn-info" type="button" onclick="onSaveClicked()">Save Profile</button></div>
+          </div>
         </div>
       </div>
     </div>
+    <script type="text/javascript" src="/js/global.js"></script>
+    <script type="text/javascript" src="/js/common-authorized.js"></script>
+    <script type="text/javascript">
+      function fetchUserInfo() {
+        restapi.get(AS_URL, '/api/user/detail', null, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+          var user = msgResp;
+
+          if (user.photoUrl) { document.getElementById('userAvatarImg').src = user.photoUrl; }
+          document.getElementById("userNameText").innerHTML = user.name;
+          document.getElementById("userEmailText").innerHTML = user.email;
+
+          document.getElementById("userName").value = user.name;
+          document.getElementById("userEmail").value = user.email;
+          document.getElementById("userPhone").value = user.phone;
+          document.getElementById("userPostalCode").value = user.postalCode;
+
+          var userInfo = {};
+          try {userInfo = JSON.parse(localStorage.getItem('USER_INFO'));} catch (e) {}
+          userInfo = userInfo ? userInfo : {};
+          userInfo.photoUrl = user.photoUrl;
+          localStorage.setItem('USER_INFO', JSON.stringify(userInfo));
+        }, function(msg) {
+          console.log(msg);
+        });
+      }
+
+      function onUserImageUploaded(self) {
+        var imgElement = document.getElementById('userAvatarImg');
+        var file = document.getElementById('userAvatarInput').files[0];
+
+        var params = {
+          type: 'user',
+          file: file,
+        }
+
+        restapi.uploadImage('', '/upload/image', null, params, null, '/sign-in', function(msgResp) {
+          var photoUrl = msgResp.url;
+          var params = {photoUrl: photoUrl};
+          restapi.patch(AS_URL, '/api/user/update', null, JSON.stringify(params), localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+            imgElement.src = photoUrl;
+          }, function(msg) {
+            console.log(msg);
+          });
+        }, function(msg) {
+          console.log(msg);
+        });
+      }
+
+      function onSaveClicked() {
+        document.getElementById('notify').innerHTML = '';
+        document.getElementById('nameError').innerHTML = '';
+        document.getElementById('phoneError').innerHTML = '';
+        document.getElementById('postalCodeError').innerHTML = '';
+
+        var valid = true;
+
+        var name = document.getElementById("userName").value;
+        if (!name || name.length > 64) {
+          document.getElementById('nameError').innerHTML = 'Invalid name';
+          valid = false;
+        }
+        
+        const phoneRegexp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+        var phone = document.getElementById("userPhone").value;
+        if (phone && !phoneRegexp.test(phone)) {
+          document.getElementById('phoneError').innerHTML = 'Invalid phone number';
+          valid = false;
+        }
+        
+        var postalCode = document.getElementById("userPostalCode").value;
+        if (postalCode && postalCode.length > 6) {
+          document.getElementById('postalCodeError').innerHTML = 'Invalid postal code';
+          valid = false;
+        }
+        
+        if (!valid) {
+          return false;
+        }
+
+        var userInfo = {};
+        try {userInfo = JSON.parse(localStorage.getItem('USER_INFO'));} catch (e) {}
+        userInfo = userInfo ? userInfo : {};
+        userInfo.name = name;
+        userInfo.phone = phone;
+        userInfo.postalCode = postalCode;
+        console.log(userInfo);
+        localStorage.setItem('USER_INFO', JSON.stringify(userInfo));
+
+        var params = userInfo;
+
+        restapi.patch(AS_URL, '/api/user/update', null, JSON.stringify(params), localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+          localStorage.setItem('USER_INFO', null);
+          document.getElementById('notify').innerHTML = 'Updated!';
+          document.getElementById('notify').style.color = 'green';
+        }, function(msg) {
+          document.getElementById('notify').innerHTML = msg.msgResp;
+          document.getElementById('notify').style.color = 'red';
+        });
+
+        return false;
+      }
+
+      function onCancelClicked() {
+        localStorage.setItem('USER_INFO', null);
+        location.href = window.location;
+      }
+
+      fetchUserInfo();
+    </script>
   </body>
 </html>

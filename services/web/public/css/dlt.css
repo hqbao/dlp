@@ -356,8 +356,8 @@ body {
 
 .guide-btn {
 	position: fixed;
-	top: 330px;
-	left: 120px;
+	top: 16px;
+    left: 96px;
 	height: 32px;
 	width: 32px;
 	background-color: #00cc99;
@@ -375,14 +375,14 @@ body {
 
 .guide-content {
 	position: fixed;
-	left: 150px;
-    top: 116px;
+	left: 128px;
+    top: 46px;
     height: 200px;
 	width: 400px;
 	padding: 8px;
-	border: 1px solid #404040;
+	border: 1px solid #c0c0c0;
 	background-color: rgba(255, 255, 255, 0.98);
-	border-radius: 8px 8px 8px 0px;
+	border-radius: 0px 8px 8px 8px;
 }
 
 .guide-content > ul {
