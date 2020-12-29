@@ -9,6 +9,7 @@ const user = require('./routes/User');
 const aiModel = require('./routes/AIModel');
 const codegen = require('./routes/Codegen');
 const gdrive = require('./routes/GoogleDrive');
+const feedback = require('./routes/Feedback');
 const upload = require('./routes/Upload');
 const cUser = require('./controllers/User');
 const cIndex = require('./controllers/Index');
@@ -122,6 +123,8 @@ app.get('/api/aimodel/list-weights-files', aiModel.listWeightsFiles);
 app.get('/api/aimodel/list-tfjs', aiModel.listTFJS);
 
 app.post('/api/codegen/generate', codegen.generate);
+
+app.post('/api/feedback/create', feedback.create);
 
 app.get('/gdrive/sign-in', gdrive.signIn);
 app.get('/gdrive/sign-in-return', gdrive.signInReturn);

@@ -13,7 +13,7 @@ exports.image = function(req, res) {
         }
 
         var type = fields['type'];
-        if (!['user'].includes(type)) {
+        if (!['user', 'feedback'].includes(type)) {
             res.writeHead(400, {});
             res.write(JSON.stringify({msgCode: 1003, msgResp: 'Invalid type'}));
             res.end();

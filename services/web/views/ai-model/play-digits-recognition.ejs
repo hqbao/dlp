@@ -4,6 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/ico" href="/images/favicon.ico">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -41,6 +42,9 @@
       <div class="row">
         <div class="col-12">
           <div style="width: 896px;margin: auto;">
+            <div class="alert alert-info" role="alert">
+            Let's draw a digit on the left box, then click on Infer button. AI will result on the right box!
+            </div>
             <img id="preview" src="" style="position: fixed;top: 80px;display: none;" height="28" width="28" />
             <canvas id="paint" height="448" width="448" style="float: left;background-color: black;border-radius: 32px 0px 0px 32px;"></canvas>
             <div id="previewNumber" style="height: 448px;width: 448px;float: left;background-color: cyan;font-size: 300px;padding-left: 140px;border-radius: 0px 32px 32px 0px;"></div>
@@ -56,30 +60,21 @@
     <script type="text/javascript" src="/js/global.js"></script>
     <script type="text/javascript" src="/js/common-authorized.js"></script>
     <script type="text/javascript">
-      async function infer(blob) {
-        const model = await tf.loadGraphModel(jModel);
-        var pix = tf.browser.fromPixels(preview);
+      async function infer(canvas) {
+        var pix = tf.browser.fromPixels(canvas);
+        pix = tf.image.resizeBilinear(pix, [28, 28]);
         pix = tf.mean(pix, -1, true);
         // console.log(tf.cast(pix, 'int32').arraySync());
         pix = pix.expandDims(0);
-        var prediction = model.execute(pix);
+        var prediction = digitsRecognitionModel.execute(pix);
         // console.log(prediction.arraySync());
 
         var number = prediction.arraySync()[0];
         document.getElementById('previewNumber').innerHTML = number;
       }
 
-      var preview = document.getElementById('preview');
-
-      function getImage(blob) {
-        var objectURL = URL.createObjectURL(blob);
-        preview.src = objectURL;
-
-        infer(blob);
-      }
-
       function onInferClicked() {
-        canvas.toBlob(getImage, 'image/jpeg');
+        infer(canvas)
       }
 
       function onClearClicked() {
@@ -150,12 +145,12 @@
       }
 
       var aiModelId = getParamInUrl('id');
-      var jModel = null;
+      var digitsRecognitionModel = null;
       
       function load() {
-        restapi.get(DLPS_URL, '/api/aimodel/detail', {id: aiModelId}, localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+        restapi.get(DLPS_URL, '/api/aimodel/detail', {id: aiModelId}, localStorage.getItem('TOKEN'), '/sign-in', async function(msgResp) {
           var model = msgResp;
-          jModel = model.tfjsModelUrl;
+          digitsRecognitionModel = await tf.loadGraphModel(model.tfjsModelUrl);
           play();
         }, function(msg) {
           console.log(msg);

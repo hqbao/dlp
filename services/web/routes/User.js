@@ -318,7 +318,7 @@ exports.detail = function(req, res) {
     var cert = fs.readFileSync(global.settings.loginJwtCertPath);
     jwt.verify(token, cert, function(err, decoded) {
         var userId = req.query.id;
-        if (!userId) { userId = decoded.uid; }
+        if (!userId) { userId = decoded ? decoded.uid : undefined; }
         if (!userId || ![12, 24].includes(userId.length)) {
             res.writeHead(400, {});
             res.write(JSON.stringify({msgCode: 1001, msgResp: 'Invalid user ID'}));

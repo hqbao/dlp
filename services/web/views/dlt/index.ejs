@@ -3,6 +3,7 @@
 	<head>
 		<title>Artificial brains - Deep Learning Tool</title>
 		<link rel="stylesheet" href="/css/dlt.css">
+		<link rel="icon" type="image/ico" href="/images/favicon.ico">
 		<script type="text/javascript" src="/js/global.js"></script>
 		<script src="/dltjs/UINode.js" type="module"></script>
 		<script src="/dltjs/UIBackgroundNode.js" type="module"></script>
@@ -118,9 +119,18 @@
 		</div>
 		<!-- Guide -->
 		<button id="guideBtn" class="guide-btn" onclick="guide();" title="Guide">?</button>
-		<div id="guideContent" class="guide-content" style="display: none;">
-		</div>
+		<div id="guideContent" class="guide-content" style="display: none;"></div>
 		<!-- End guide -->
+		<!-- Feedback -->
+		<button id="feedbackBtn" class="feedback-btn" onclick="feedback();" title="Feedback">f</button>
+		<div id="feedbackContent" class="feedback-content" style="display: none;">
+			<h3>Feedback</h3>
+			<small id="notify" class="notify"></small>
+			<textarea id="feedbackMessage" rows="4" placeholder="Content"></textarea>
+			<input id="feedbackScreenshot" type="file"/><br>
+			<button onclick="onFeedbackSubmited()">Submit</button>
+		</div>
+		<!-- End feedback -->
 		<div id="errorValidationWrapper" class="dlt-errors">
 			<ul id="errorValidation"></ul>
 		</div>
@@ -699,6 +709,47 @@
 					localStorage.setItem('GUIDE_HTML_SHOW', 'NO');
 					guideContent.style.display = 'none';
 				}
+			}
+
+			function feedback() {
+				var guideContent = document.getElementById('feedbackContent');
+				guideContent.style.display = guideContent.style.display=='none' ? 'block' : 'none';
+			}
+
+			function onFeedbackSubmited() {
+				document.getElementById('notify').innerHTML = '';
+
+				var message = document.getElementById('feedbackMessage').value;
+				if (!message || message.length > 1024) {
+					document.getElementById('notify').innerHTML = 'Invalid message';
+					return;
+				}
+
+				var file = document.getElementById('feedbackScreenshot').files[0];
+				if (!file) {
+					document.getElementById('notify').innerHTML = 'Please upload screenshot';
+					return;
+				}
+
+				var params = {
+					type: 'feedback',
+					file: file,
+				}
+
+				restapi.uploadImage('', '/upload/image', null, params, null, '/sign-in', function(msgResp) {
+					var photoUrl = msgResp.url;
+					var params = {
+						message: message,
+						photoUrl: photoUrl,
+					};
+					restapi.post(DLPS_URL, '/api/feedback/create', null, JSON.stringify(params), localStorage.getItem('TOKEN'), '/sign-in', function(msgResp) {
+						document.getElementById('notify').innerHTML = 'Feedback submitted, thank you!';
+					}, function(msg) {
+						document.getElementById('notify').innerHTML = msg.msgResp;
+					});
+				}, function(msg) {
+					document.getElementById('notify').innerHTML = msg.msgResp;
+				});
 			}
 
 			function load() {
