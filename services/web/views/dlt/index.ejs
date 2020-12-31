@@ -21,7 +21,7 @@
 			window.addInputLayer = dlt.gCommander.addInputLayer;
 			window.addDenseLayer = dlt.gCommander.addDenseLayer;
 			window.addConv2DLayer = dlt.gCommander.addConv2DLayer;
-			window.addMaxPool2DLayer = dlt.gCommander.addMaxPool2DLayer;
+			window.addPool2DLayer = dlt.gCommander.addPool2DLayer;
 			window.addUpSampling2DLayer = dlt.gCommander.addUpSampling2DLayer;
 			window.addBatchNormLayer = dlt.gCommander.addBatchNormLayer;
 			window.addActivationLayer = dlt.gCommander.addActivationLayer;
@@ -59,7 +59,7 @@
 			window.onInputLayerChange = itg.onInputLayerChange;
 			window.onDenseLayerChange = itg.onDenseLayerChange;
 			window.onConv2DLayerChange = itg.onConv2DLayerChange;
-			window.onMaxPool2DLayerChange = itg.onMaxPool2DLayerChange;
+			window.onPool2DLayerChange = itg.onPool2DLayerChange;
 			window.onUpSampling2DLayerChange = itg.onUpSampling2DLayerChange;
 			window.onDropoutLayerChange = itg.onDropoutLayerChange;
 			window.onFlattenLayerChange = itg.onFlattenLayerChange;
@@ -191,6 +191,7 @@
 				<label>Dataset</label>
 				<select id="OBJECT_DETECTION_DATAGEN.dataset_name" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
 					<option value="face1024">Face detection</option>
+					<option value="quizanswer">Quiz answer</option>
 				</select>
 				<label>Train procedure</label>
 				<select id="OBJECT_DETECTION_DATAGEN.train_procedure" onchange="addObjectDetectionDatagenChange(this.id, this.value)">
@@ -251,6 +252,13 @@
 					<option value="1">Yes</option>
 					<option value="0">No</option>
 				</select>
+				<label>Activation</label>
+				<select id="DENSE_LAYER.activation" onchange="onDenseLayerChange(this.id, this.value)">
+					<option value="relu">ReLU</option>
+					<option value="softmax">Softmax</option>
+					<option value="sigmoid">Sigmoid</option>
+					<option value="linear">Linear</option>
+				</select>
 				<label>Rect</label>
 				<input type="text" id="DENSE_LAYER.rect" placeholder="RECT" onchange="onDenseLayerChange(this.id, this.value)">
 				<label>Color</label>
@@ -280,31 +288,48 @@
 					<option value="1">Yes</option>
 					<option value="0">No</option>
 				</select>
+				<label>Activation</label>
+				<select id="CONV2D_LAYER.activation" onchange="onConv2DLayerChange(this.id, this.value)">
+					<option value="relu">ReLU</option>
+					<option value="softmax">Softmax</option>
+					<option value="sigmoid">Sigmoid</option>
+					<option value="linear">Linear</option>
+				</select>
 				<label>Rect</label>
 				<input type="text" id="CONV2D_LAYER.rect" placeholder="RECT" onchange="onConv2DLayerChange(this.id, this.value)">
 				<label>Color</label>
 				<input type="color" id="CONV2D_LAYER.color" placeholder="COLOR" onchange="onConv2DLayerChange(this.id, this.value)">
 			</form>
-			<form id="MAXPOOL2D_LAYER" class="settings-form">
-				<h5 class="settings-title">MAXPOOL2D LAYER</h5>
+			<form id="POOL2D_LAYER" class="settings-form">
+				<h5 class="settings-title">POOL2D LAYER</h5>
+				<label>Type</label>
+				<select id="POOL2D_LAYER.type" onchange="onPool2DLayerChange(this.id, this.value)">
+					<option value="max-pool">Max pool</option>
+					<option value="avg-pool">Avg pool</option>
+				</select>
 				<label>Pool size</label>
-				<input type="text" id="MAXPOOL2D_LAYER.pool_size" placeholder="POOL SIZE" onchange="onMaxPool2DLayerChange(this.id, this.value)">
+				<input type="text" id="POOL2D_LAYER.pool_size" placeholder="POOL SIZE" onchange="onPool2DLayerChange(this.id, this.value)">
 				<label>Strides</label>
-				<input type="text" id="MAXPOOL2D_LAYER.strides" placeholder="STRIDES" onchange="onMaxPool2DLayerChange(this.id, this.value)">
+				<input type="text" id="POOL2D_LAYER.strides" placeholder="STRIDES" onchange="onPool2DLayerChange(this.id, this.value)">
 				<label>Padding</label>
-				<select id="MAXPOOL2D_LAYER.padding" onchange="onMaxPool2DLayerChange(this.id, this.value)">
+				<select id="POOL2D_LAYER.padding" onchange="onPool2DLayerChange(this.id, this.value)">
 					<option value="same">Same</option>
 					<option value="valid">Valid</option>
 				</select>
 				<label>Rect</label>
-				<input type="text" id="MAXPOOL2D_LAYER.rect" placeholder="RECT" onchange="onMaxPool2DLayerChange(this.id, this.value)">
+				<input type="text" id="POOL2D_LAYER.rect" placeholder="RECT" onchange="onPool2DLayerChange(this.id, this.value)">
 				<label>Color</label>
-				<input type="color" id="MAXPOOL2D_LAYER.color" placeholder="COLOR" onchange="onMaxPool2DLayerChange(this.id, this.value)">
+				<input type="color" id="POOL2D_LAYER.color" placeholder="COLOR" onchange="onPool2DLayerChange(this.id, this.value)">
 			</form>
 			<form id="UPSAMPLING2D_LAYER" class="settings-form">
 				<h5 class="settings-title">UPSAMPLING2D LAYER</h5>
 				<label>Size</label>
 				<input type="text" id="UPSAMPLING2D_LAYER.size" placeholder="SIZE" onchange="onUpSampling2DLayerChange(this.id, this.value)">
+				<label>Interpolation</label>
+				<select id="UPSAMPLING2D_LAYER.interpolation" onchange="onUpSampling2DLayerChange(this.id, this.value)">
+					<option value="nearest">Nearest</option>
+					<option value="bilinear">Bilinear</option>
+				</select>
 				<label>Rect</label>
 				<input type="text" id="UPSAMPLING2D_LAYER.rect" placeholder="RECT" onchange="onUpSampling2DLayerChange(this.id, this.value)">
 				<label>Color</label>
@@ -623,7 +648,7 @@
 				<h5 class="settings-title">LOSS FUNCTION OBJECT DETECTION</h5>
 				<label>Name</label>
 				<select id="LOSS_FUNC_OD.name" onchange="onODLossFuncChange(this.id, this.value)">
-					<option value="od-loss">OD Loss</option>
+					<option value="object-detection">OD Loss</option>
 				</select>
 				<label>Total classes</label>
 				<input type="number" id="LOSS_FUNC_OD.total_classes" placeholder="TOTAL CLASSES" onchange="onODLossFuncChange(this.id, this.value)">
@@ -653,7 +678,7 @@
 			<button class="add-btn-input" onclick="addInputLayer();"></button>
 			<button class="add-btn-dense" onclick="addDenseLayer();"></button>
 			<button class="add-btn-conv2d" onclick="addConv2DLayer();"></button>
-			<button class="add-btn-maxpool2d" onclick="addMaxPool2DLayer();"></button>
+			<button class="add-btn-pool2d" onclick="addPool2DLayer();"></button>
 			<button class="add-btn-upsamp2d" onclick="addUpSampling2DLayer();"></button>
 			<button class="add-btn-bn" onclick="addBatchNormLayer();"></button>
 			<button class="add-btn-activation" onclick="addActivationLayer();"></button>

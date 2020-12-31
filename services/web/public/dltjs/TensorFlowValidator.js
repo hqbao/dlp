@@ -3,7 +3,7 @@ import {UIConnectionNode} from './UIConnectionNode.js';
 
 const SUPPORTED_IMAGE_CLASSIFICATION_DATASETS = ['mnist-digits', 'fingers', 'faceid128x128'];
 const SUPPORTED_HEATMAP_REGRESSION_DATASETS = ['faceali128x128'];
-const SUPPORTED_OBJECT_DETECTION_DATASETS = ['face1024'];
+const SUPPORTED_OBJECT_DETECTION_DATASETS = ['face1024', 'quizanswer'];
 
 class TensorFlowValidator {
 	constructor() {}
@@ -147,6 +147,10 @@ class TensorFlowValidator {
 							errors.push(node.getName()+' trainable must not be empty');
 						}
 
+						if (!['linear', 'relu', 'sigmoid', 'softmax'].includes(node.nodeParams.params.activation)) {
+							errors.push(node.getName()+' activation is not supported');
+						}
+
 						// Set name if needed
 						var name = node.nodeParams.params.name;
 						var blockType = node.nodeParams.blockType;
@@ -171,6 +175,10 @@ class TensorFlowValidator {
 
 						if (isEmpty(node.nodeParams.params.trainable)) {
 							errors.push(node.getName()+' trainable must not be empty');
+						}
+
+						if (!['linear', 'relu', 'sigmoid', 'softmax'].includes(node.nodeParams.params.activation)) {
+							errors.push(node.getName()+' activation is not supported');
 						}
 
 						// Set name if needed
@@ -230,7 +238,11 @@ class TensorFlowValidator {
 						break;
 					}
 
-					case 'MAXPOOL2D_LAYER': {
+					case 'POOL2D_LAYER': {
+						if (!['max-pool', 'avg-pool'].includes(node.nodeParams.params.type)) {
+							errors.push(node.getName()+' type is not supported');
+						}
+
 						if (!isKernelSize(node.nodeParams.params.pool_size)) {
 							errors.push(node.getName()+' pool size is not valid');
 						}
@@ -247,6 +259,10 @@ class TensorFlowValidator {
 					}
 
 					case 'UPSAMPLING2D_LAYER': {
+						if (!['nearest', 'bilinear'].includes(node.nodeParams.params.interpolation)) {
+							errors.push(node.getName()+' interpolation is not supported');
+						}
+						
 						if (!isKernelSize(node.nodeParams.params.size)) {
 							errors.push(node.getName()+' size is not valid');
 						}
@@ -713,7 +729,7 @@ class TensorFlowValidator {
 					break;
 				}
 
-				case 'MAXPOOL2D_LAYER': {
+				case 'POOL2D_LAYER': {
 					var prevLayerParams = prevNode.nodeParams.params;
 					var layerParams = node.nodeParams.params;
 					if (prevLayerParams.shape == undefined 

@@ -265,6 +265,7 @@ export function onDenseLayerSelected() {
 	var unitsInput = document.getElementById("DENSE_LAYER.units");
 	var useBiasInput = document.getElementById("DENSE_LAYER.use_bias");
 	var trainableInput = document.getElementById("DENSE_LAYER.trainable");
+	var activationInput = document.getElementById("DENSE_LAYER.activation");
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
@@ -272,6 +273,7 @@ export function onDenseLayerSelected() {
 	unitsInput.value = gNode.nodeParams.params.units;
 	useBiasInput.value = gNode.nodeParams.params.use_bias;
 	trainableInput.value = gNode.nodeParams.params.trainable;
+	activationInput.value = gNode.nodeParams.params.activation;
 }
 
 export function onDenseLayerChange(id, value) {
@@ -300,6 +302,10 @@ export function onDenseLayerChange(id, value) {
 		gNode.nodeParams.params.trainable = parseInt(value);
 		break;
 
+		case "DENSE_LAYER.activation":
+		gNode.nodeParams.params.activation = value;
+		break;
+
 		default:
 		break;
 	}
@@ -317,6 +323,7 @@ export function onConv2DLayerSelected() {
 	var paddingInput = document.getElementById("CONV2D_LAYER.padding");
 	var useBiasInput = document.getElementById("CONV2D_LAYER.use_bias");
 	var trainableInput = document.getElementById("CONV2D_LAYER.trainable");
+	var activationInput = document.getElementById("CONV2D_LAYER.activation");
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
@@ -327,6 +334,7 @@ export function onConv2DLayerSelected() {
 	paddingInput.value = gNode.nodeParams.params.padding;
 	useBiasInput.value = gNode.nodeParams.params.use_bias;
 	trainableInput.value = gNode.nodeParams.params.trainable;
+	activationInput.value = gNode.nodeParams.params.activation;
 }
 
 export function onConv2DLayerChange(id, value) {
@@ -367,6 +375,10 @@ export function onConv2DLayerChange(id, value) {
 		gNode.nodeParams.params.trainable = parseInt(value);
 		break;
 
+		case "CONV2D_LAYER.activation":
+		gNode.nodeParams.params.activation = value;
+		break;
+
 		default:
 		break;
 	}
@@ -374,39 +386,45 @@ export function onConv2DLayerChange(id, value) {
 	dlt.gCommander.onNodeUpdated(gNode);
 }
 
-export function onMaxPool2DLayerSelected() {
-	var rectInput = document.getElementById("MAXPOOL2D_LAYER.rect");
-	var colorInput = document.getElementById("MAXPOOL2D_LAYER.color");
-	var poolSizeInput = document.getElementById("MAXPOOL2D_LAYER.pool_size");
-	var stridesInput = document.getElementById("MAXPOOL2D_LAYER.strides");
-	var paddingInput = document.getElementById("MAXPOOL2D_LAYER.padding");
+export function onPool2DLayerSelected() {
+	var rectInput = document.getElementById("POOL2D_LAYER.rect");
+	var colorInput = document.getElementById("POOL2D_LAYER.color");
+	var typeInput = document.getElementById("POOL2D_LAYER.type");
+	var poolSizeInput = document.getElementById("POOL2D_LAYER.pool_size");
+	var stridesInput = document.getElementById("POOL2D_LAYER.strides");
+	var paddingInput = document.getElementById("POOL2D_LAYER.padding");
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
+	typeInput.value = gNode.nodeParams.params.type;
 	poolSizeInput.value = JSON.stringify(gNode.nodeParams.params.pool_size);
 	stridesInput.value = JSON.stringify(gNode.nodeParams.params.strides);
 	paddingInput.value = gNode.nodeParams.params.padding;
 }
 
-export function onMaxPool2DLayerChange(id, value) {
+export function onPool2DLayerChange(id, value) {
 	switch (id) {
-		case "MAXPOOL2D_LAYER.rect":
+		case "POOL2D_LAYER.rect":
 		gNode.rect = JSON_parse(value);
 		break;
 
-		case "MAXPOOL2D_LAYER.color":
+		case "POOL2D_LAYER.color":
 		gNode.color = value;
 		break;
 
-		case "MAXPOOL2D_LAYER.pool_size":
+		case "POOL2D_LAYER.type":
+		gNode.nodeParams.params.type = value;
+		break;
+
+		case "POOL2D_LAYER.pool_size":
 		gNode.nodeParams.params.pool_size = JSON_parse(value);
 		break;
 
-		case "MAXPOOL2D_LAYER.strides":
+		case "POOL2D_LAYER.strides":
 		gNode.nodeParams.params.strides = JSON_parse(value);
 		break;
 
-		case "MAXPOOL2D_LAYER.padding":
+		case "POOL2D_LAYER.padding":
 		gNode.nodeParams.params.padding = value;
 		break;
 
@@ -421,10 +439,12 @@ export function onUpSampling2DLayerSelected() {
 	var rectInput = document.getElementById("UPSAMPLING2D_LAYER.rect");
 	var colorInput = document.getElementById("UPSAMPLING2D_LAYER.color");
 	var sizeInput = document.getElementById("UPSAMPLING2D_LAYER.size");
+	var interpolationInput = document.getElementById("UPSAMPLING2D_LAYER.interpolation");
 
 	rectInput.value = JSON.stringify(gNode.rect);
 	colorInput.value = gNode.color;
 	sizeInput.value = JSON.stringify(gNode.nodeParams.params.size);
+	interpolationInput.value = gNode.nodeParams.params.interpolation;
 }
 
 export function onUpSampling2DLayerChange(id, value) {
@@ -439,6 +459,10 @@ export function onUpSampling2DLayerChange(id, value) {
 
 		case "UPSAMPLING2D_LAYER.size":
 		gNode.nodeParams.params.size = JSON_parse(value);
+		break;
+
+		case "UPSAMPLING2D_LAYER.interpolation":
+		gNode.nodeParams.params.interpolation = value;
 		break;
 
 		default:
@@ -1367,8 +1391,8 @@ dlt.gNotification.onNodeSelected = function(node) {
 		onConv2DLayerSelected();
 		break;
 
-		case "MAXPOOL2D_LAYER":
-		onMaxPool2DLayerSelected();
+		case "POOL2D_LAYER":
+		onPool2DLayerSelected();
 		break;
 
 		case "UPSAMPLING2D_LAYER":

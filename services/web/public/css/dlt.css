@@ -106,8 +106,8 @@ body {
 	background-image: url(/images/dlt-conv2d-node.png);
 }
 
-.add-btn-maxpool2d {
-	background-image: url(/images/dlt-maxpool2d-node.png);
+.add-btn-pool2d {
+	background-image: url(/images/dlt-pool2d-node.png);
 }
 
 .add-btn-upsamp2d {

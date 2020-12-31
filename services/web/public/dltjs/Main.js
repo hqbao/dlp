@@ -330,6 +330,7 @@ var gCommander = {
 						padding: 'same',
 						use_bias: 1,
 						trainable: 1,
+						activation: 'linear',
 					}
 				},
 			});
@@ -358,6 +359,7 @@ var gCommander = {
 						units: 1,
 						use_bias: 1,
 						trainable: 1,
+						activation: 'linear',
 					}
 				},
 			});
@@ -386,7 +388,7 @@ var gCommander = {
 			});
 		gUIApp.nodeManager.snapshot();
 	},
-	addMaxPool2DLayer: function() {
+	addPool2DLayer: function() {
 		gUIApp.nodeManager.addNode(
 			UINodeManager.NODE_TYPE_CONNECTABLE,
 			{
@@ -398,13 +400,14 @@ var gCommander = {
 						y2: gUIApp.refPosition.y+64, 
 						x2: gUIApp.refPosition.x+64,
 					}, 
-					name: 'MaxPool2DLayer',
-					shortName: 'MAXPOOL2D',
+					name: 'Pool2DLayer',
+					shortName: 'POOL2D',
 				},
 				nodeParams: {
 					type: 'ONE_ANY',
-					blockType: 'MAXPOOL2D_LAYER',
+					blockType: 'POOL2D_LAYER',
 					params: {
+						type: 'max-pool',
 						pool_size: [2, 2],
 						strides: [1, 1],
 						padding: 'same',
@@ -433,6 +436,7 @@ var gCommander = {
 					blockType: 'UPSAMPLING2D_LAYER',
 					params: {
 						size: [2, 2],
+						interpolation: 'nearest',
 					}
 				},
 			});
