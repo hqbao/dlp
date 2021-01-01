@@ -83,7 +83,7 @@ class UIConnectionNode extends UINode {
 
 	// Node protocol
 	onLeftClick(entity, anchorPoint, ctrlKey, shiftKey) {
-		if (shiftKey) {
+		if (shiftKey && this.isSelected()) {
 			this.onDeselect();
 		}
 		else {
