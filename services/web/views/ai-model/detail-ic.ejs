@@ -85,7 +85,8 @@
           data: trainLossData,
           lineTension: 0.3,
           fill: false,
-          borderColor: 'cyan'
+          borderColor: 'cyan',
+          borderWidth: 1,
         };
 
         var testLoss = {
@@ -93,7 +94,8 @@
           data: testLossData,
           lineTension: 0.3,
           fill: false,
-          borderColor: 'orange'
+          borderColor: 'orange',
+          borderWidth: 1,
         };
 
         var epoch = Math.max(trainLossData.length, testLossData.length)
@@ -136,7 +138,8 @@
           data: precisionData,
           lineTension: 0.3,
           fill: false,
-          borderColor: 'blue'
+          borderColor: 'blue',
+          borderWidth: 1,
         };
 
         var recall = {
@@ -144,7 +147,22 @@
           data: recallData,
           lineTension: 0.3,
           fill: false,
-          borderColor: 'red'
+          borderColor: 'red',
+          borderWidth: 1,
+        };
+
+        var accuracyData = [];
+        for (var i = 0; i < precisionData.length; i++) {
+          accuracyData.push((precisionData[i]+recallData[i])/2)
+        }
+
+        var accuracy = {
+          label: "Accuracy",
+          data: accuracyData,
+          lineTension: 0.3,
+          fill: false,
+          borderColor: '#00ff00',
+          borderWidth: 5,
         };
 
         var epoch = Math.max(precisionData.length, recallData.length)
@@ -155,7 +173,7 @@
 
         var data = {
           labels: labels,
-          datasets: [precision, recall]
+          datasets: [accuracy, precision, recall]
         };
 
         var chartOptions = {

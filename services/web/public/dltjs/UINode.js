@@ -1,33 +1,41 @@
 class UINode {
-	#id
-	#zIndex
-	#canvas
-	#notif
+	// #id
+	// #zIndex
+	// #canvas
+	// #notif
 	constructor(nodeId, nodeZIndex, canvas, notif) {
 		if (new.target === Node) { 
 			throw new Error("Can not construct Node instances directly");
 		}
 
-		this.#id = nodeId;
-		this.#zIndex = nodeZIndex;
-		this.#canvas = canvas;
-		this.#notif = notif;
+		// this.#id = nodeId;
+		// this.#zIndex = nodeZIndex;
+		// this.#canvas = canvas;
+		// this.#notif = notif;
+		this._id = nodeId;
+		this._zIndex = nodeZIndex;
+		this._canvas = canvas;
+		this._notif = notif;
 	}
 
 	getId() {
-		return this.#id;
+		// return this.#id;
+		return this._id;
 	}
 
 	getZIndex() {
-		return this.#zIndex;
+		// return this.#zIndex;
+		return this._zIndex;
 	}
 
 	getCanvas() {
-		return this.#canvas;
+		// return this.#canvas;
+		return this._canvas;
 	}
 
 	getnotif() {
-		return this.#notif;
+		// return this.#notif;
+		return this._notif;
 	}
 
 	getName() {
