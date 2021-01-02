@@ -452,6 +452,7 @@ body {
 	border-radius: 8px;
 	outline: none;
 	margin-bottom: 8px;
+	resize: none;
 }
 
 .feedback-content > input[type="file"] {

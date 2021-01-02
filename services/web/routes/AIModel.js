@@ -801,7 +801,10 @@ exports.convert = function(req, res) {
 
             var settings = JSON.stringify(req.body.settings);
             if (!settings) {
-                settings = '{}';
+                res.writeHead(400, {});
+                res.write(JSON.stringify({msgCode: 1013, msgResp: 'Missing settings'}));
+                res.end();
+                return;
             }
 
             function updateStatus(converted) {
@@ -832,7 +835,7 @@ exports.convert = function(req, res) {
                         var output = fs.createWriteStream(zipModelFilePath, {overwrite: true});
                         output.on('error', function(err){
                             res.writeHead(400, {});
-                            res.write(JSON.stringify({msgCode: 1003, msgResp: 'Error'}));
+                            res.write(JSON.stringify({msgCode: 1015, msgResp: 'Error'}));
                             res.end();
                         });
                         output.on('close', function () {
@@ -870,12 +873,12 @@ exports.convert = function(req, res) {
                 });
             }, function(e) {
                 res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1013, msgResp: 'Unknown error'}));
+                res.write(JSON.stringify({msgCode: 1017, msgResp: 'Unknown error'}));
                 res.end();
             });
         }, function(e){
             res.writeHead(400, {});
-            res.write(JSON.stringify({msgCode: 1015, msgResp: 'Unknow error'}));
+            res.write(JSON.stringify({msgCode: 1019, msgResp: 'Unknow error'}));
             res.end();
         });
     });

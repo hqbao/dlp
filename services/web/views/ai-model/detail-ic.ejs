@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/ico" href="/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=1">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -48,7 +48,7 @@
             <div class="col-lg-6">
               <div class="form-group mb-2">
                 <label>Procedure</label>
-                <select id="settingsTestType" class="form-control">
+                <select id="settingsTestType" class="form-control" disabled>
                   <option value="digits-recognition">Digits recognition</option>
                   <option value="face-id">Face ID</option>
                 </select>
@@ -63,8 +63,8 @@
               </div>
             </div>
           </div>
-          <button id="convertBtn" type="button" class="btn btn-info" onclick="convert()" disabled>CONVERT</button>
-          <a href="#" id="playLink" type="button" class="btn btn-success" style="display: none;">PLAY</a>
+          <button id="convertBtn" type="button" class="btn btn-info btn-sm" onclick="convert()" disabled>CONVERT</button>
+          <a href="#" id="playLink" class="btn btn-success" style="display: none;">PLAY</a>
         </div>
         <div class="col-12 col-lg-6 col-sm-12">
           <canvas id="lossChart" width="600" height="400"></canvas>
@@ -227,13 +227,26 @@
           plotLoss(model.trainLoss, model.testLoss);
           plotPR(model.precision, model.recall);
 
+          if (model.datasetName == 'mnist-digits') {
+            document.getElementById('settingsTestType').value = 'digits-recognition';
+          }
+          else if (model.datasetName == 'faceid128x128') {
+            document.getElementById('settingsTestType').value = 'face-id';
+          }
+
           if (model.weights && !model.converting) {
             document.getElementById('convertBtn').disabled = '';
           }
 
           if (model.converted && model.tfjsModelUrl) {
-            document.getElementById('playLink').style.display = 'inline';
-            document.getElementById('playLink').href = '/ai-model/play-'+document.getElementById('settingsTestType').value+'?id='+aiModelId;
+            if (model.datasetName == 'mnist-digits') {
+              document.getElementById('playLink').style.display = 'inline';
+              document.getElementById('playLink').href = '/ai-model/play-digits-recognition?id='+aiModelId;
+            }
+            else if (model.datasetName == 'faceid128x128') {
+              document.getElementById('playLink').style.display = 'inline';
+              document.getElementById('playLink').href = '/ai-model/play-face-id?id='+aiModelId;
+            }
           }
         }, function(msg) {
           console.log(msg);

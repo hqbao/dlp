@@ -858,7 +858,7 @@ var gCommander = {
 					type: 'ONE_ANY',
 					blockType: 'RESNET_SIDENTITY_BLOCK',
 					params: {
-						name: 'sidentity',
+						name: '',
 						filters: [16, 16, 64],
 						kernel_size: [3, 3],
 						strides: [2, 2],

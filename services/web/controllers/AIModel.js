@@ -34,6 +34,10 @@ exports.playFaceDetection = function(req, res) {
     res.render('ai-model/play-face-detection', {});
 };
 
+exports.playScoreScanner = function(req, res) {
+    res.render('ai-model/play-score-scanner', {});
+};
+
 exports.playFace5landmarksDetection = function(req, res) {
     res.render('ai-model/play-face-5landmarks-detection', {});
 };

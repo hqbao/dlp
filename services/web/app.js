@@ -152,6 +152,7 @@ app.get('/ai-model/play-digits-recognition', cAIModel.playDigitsRecognition);
 app.get('/ai-model/play-face-id', cAIModel.playFaceId);
 app.get('/ai-model/play-fingers', cAIModel.playFingers);
 app.get('/ai-model/play-face-detection', cAIModel.playFaceDetection);
+app.get('/ai-model/play-score-scanner', cAIModel.playScoreScanner);
 app.get('/ai-model/play-face-5landmarks-detection', cAIModel.playFace5landmarksDetection);
 
 const MongoClient = require('mongodb').MongoClient;

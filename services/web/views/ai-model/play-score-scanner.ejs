@@ -42,101 +42,82 @@
       <div class="row">
         <div class="col-12">
           <div style="width: 100%;text-align: center;">
-            <video width="448" height="448" style="position: fixed;background-color: black;z-index: 1;"></video>
-            <canvas id="overlay" width="448" height="448" style="position: relative;left: 0px;background-color: none;z-index: 2;">
+            <video width="200" height="240" style="position: fixed;background-color: black;z-index: 1;"></video>
+            <canvas id="overlay" width="200" height="240" style="position: relative;left: 0px;background-color: none;z-index: 2;">
           </div>
         </div>
         <div class="col-12" style="text-align: center;">
-          <button class="btn btn-success" onclick="onStartClicked()">START</button>
-          <button class="btn btn-danger" onclick="onStopClicked()">STOP</button>
+          <button class="btn btn-success" onclick="onStartClicked()">Start</button>
+          <button class="btn btn-danger" onclick="onStopClicked()">Stop</button>
         </div>
       </div>
     </div>
     <script type="text/javascript" src="/js/global.js"></script>
     <script type="text/javascript" src="/js/common-authorized.js"></script>
     <script type="text/javascript">
-      var aiModelId = getParamInUrl('id');
-
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
+
+      var isVideoReady = false;
 
       var overlayCanvas = document.getElementById('overlay');
       var overlayCtx = overlayCanvas.getContext('2d');
 
-      var preview = document.getElementById('preview');
-      var isVideoReady = false;
-
-      var faceLandmarksDetection = null;
+      var aiModelId = getParamInUrl('id');
+      var odModel = null;
       var inference = false;
       var infering = false;
 
-      function handle(a, b, c, d, e) {
-        overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
-
-        var ay = a/112;
-        var ax = a%112;
-        var by = b/112;
-        var bx = b%112;
-        var cy = c/112;
-        var cx = c%112;
-        var dy = d/112;
-        var dx = d%112;
-        var ey = e/112;
-        var ex = e%112;
-
-        var scale = 0.25;
-
-        overlayCtx.fillStyle = "#00FF00";
+      function drawBoxes(box) {
         overlayCtx.beginPath();
-        overlayCtx.arc(ax/scale, ay/scale, 10, 0, 2 * Math.PI);
-        overlayCtx.fill();
-        overlayCtx.fillStyle = "#00FF00";
-        overlayCtx.beginPath();
-        overlayCtx.arc(bx/scale, by/scale, 10, 0, 2 * Math.PI);
-        overlayCtx.fill();
-        overlayCtx.fillStyle = "#00FF00";
-        overlayCtx.beginPath();
-        overlayCtx.arc(cx/scale, cy/scale, 10, 0, 2 * Math.PI);
-        overlayCtx.fill();
-        overlayCtx.fillStyle = "#00FF00";
-        overlayCtx.beginPath();
-        overlayCtx.arc(dx/scale, dy/scale, 10, 0, 2 * Math.PI);
-        overlayCtx.fill();
-        overlayCtx.fillStyle = "#00FF00";
-        overlayCtx.beginPath();
-        overlayCtx.arc(ex/scale, ey/scale, 10, 0, 2 * Math.PI);
-        overlayCtx.fill();
+        overlayCtx.strokeStyle = "#FFFFFF";
+        overlayCtx.rect(box[1], box[0], (box[3]-box[1]), (box[2]-box[0]), Math.PI);
+        overlayCtx.stroke();
       }
 
-      function infer() {
+      function handleObjectDetection(validOutputs, boxes) {
+        overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+        for (var i = 0; i < validOutputs; i++) {
+          var box = boxes[i];
+          drawBoxes(box);
+        }
+      }
+
+      async function inferObjectDetection() {
         var pix = tf.browser.fromPixels(canvas);
-        pix = tf.mean(pix, -1, true);
         pix = tf.cast(pix, 'float32');
         pix = pix.expandDims(0);
-        var prediction = faceLandmarksDetection.execute(pix);
-        var a = prediction[0].arraySync();
-        var b = prediction[1].arraySync();
-        var c = prediction[2].arraySync();
-        var d = prediction[3].arraySync();
-        var e = prediction[4].arraySync();
-        handle(a, b, c, d, e);
+        var prediction = await odModel.executeAsync(pix); // TFJS not working with tensorflow 2.4
+        
+        var output1 = prediction[0].arraySync();
+        var output2 = prediction[1].arraySync();
+        if (Array.isArray(output1[0])) {
+          validOutputs = output2[0];
+          boxes = output1;
+        }
+        else {
+          validOutputs = output1[0];
+          boxes = output2;
+        }
+
+        handleObjectDetection(validOutputs, boxes);
       }
 
       function loadedmetadata(e) {
-        canvas.width = this.videoWidth;
-        canvas.height = this.videoHeight;
+        canvas.width = 200;
+        canvas.height = 240;
       }
 
       function timeupdate(e) {
         ctx.drawImage(this, 0, 0);
       }
 
-      function onEnded(e) {}
+      function ended(e) {}
 
       var video = document.querySelector('video');
       video.addEventListener('loadedmetadata', loadedmetadata, false);
       video.addEventListener('timeupdate', timeupdate, false);
-      video.addEventListener('ended', onEnded, false);
+      video.addEventListener('ended', ended, false);
 
       function onStopClicked() {
         if (isVideoReady) {
@@ -153,7 +134,7 @@
       }
 
       function play() {
-        var constraints = {audio: false, video: {width: 112, height: 112}}; 
+        var constraints = {audio: false, video: {width: 200, height: 240}};
         navigator.mediaDevices.getUserMedia(constraints)
         .then(function(mediaStream) {
           video.srcObject = mediaStream;
@@ -161,7 +142,7 @@
             isVideoReady = true;
           };
         })
-        .catch(function(err) { 
+        .catch(function(err) {
           console.log(err.name + ": " + err.message); 
         });
       }
@@ -169,7 +150,7 @@
       function load() {
         restapi.get(DLPS_URL, '/api/aimodel/detail', {id: aiModelId}, localStorage.getItem('TOKEN'), '/sign-in', async function(msgResp) {
           var model = msgResp;
-          faceLandmarksDetection = await tf.loadGraphModel(model.tfjsModelUrl);
+          odModel = await tf.loadGraphModel(model.tfjsModelUrl);
           play();
         }, function(msg) {
           console.log(msg);
@@ -180,9 +161,9 @@
         if (!inference) { return; }
         if (infering) { return; }
         infering = true;
-        var t = Date.now();
-        infer();
-        console.log('Face landmarks detection', Date.now()-t);
+        // var t = Date.now();
+        await inferObjectDetection();
+        // console.log('Object detection', Date.now()-t);
         infering = false;
       }, 50);
 
