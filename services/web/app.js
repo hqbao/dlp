@@ -21,17 +21,21 @@ global.settings = {
     loginLockedTimeCoefficient: 5,
     loginAllowedRetries: 4,
     loginJwtPeriod: 7*24*60*60,
-    resetPasswordPeriod: 1*300,
-    mailService: 'gmail',
-    mailTransporterID: 'baofair001@gmail.com',
-    mailSenderID: 'baofair001@gmail.com',
-    mailSenderPass: '123!@#qweQWE',
+    resetPasswordPeriod: 1*60,
+    mail: {
+        service: 'gmail',
+        transporterID: 'baofair001@gmail.com',
+        senderID: 'baofair001@gmail.com',
+        senderPass: '123!@#qweQWE',
+    },
+    ssl: {
+        certPath: './ssl-cert/ai-designer.io/certificate.crt',
+        caPath: './ssl-cert/ai-designer.io/ca_bundle.crt',
+        privateKeyPath: './ssl-cert/ai-designer.io/private.key',
+    },
     loginJwtCertPath: './token-cert/jwt-token.crt',
     loginJwtPrivateKeyPath: './token-cert/jwt-token.key',
     googleJwtPrivateKeyPath: './token-cert/google-jwt.key',
-    sslCertPath: './ssl-cert/ai-designer.io/certificate.crt',
-    sslCAPath: './ssl-cert/ai-designer.io/ca_bundle.crt',
-    sslPrivateKeyPath: './ssl-cert/ai-designer.io/private.key',
     webServiceDomain: 'ai-designer.io',
     webServicePort: 443,
     GOOGLEAPP_redirectURI: 'https://ai-designer.io/gdrive/sign-in-return',
@@ -51,9 +55,9 @@ global.settings = {
 };
 
 // ssl
-const certificate =fs.readFileSync(global.settings.sslCertPath, {encoding: 'utf8'}, function(err, data) {});
-const ca  = fs.readFileSync(global.settings.sslCAPath, {encoding: 'utf8'}, function(err, data) {});
-const privateKey  = fs.readFileSync(global.settings.sslPrivateKeyPath, {encoding: 'utf8'}, function(err, data) {});
+const certificate =fs.readFileSync(global.settings.ssl.certPath, {encoding: 'utf8'}, function(err, data) {});
+const ca  = fs.readFileSync(global.settings.ssl.caPath, {encoding: 'utf8'}, function(err, data) {});
+const privateKey  = fs.readFileSync(global.settings.ssl.privateKeyPath, {encoding: 'utf8'}, function(err, data) {});
 const credentials = {
     key: privateKey,
     cert: certificate,
@@ -141,6 +145,8 @@ app.get('/upload/list-tfjs', upload.listTFJS);
 app.get('/', cIndex.index);
 app.get('/sign-in', cUser.signIn);
 app.get('/sign-up', cUser.signUp);
+app.get('/reset-password', cUser.resetPassword);
+app.get('/reset-password-with-code', cUser.resetPasswordWithCode);
 app.get('/user/profile', cUser.profile);
 app.get('/dlt', cDLT.index);
 app.get('/ai-model/list-top-models', cAIModel.listTopModels);

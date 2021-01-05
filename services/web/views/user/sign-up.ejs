@@ -30,13 +30,13 @@
                   <small id="emailError" style="color: maroon"></small>
                 </div>
                 <div class="form-group">
-                  <label>PIN<span style="color: maroon;">*</span></label>
-                  <input name="password" type="password" class="form-control" placeholder="PIN">
+                  <label>Password<span style="color: maroon;">*</span></label>
+                  <input name="password" type="password" class="form-control" placeholder="Password">
                   <small id="passwordError" style="color: maroon"></small>
                 </div>
                 <div class="form-group">
-                  <label>Re-type PIN<span style="color: maroon;">*</span></label>
-                  <input name="retypePassword" type="password" class="form-control" placeholder="Re-type PIN">
+                  <label>Re-type Password<span style="color: maroon;">*</span></label>
+                  <input name="retypePassword" type="password" class="form-control" placeholder="Re-type Password">
                   <small id="retypePasswordError" style="color: maroon"></small>
                 </div>
                 <div class="form-group">
@@ -133,7 +133,7 @@
           if (redirectUrl) { location.href = redirectUrl; }
           else { location.href = '/'; }
         }, function(msg) {
-          document.getElementById('errorMessage').innerHTML = msg.msgResp;
+          document.getElementById('genericError').innerHTML = msg.msgResp;
         });
         
         return false;

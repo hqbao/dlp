@@ -87,7 +87,7 @@ exports.login = function(req, res) {
             var header = {algorithm: 'ES256'};
             var payload = {
                 iss: 'Cobee',
-                sub: 'O=ai-designer.io,E='+user.email,
+                sub: 'O=co-bee.com,E='+user.email,
                 aud: user.email,
                 jti: uuidv4(),
                 exp: Math.floor(Date.now()/1000)+global.settings.loginJwtPeriod,
@@ -124,14 +124,8 @@ exports.register = function(req, res) {
     const moment = require('moment');
     const userModel = require('../model/User');
 
-    var email = req.body.email;
-    var password = req.body.password;
-    var name = req.body.name;
-    var phone = req.body.phone;
-    var postalCode = req.body.postal_code;
-    var photoUrl = req.body.photo_url;
-
     const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    var email = req.body.email;
     if (!email || !emailRegexp.test(email)) {
         res.writeHead(400, {});
         res.write(JSON.stringify({msgCode: 1001, msgResp: 'Invalid email'}));
@@ -139,6 +133,7 @@ exports.register = function(req, res) {
         return;
     }
 
+    var password = req.body.password;
     if (!password || password.length < 6) {
         res.writeHead(400, {});
         res.write(JSON.stringify({msgCode: 1003, msgResp: 'Invalid password'}));
@@ -146,6 +141,7 @@ exports.register = function(req, res) {
         return;
     }
 
+    var name = req.body.name;
     if (!name) {
         res.writeHead(400, {});
         res.write(JSON.stringify({msgCode: 1005, msgResp: 'Name is mandatory'}));
@@ -154,6 +150,7 @@ exports.register = function(req, res) {
     }
 
     const phoneRegexp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    var phone = req.body.phone;
     if (phone && !phoneRegexp.test(phone)) {
         res.writeHead(400, {});
         res.write(JSON.stringify({msgCode: 1007, msgResp: 'Invalid phone'}));
@@ -161,12 +158,17 @@ exports.register = function(req, res) {
         return;
     }
 
+    var postalCode = req.body.postalCode;
     if (postalCode && postalCode.length > 6) {
         res.writeHead(400, {});
         res.write(JSON.stringify({msgCode: 1009, msgResp: 'Invalid postal code'}));
         res.end();
         return;
     }
+
+    var photoUrl = req.body.photoUrl;
+    var linkedFBAccount = req.body.linkedFBAccount;
+    var linkedGoogleAccount = req.body.linkedGoogleAccount;
 
     userModel.findByEmail(email, function(item) {
         if (item) {
@@ -188,6 +190,8 @@ exports.register = function(req, res) {
             phone: phone,
             postalCode: postalCode,
             photoUrl: photoUrl,
+            linkedFBAccount: linkedFBAccount,
+            linkedGoogleAccount: linkedGoogleAccount,
             createdAt: moment().unix(),
             loginTryCount: 0,
             loginLockedTime: 0,
@@ -201,7 +205,7 @@ exports.register = function(req, res) {
             var header = {algorithm: 'ES256'};
             var payload = {
                 iss: 'Cobee',
-                sub: 'O=ai-designer.io,E='+item.email,
+                sub: 'O=co-bee.com,E='+item.email,
                 aud: item.email,
                 jti: uuidv4(),
                 exp: Math.floor(Date.now()/1000)+global.settings.loginJwtPeriod,
@@ -248,7 +252,7 @@ exports.update = function(req, res) {
         var doc = {};
 
         var name = req.body.name;
-        if (name) {
+        if (name != undefined) {
             if (name.length > 64) {
                 res.writeHead(400, {});
                 res.write(JSON.stringify({msgCode: 1005, msgResp: 'Invalid'}));
@@ -260,32 +264,36 @@ exports.update = function(req, res) {
         }
 
         var phone = req.body.phone;
-        if (phone) {
-            const phoneRegexp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-            if (phone.length > 16 || !phoneRegexp.test(phone)) {
-                res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1007, msgResp: 'Invalid phone'}));
-                res.end();
-                return;
+        if (phone != undefined) {
+            if (phone != '') {
+                const phoneRegexp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+                if (phone.length > 16 || !phoneRegexp.test(phone)) {
+                    res.writeHead(400, {});
+                    res.write(JSON.stringify({msgCode: 1007, msgResp: 'Invalid phone'}));
+                    res.end();
+                    return;
+                }
             }
-
+            
             doc['phone'] = phone;
         }
 
         var postalCode = req.body.postalCode;
-        if (postalCode) {
-            if (postalCode.length > 6) {
-                res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1009, msgResp: 'Invalid postal code'}));
-                res.end();
-                return;
+        if (postalCode != undefined) {
+            if (phone != '') {
+                if (postalCode.length > 6) {
+                    res.writeHead(400, {});
+                    res.write(JSON.stringify({msgCode: 1009, msgResp: 'Invalid postal code'}));
+                    res.end();
+                    return;
+                }
             }
             
             doc['postalCode'] = postalCode;
         }
 
         var photoUrl = req.body.photoUrl;
-        if (photoUrl) {
+        if (photoUrl != undefined) {
             if (photoUrl.length > 1024) {
                 res.writeHead(400, {});
                 res.write(JSON.stringify({msgCode: 1011, msgResp: 'Photo URL must not exceed 1024 characters'}));
@@ -296,12 +304,22 @@ exports.update = function(req, res) {
             doc['photoUrl'] = photoUrl;
         }
 
+        var linkedFBAccount = req.body.linkedFBAccount;
+        if (linkedFBAccount != undefined) {
+            doc['linkedFBAccount'] = linkedFBAccount;
+        }
+
+        var linkedGoogleAccount = req.body.linkedGoogleAccount;
+        if (linkedGoogleAccount != undefined) {
+            doc['linkedGoogleAccount'] = linkedGoogleAccount;
+        }
+
         const userModel = require('../model/User');
         userModel.update(decoded.uid, doc, function() {
             res.writeHead(200, {});
             res.write(JSON.stringify({msgCode: 1000, msgResp: 'Success'}));
             res.end();
-        }, function(err) {
+        }, function(e) {
             res.writeHead(400, {});
             res.write(JSON.stringify({msgCode: 1013, msgResp: 'Unknown error'}));
             res.end();
@@ -317,17 +335,15 @@ exports.detail = function(req, res) {
     if (token) { token = token.replace('Bearer ', ''); }
     var cert = fs.readFileSync(global.settings.loginJwtCertPath);
     jwt.verify(token, cert, function(err, decoded) {
-        var userId = req.query.id;
-        if (!userId) { userId = decoded ? decoded.uid : undefined; }
-        if (!userId || ![12, 24].includes(userId.length)) {
-            res.writeHead(400, {});
-            res.write(JSON.stringify({msgCode: 1001, msgResp: 'Invalid user ID'}));
+        if (err) {
+            res.writeHead(401, {});
+            res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
             res.end();
             return;
         }
 
         const userModel = require('../model/User');
-        userModel.findById(userId, function(user) {
+        userModel.findById(decoded.uid, function(user) {
             if (!user) {
                 res.writeHead(400, {});
                 res.write(JSON.stringify({msgCode: 1003, msgResp: 'User not found'}));
@@ -355,6 +371,45 @@ exports.detail = function(req, res) {
     });
 };
 
+exports.publicDetail = function(req, res) {
+    const fs = require('fs');
+    const jwt = require('jsonwebtoken');
+    
+    var userId = req.query.id;
+    if (!userId || ![12, 24].includes(userId.length)) {
+        res.writeHead(400, {});
+        res.write(JSON.stringify({msgCode: 1001, msgResp: 'Invalid ID'}));
+        res.end();
+        return;
+    }
+
+    const userModel = require('../model/User');
+    userModel.findById(userId, function(user) {
+        if (!user) {
+            res.writeHead(400, {});
+            res.write(JSON.stringify({msgCode: 1003, msgResp: 'User not found'}));
+            res.end();
+            return;
+        }
+
+        var respUser = {
+            _id: user['_id'],
+            email: user['email'],
+            name: user['name'],
+            phone: user['phone'],
+            photoUrl: user['photoUrl'],
+        };
+        
+        res.writeHead(200, {});
+        res.write(JSON.stringify({msgCode: 1000, msgResp: respUser}));
+        res.end();
+    }, function(e) {
+        res.writeHead(400, {});
+        res.write(JSON.stringify({msgCode: 1005, msgResp: 'Unknown error'}));
+        res.end();
+    });
+};
+
 exports.resetPassword = function(req, res) {
     const moment = require('moment');
     const { v4: uuidv4 } = require('uuid');
@@ -378,19 +433,27 @@ exports.resetPassword = function(req, res) {
     }
 
     if (step === 1) {
+        var webPageUrl = req.body.webPageUrl;
+        if (!webPageUrl || webPageUrl.length > 1024) {
+            res.writeHead(400, {});
+            res.write(JSON.stringify({msgCode: 1005, msgResp: 'Invalid web page url'}));
+            res.end();
+            return;
+        }
+
         const userModel = require('../model/User');
         userModel.find({email: email}, {}, function(users) {
             var user = users[0];
             if (!user) {
                 res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1005, msgResp: 'User not found'}));
+                res.write(JSON.stringify({msgCode: 1007, msgResp: 'User not found'}));
                 res.end();
                 return;
             }
 
             if (moment().unix() - user.resetPasswordRequestTime < global.settings.resetPasswordPeriod) {
                 res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1007, msgResp: 'One request per hour'}));
+                res.write(JSON.stringify({msgCode: 1009, msgResp: 'One request per a minute'}));
                 res.end();
                 return;
             }
@@ -401,23 +464,24 @@ exports.resetPassword = function(req, res) {
 
             var nodemailer = require('nodemailer');
             var transporter = nodemailer.createTransport({
-                service: global.settings.mailService,
+                service: global.settings.mail.service,
                 auth: {
-                    user: global.settings.mailTransporterID,
-                    pass: global.settings.mailSenderPass
+                    user: global.settings.mail.transporterID,
+                    pass: global.settings.mail.senderPass
                 }
             });
             var mailOptions = {
-                from: global.settings.mailSenderID,
+                from: global.settings.mail.senderID,
                 to: email,
                 subject: 'Reset PIN',
-                text: 'Code: '+codeToResetPassword,
+                text: webPageUrl+'?email='+email+'&code='+codeToResetPassword,
             };
 
             transporter.sendMail(mailOptions, function(err, info){
                 if (err) {
+                    console.log(err);
                     res.writeHead(400, {});
-                    res.write(JSON.stringify({msgCode: 1009, msgResp: 'Can not send email to '+email}));
+                    res.write(JSON.stringify({msgCode: 1011, msgResp: 'Can not send email to '+email}));
                     res.end();
                     return;
                 }
@@ -432,13 +496,13 @@ exports.resetPassword = function(req, res) {
                     res.end();
                 }, function(e) {
                     res.writeHead(400, {});
-                    res.write(JSON.stringify({msgCode: 1011, msgResp: 'Unknown error'}));
+                    res.write(JSON.stringify({msgCode: 1013, msgResp: 'Unknown error'}));
                     res.end();
                 });
             });
         }, function(e) {
             res.writeHead(400, {});
-            res.write(JSON.stringify({msgCode: 1013, msgResp: 'Unknown error'}));
+            res.write(JSON.stringify({msgCode: 1015, msgResp: 'Unknown error'}));
             res.end();
         });
         return;
@@ -446,15 +510,15 @@ exports.resetPassword = function(req, res) {
         var code = parseInt(req.body.code);
         if (!code) {
             res.writeHead(400, {});
-            res.write(JSON.stringify({msgCode: 1015, msgResp: 'Invalid code'}));
+            res.write(JSON.stringify({msgCode: 1017, msgResp: 'Invalid code'}));
             res.end();
             return;
         }
 
-        var password = req.body.new_password;
+        var password = req.body.newPassword;
         if (!password || password.length < 6) {
             res.writeHead(400, {});
-            res.write(JSON.stringify({msgCode: 1017, msgResp: 'Invalid password'}));
+            res.write(JSON.stringify({msgCode: 1019, msgResp: 'Invalid password'}));
             res.end();
             return;
         }
@@ -464,14 +528,14 @@ exports.resetPassword = function(req, res) {
             var user = users[0];
             if (!user) {
                 res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1019, msgResp: 'Icorrect ID/code'}));
+                res.write(JSON.stringify({msgCode: 1021, msgResp: 'Icorrect ID/code'}));
                 res.end();
                 return;
             }
 
             if (moment().unix() - user.resetPasswordRequestTime > global.settings.resetPasswordPeriod) {
                 res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1021, msgResp: 'Invalid request'}));
+                res.write(JSON.stringify({msgCode: 1023, msgResp: 'Invalid request'}));
                 res.end();
                 return;
             }
@@ -482,12 +546,12 @@ exports.resetPassword = function(req, res) {
                 res.end();
             }, function(e) {
                 res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1023, msgResp: 'Unknown error'}));
+                res.write(JSON.stringify({msgCode: 1025, msgResp: 'Unknown error'}));
                 res.end();
             });
         }, function(e) {
             res.writeHead(400, {});
-            res.write(JSON.stringify({msgCode: 1025, msgResp: 'Unknown error'}));
+            res.write(JSON.stringify({msgCode: 1027, msgResp: 'Unknown error'}));
             res.end();
         });
     }
@@ -508,8 +572,8 @@ exports.changePassword = function(req, res) {
             return;
         }
 
-        var oldPassword = req.body.old_password;
-        var newPassword = req.body.new_password;
+        var oldPassword = req.body.oldPassword;
+        var newPassword = req.body.newPassword;
 
         if (!oldPassword || oldPassword.length < 6) {
             res.writeHead(400, {});
@@ -535,12 +599,12 @@ exports.changePassword = function(req, res) {
         const md5 = require('md5');
         const userModel = require('../model/User');
         userModel.findByUsernameAndPassword(decoded.email, md5(oldPassword), function(item) {
-            if (!item) {
-                res.writeHead(400, {});
-                res.write(JSON.stringify({msgCode: 1009, msgResp: 'Incorrect password'}));
-                res.end();
-                return;
-            }
+            // if (!item) {
+            //     res.writeHead(400, {});
+            //     res.write(JSON.stringify({msgCode: 1009, msgResp: 'Incorrect password'}));
+            //     res.end();
+            //     return;
+            // }
             
             userModel.update(decoded.uid, {password: md5(newPassword)}, function() {
                 res.writeHead(200, {});
@@ -584,5 +648,73 @@ exports.delete = function(req, res) {
             res.write(JSON.stringify({msgCode: 1003, msgResp: 'Unknown error'}));
             res.end();
         });
+    });
+};
+
+exports.authenticated = function(req, res) {
+    const jwt = require('jsonwebtoken');
+    const fs = require('fs');
+    const { v4: uuidv4 } = require('uuid');
+    const userModel = require('../model/User');
+
+    var token = req.header('Authorization');
+    if (!token || token != 'web trusted password') {
+        res.writeHead(400, {});
+        res.write(JSON.stringify({msgCode: 1001, msgResp: 'Unauthorized'}));
+        res.end();
+        return;
+    }
+
+    var id = req.query.id;
+    if (!id) {
+        res.writeHead(400, {});
+        res.write(JSON.stringify({msgCode: 1003, msgResp: 'Missing ID'}));
+        res.end();
+        return;
+    }
+
+    var type = req.query.type;
+    if (!type || !['facebook', 'google'].includes(type)) {
+        res.writeHead(400, {});
+        res.write(JSON.stringify({msgCode: 1005, msgResp: 'Invalid type'}));
+        res.end();
+        return;
+    }
+    
+    userModel.find({'$or': [{linkedFBAccount: id}, {linkedGoogleAccount: id}]}, {}, function(users) {
+        // No user found
+        if (!users || users.length < 1) {
+            res.writeHead(400, {});
+            res.write(JSON.stringify({msgCode: 1005, msgResp: 'User not found'}));
+            res.end();
+            return;
+        }
+
+        var user = users[0];
+        var privKey = fs.readFileSync(global.settings.loginJwtPrivateKeyPath);
+        var header = {algorithm: 'ES256'};
+        var payload = {
+            iss: 'Cobee',
+            sub: 'O=co-bee.com,E='+user.email,
+            aud: user.email,
+            jti: uuidv4(),
+            exp: Math.floor(Date.now()/1000)+global.settings.loginJwtPeriod,
+            iat: Math.floor(Date.now()/1000),
+            uid: user._id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            postalCode: user.postalCode,
+            photoUrl: user.photoUrl,
+        };
+        token = jwt.sign(payload, privKey, header);
+
+        res.writeHead(200, {});
+        res.write(JSON.stringify({msgCode: 1000, msgResp: {token: token}}));
+        res.end();
+    }, function(e) {
+        res.writeHead(400, {});
+        res.write(JSON.stringify({msgCode: 1014, msgResp: 'Unknown error'}));
+        res.end();
     });
 };

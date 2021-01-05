@@ -233,6 +233,8 @@ var restapi = {
 	},
 }
 
-if (!window.location.pathname.includes('/sign-in') && !window.location.pathname.includes('/sign-up')) {
+if (!window.location.pathname.includes('/sign-in') 
+	&& !window.location.pathname.includes('/sign-up')
+	&& !window.location.pathname.includes('/reset-password')) {
 	localStorage.setItem('REDIRECT_URL', window.location);
 }
